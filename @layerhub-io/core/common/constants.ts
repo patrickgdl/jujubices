@@ -46,8 +46,8 @@ export const defaultEditorConfig: EditorConfig = {
 }
 
 export const defaultFrameOptions = {
-  width: 1200,
-  height: 1200,
+  width: 1080,
+  height: 1920,
   id: "frame",
   name: "Initial Frame",
   fill: "#ffffff",
@@ -70,8 +70,8 @@ export enum LayerType {
 }
 
 export const defaultBackgroundOptions = {
-  width: 1200,
-  height: 1200,
+  width: 1080,
+  height: 1920,
   fill: "#ffffff",
   id: "background",
   name: "Initial Frame",

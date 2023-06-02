@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios"
-import { IDesign, IComponent } from "~/interfaces/DesignEditor"
+import { IComponent, IDesign } from "~/interfaces/DesignEditor"
 import { Resource } from "~/interfaces/editor"
 
 type IElement = any
