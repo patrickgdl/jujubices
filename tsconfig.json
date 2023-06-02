@@ -18,9 +18,10 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
+      "@layerhub-io/*": ["@layerhub-io/*"],
       "~/*": ["src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "@layerhub-io"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

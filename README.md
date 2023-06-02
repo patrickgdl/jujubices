@@ -4,7 +4,7 @@ Invite Builder from [jujubices.com](https://jujubices.com).
 
 ## Components
 
-- @layerhub-io/react: This editor is using SDK for react.
+- @layerhub-io/react: This editor is using a custom LayerHub SDK.
 
 ## How to start
 
