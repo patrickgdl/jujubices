@@ -1,21 +1,22 @@
-import React from "react"
-import { styled } from "baseui"
-import { Theme } from "baseui/theme"
-import Icons from "~/components/Icons"
-import { Button, KIND, SIZE } from "baseui/button"
-import { Slider } from "baseui/slider"
-import { Input } from "baseui/input"
 import { useEditor, useZoomRatio } from "@layerhub-io/react"
-import { StatefulTooltip } from "baseui/tooltip"
+import { styled } from "baseui"
 import { Block } from "baseui/block"
+import { Button, KIND, SIZE } from "baseui/button"
+import { Input } from "baseui/input"
+import { Slider } from "baseui/slider"
+import { Theme } from "baseui/theme"
 import { PLACEMENT } from "baseui/toast"
+import { StatefulTooltip } from "baseui/tooltip"
+import React from "react"
+import Icons from "~/components/Icons"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
-  height: "50px",
+  height: "100%",
   background: $theme.colors.white,
   display: "flex",
-  justifyContent: "space-between",
+  flexDirection: "column",
   alignItems: "center",
+  justifyContent: "flex-end",
 }))
 
 interface Options {
@@ -68,15 +69,25 @@ const Common = () => {
 
   return (
     <Container>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Button kind={KIND.tertiary} size={SIZE.compact}>
-          <Icons.Expand size={16} />
-        </Button>
-
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "end" }}>
         <Button kind={KIND.tertiary} size={SIZE.compact} onClick={() => editor.zoom.zoomToFit()}>
           <Icons.Compress size={16} />
         </Button>
+        <Button kind={KIND.tertiary} size={SIZE.compact}>
+          <Icons.Refresh size={16} />
+        </Button>
+        <Button kind={KIND.tertiary} size={SIZE.compact}>
+          <Icons.Undo size={22} />
+        </Button>
+        <Button kind={KIND.tertiary} size={SIZE.compact}>
+          <Icons.Redo size={22} />
+        </Button>
+        <Button kind={KIND.tertiary} size={SIZE.compact}>
+          <Icons.TimePast size={16} />
+        </Button>
+      </div>
 
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Block>
           <StatefulTooltip
             placement={PLACEMENT.bottom}
@@ -173,21 +184,6 @@ const Common = () => {
           onKeyUp={(e) => applyZoomRatio("zoomRatio", e)}
           value={options.zoomRatioTemp}
         />
-      </div>
-
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "end" }}>
-        <Button kind={KIND.tertiary} size={SIZE.compact}>
-          <Icons.Refresh size={16} />
-        </Button>
-        <Button kind={KIND.tertiary} size={SIZE.compact}>
-          <Icons.Undo size={22} />
-        </Button>
-        <Button kind={KIND.tertiary} size={SIZE.compact}>
-          <Icons.Redo size={22} />
-        </Button>
-        <Button kind={KIND.tertiary} size={SIZE.compact}>
-          <Icons.TimePast size={16} />
-        </Button>
       </div>
     </Container>
   )

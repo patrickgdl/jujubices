@@ -83,7 +83,7 @@ export default function () {
                 },
               }}
             >
-              Computer
+              Computador
             </Button>
             <input onChange={handleFileInput} type="file" id="file" ref={inputFileRef} style={{ display: "none" }} />
 

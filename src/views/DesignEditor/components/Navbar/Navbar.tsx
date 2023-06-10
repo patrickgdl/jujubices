@@ -53,7 +53,8 @@ const Navbar = () => {
         frame: currentDesign.frame,
         scenes: updatedScenes,
         metadata: {},
-        preview: "",
+        previews: [],
+        published: false,
       }
       makeDownload(graphicTemplate)
     } else {
