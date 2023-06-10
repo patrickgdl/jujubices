@@ -1,20 +1,20 @@
-import React from "react"
+import { useEditor, useFrame } from "@layerhub-io/react"
+import Scrollbar from "@layerhub-io/react-custom-scrollbar"
+import { Block } from "baseui/block"
 import { Button, SIZE } from "baseui/button"
-import { HexColorPicker } from "react-colorful"
-import { StatefulPopover, PLACEMENT } from "baseui/popover"
 import { Plus } from "baseui/icon"
 import { Input } from "baseui/input"
-import { useEditor, useFrame } from "@layerhub-io/react"
 import { Modal, ROLE } from "baseui/modal"
-import { Block } from "baseui/block"
+import { PLACEMENT, StatefulPopover } from "baseui/popover"
+import { Tab, Tabs } from "baseui/tabs"
+import React from "react"
+import { HexColorPicker } from "react-colorful"
 import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
+import SwapHorizontal from "~/components/Icons/SwapHorizontal"
 import Scrollable from "~/components/Scrollable"
 import { sampleFrames } from "~/constants/editor"
-import Scrollbar from "@layerhub-io/react-custom-scrollbar"
-import SwapHorizontal from "~/components/Icons/SwapHorizontal"
-import { Tabs, Tab } from "baseui/tabs"
-import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 
 const colors = ["#ffffff", "#9B9B9B", "#4A4A4A", "#000000", "#A70C2C", "#DA9A15", "#F8E71D", "#47821A", "#4990E2"]
 
@@ -165,8 +165,6 @@ const Customize = () => {
 const ResizeTemplate = () => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [activeKey, setActiveKey] = React.useState<string | number>("0")
-  const { currentDesign, setCurrentDesign } = useDesignEditorContext()
-  const editor = useEditor()
   const [desiredFrame, setDesiredFrame] = React.useState({
     width: 0,
     height: 0,
@@ -176,7 +174,10 @@ const ResizeTemplate = () => {
     width: 0,
     height: 0,
   })
+
   const frame = useFrame()
+  const editor = useEditor()
+  const { currentDesign, setCurrentDesign } = useDesignEditorContext()
 
   React.useEffect(() => {
     if (frame) {
@@ -206,6 +207,7 @@ const ResizeTemplate = () => {
     }
     setIsOpen(false)
   }
+
   const isEnabled =
     // @ts-ignore
     (activeKey === "0" && selectedFrame.id !== 0) ||
@@ -225,8 +227,9 @@ const ResizeTemplate = () => {
           },
         }}
       >
-        Resize template
+        Redimensionar
       </Button>
+
       <Modal
         onClose={() => setIsOpen(false)}
         closeable={true}
@@ -255,7 +258,7 @@ const ResizeTemplate = () => {
               fontWeight: 500,
             }}
           >
-            Choose a format and resize your template.
+            Escolha um formato e redimensione seu modelo.
           </Block>
           <Tabs
             overrides={{
@@ -279,16 +282,16 @@ const ResizeTemplate = () => {
               setActiveKey(activeKey)
             }}
           >
-            <Tab title="Preset size">
+            <Tab title="Tamanho pré-definidos">
               <Block $style={{ width: "100%", height: "400px" }}>
                 <Scrollbar>
-                  <Block $style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+                  <Block $style={{ display: "flex", flexDirection: "column", padding: "1rem 5rem" }}>
                     {sampleFrames.map((sampleFrame, index) => (
                       <Block
                         onClick={() => setSelectedFrame(sampleFrame)}
                         $style={{
-                          padding: "0.5rem",
                           backgroundColor: selectedFrame.id === sampleFrame.id ? "rgb(243,244,245)" : "#ffffff",
+                          margin: "0.25rem 0",
                           ":hover": {
                             backgroundColor: "rgb(246,247,248)",
                             cursor: "pointer",
@@ -296,17 +299,7 @@ const ResizeTemplate = () => {
                         }}
                         key={index}
                       >
-                        <Block
-                          $style={{
-                            height: "120px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <img src={sampleFrame.preview} />
-                        </Block>
-                        <Block $style={{ fontSize: "13px", textAlign: "center" }}>
+                        <Block $style={{ fontSize: "13px" }}>
                           <Block $style={{ fontWeight: 500 }}>{sampleFrame.name}</Block>
                           <Block $style={{ color: "rgb(119,119,119)" }}>
                             {sampleFrame.width} x {sampleFrame.height}px
@@ -318,7 +311,8 @@ const ResizeTemplate = () => {
                 </Scrollbar>
               </Block>
             </Tab>
-            <Tab title="Custom size">
+
+            <Tab title="Tamanho customizado">
               <Block $style={{ padding: "2rem 2rem" }}>
                 <Block
                   $style={{ display: "grid", gridTemplateColumns: "1fr 50px 1fr", alignItems: "end", fontSize: "14px" }}
@@ -353,9 +347,10 @@ const ResizeTemplate = () => {
             </Tab>
           </Tabs>
         </Block>
+
         <Block $style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingBottom: "2rem" }}>
           <Button disabled={!isEnabled} onClick={applyResize} style={{ width: "190px" }}>
-            Resize template
+            Redimensionar
           </Button>
         </Block>
       </Modal>

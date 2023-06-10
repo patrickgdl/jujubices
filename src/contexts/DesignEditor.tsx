@@ -33,14 +33,15 @@ export const DesignEditorContext = React.createContext<ISceneEditorContext>({
   currentDesign: {
     id: "",
     frame: {
-      width: 1,
-      height: 1,
+      width: 1080,
+      height: 1920,
     },
     metadata: {},
     name: "",
-    preview: "",
+    previews: [],
     scenes: [],
     type: "",
+    published: false,
   },
   setCurrentDesign: () => {},
   isSidebarOpen: true,
@@ -75,14 +76,15 @@ export const DesignEditorProvider = ({ children }: { children: React.ReactNode }
   const [currentDesign, setCurrentDesign] = React.useState<IDesign>({
     id: "",
     frame: {
-      width: 1,
-      height: 1,
+      width: 1080,
+      height: 1920,
     },
     metadata: {},
     name: "",
-    preview: "",
+    previews: [],
     scenes: [],
     type: "",
+    published: false,
   })
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true)
   const [displayPlayback, setDisplayPlayback] = React.useState<boolean>(false)
@@ -101,6 +103,7 @@ export const DesignEditorProvider = ({ children }: { children: React.ReactNode }
     top: 0,
     visible: false,
   })
+
   const context = {
     scenes,
     setScenes,
@@ -123,5 +126,6 @@ export const DesignEditorProvider = ({ children }: { children: React.ReactNode }
     contextMenuSceneRequest,
     setContextMenuSceneRequest,
   }
+
   return <DesignEditorContext.Provider value={context}>{children}</DesignEditorContext.Provider>
 }

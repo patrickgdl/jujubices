@@ -74,7 +74,7 @@ const Graphics = () => {
             },
           }}
         >
-          Computer
+          Computador
         </Button>
       </Block>
       <Scrollable>

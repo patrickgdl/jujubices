@@ -1,8 +1,6 @@
 import React from "react"
 import { Input } from "baseui/input"
 import { Block } from "baseui/block"
-import CloudCheck from "~/components/Icons/CloudCheck"
-import { StatefulTooltip } from "baseui/tooltip"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
 
 interface State {
@@ -12,6 +10,7 @@ interface State {
 
 const DesignTitle = () => {
   const [state, setState] = React.useState<State>({ name: "Sem título", width: 0 })
+
   const { currentDesign, setCurrentDesign } = useDesignEditorContext()
   const inputTitleRef = React.useRef<Input>(null)
   const spanRef = React.useRef<HTMLDivElement | null>(null)
