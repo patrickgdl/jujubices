@@ -69,7 +69,17 @@ const Toolbox = () => {
   // @ts-ignore
   const Component = Items[state.toolbox]
 
-  return <Container>{Component ? <Component /> : state.toolbox}</Container>
+  return (
+    <Container>
+      {Component ? (
+        <Component />
+      ) : (
+        <div style={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center" }}>
+          {state.toolbox}
+        </div>
+      )}
+    </Container>
+  )
 }
 
 export default Toolbox

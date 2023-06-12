@@ -4,8 +4,8 @@ import { IFrame, IScene } from "@layerhub-io/types"
 export const defaultTemplate: IScene = {
   id: nanoid(),
   frame: {
-    width: 1200,
-    height: 1200,
+    width: 1080,
+    height: 1920,
   },
   layers: [
     {
@@ -13,8 +13,8 @@ export const defaultTemplate: IScene = {
       name: "Initial Frame",
       left: 0,
       top: 0,
-      width: 1200,
-      height: 1200,
+      width: 1080,
+      height: 1920,
       type: "Background",
       fill: "#ffffff",
       metadata: {},

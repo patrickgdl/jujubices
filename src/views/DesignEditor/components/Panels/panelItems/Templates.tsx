@@ -1,18 +1,18 @@
-import React from "react"
 import { useEditor } from "@layerhub-io/react"
-import { Block } from "baseui/block"
-import { loadTemplateFonts } from "~/utils/fonts"
-import Scrollable from "~/components/Scrollable"
-import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
-import { useStyletron } from "baseui"
-import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
-import useDesignEditorContext from "~/hooks/useDesignEditorContext"
-import { useSelector } from "react-redux"
-import { selectPublicDesigns } from "~/store/slices/designs/selectors"
-import { IDesign } from "~/interfaces/DesignEditor"
 import { IScene } from "@layerhub-io/types"
+import { useStyletron } from "baseui"
+import { Block } from "baseui/block"
 import { nanoid } from "nanoid"
+import React from "react"
+import { useSelector } from "react-redux"
+import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
+import Scrollable from "~/components/Scrollable"
+import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
+import { IDesign } from "~/interfaces/DesignEditor"
 import api from "~/services/api"
+import { selectPublicDesigns } from "~/store/slices/designs/selectors"
+import { loadTemplateFonts } from "~/utils/fonts"
 
 export default function () {
   const editor = useEditor()
@@ -71,6 +71,7 @@ export default function () {
           <AngleDoubleLeft size={18} />
         </Block>
       </Block>
+
       <Scrollable>
         <div style={{ padding: "0 1.5rem" }}>
           <div style={{ display: "grid", gap: "0.5rem", gridTemplateColumns: "1fr 1fr" }}>

@@ -48,7 +48,7 @@ const ContextMenu = () => {
             editor.cancelContextMenuRequest()
           }}
           icon="Duplicate"
-          label="copy"
+          label="Copiar"
         >
           <Duplicate size={24} />
         </ContextMenuItem>
@@ -58,7 +58,7 @@ const ContextMenu = () => {
             editor.cancelContextMenuRequest()
           }}
           icon="Paste"
-          label="paste"
+          label="Colar"
         >
           <Paste size={24} />
         </ContextMenuItem>
@@ -69,7 +69,7 @@ const ContextMenu = () => {
             editor.cancelContextMenuRequest()
           }}
           icon="Delete"
-          label="delete"
+          label="Apagar"
         >
           <Delete size={24} />
         </ContextMenuItem>

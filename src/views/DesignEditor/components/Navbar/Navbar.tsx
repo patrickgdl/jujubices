@@ -10,7 +10,6 @@ import Play from "~/components/Icons/Play"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
 import { IDesign } from "~/interfaces/DesignEditor"
 import { loadTemplateFonts } from "~/utils/fonts"
-import { loadVideoEditorAssets } from "~/utils/video"
 
 import DesignTitle from "./DesignTitle"
 
@@ -24,26 +23,14 @@ const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
 }))
 
 const Navbar = () => {
-  const editor = useEditor()
+  const inputFileRef = React.useRef<HTMLInputElement>(null)
+
+  const editor = useEditor()!
   const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign, scenes } = useDesignEditorContext()
 
   const parseGraphicJSON = () => {
+    console.log({ currentDesign })
     const currentScene = editor.scene.exportToJSON()
-
-    const updatedScenes = scenes.map((scn) => {
-      if (scn.id === currentScene.id) {
-        return {
-          id: currentScene.id,
-          layers: currentScene.layers,
-          name: currentScene.name,
-        }
-      }
-      return {
-        id: scn.id,
-        layers: scn.layers,
-        name: scn.name,
-      }
-    })
 
     if (currentDesign) {
       const graphicTemplate: IDesign = {
@@ -51,7 +38,7 @@ const Navbar = () => {
         type: "GRAPHIC",
         name: currentDesign.name,
         frame: currentDesign.frame,
-        scenes: updatedScenes,
+        scenes: [currentScene],
         metadata: {},
         previews: [],
         published: false,
@@ -88,76 +75,35 @@ const Navbar = () => {
         layers: scn.layers,
         metadata: {},
       }
-      const loadedScene = await loadVideoEditorAssets(scene)
-      await loadTemplateFonts(loadedScene)
 
-      const preview = (await editor.renderer.render(loadedScene)) as string
-      scenes.push({ ...loadedScene, preview })
+      await loadTemplateFonts(scene)
+
+      const preview = (await editor.renderer.render(scene)) as string
+
+      scenes.push({ ...scene, preview })
     }
 
-    return { scenes, design }
-  }
-
-  const loadPresentationTemplate = async (payload: IDesign) => {
-    const scenes = []
-    const { scenes: scns, ...design } = payload
-
-    for (const scn of scns) {
-      const scene: IScene = {
-        name: scn.name,
-        frame: payload.frame,
-        id: scn,
-        layers: scn.layers,
-        metadata: {},
-      }
-      const loadedScene = await loadVideoEditorAssets(scene)
-
-      const preview = (await editor.renderer.render(loadedScene)) as string
-      await loadTemplateFonts(loadedScene)
-      scenes.push({ ...loadedScene, preview })
-    }
-    return { scenes, design }
-  }
-
-  const loadVideoTemplate = async (payload: IDesign) => {
-    const scenes = []
-    const { scenes: scns, ...design } = payload
-
-    for (const scn of scns) {
-      const design: IScene = {
-        name: "Awesome template",
-        frame: payload.frame,
-        id: scn.id,
-        layers: scn.layers,
-        metadata: {},
-        duration: scn.duration,
-      }
-      const loadedScene = await loadVideoEditorAssets(design)
-
-      const preview = (await editor.renderer.render(loadedScene)) as string
-      await loadTemplateFonts(loadedScene)
-      scenes.push({ ...loadedScene, preview })
-    }
     return { scenes, design }
   }
 
   const handleImportTemplate = React.useCallback(
     async (data: any) => {
       let template
-      if (data.type === "GRAPHIC") {
-        template = await loadGraphicTemplate(data)
-      } else if (data.type === "PRESENTATION") {
-        template = await loadPresentationTemplate(data)
-      } else if (data.type === "VIDEO") {
-        template = await loadVideoTemplate(data)
-      }
-      //   @ts-ignore
+      template = await loadGraphicTemplate(data)
+
+      console.log({ template })
+      console.log({ scenes })
+
       setScenes(template.scenes)
       //   @ts-ignore
       setCurrentDesign(template.design)
     },
     [editor]
   )
+
+  const handleInputFileRefClick = () => {
+    inputFileRef.current?.click()
+  }
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
@@ -187,6 +133,30 @@ const Navbar = () => {
         <DesignTitle />
 
         <Block $style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+          <input
+            multiple={false}
+            onChange={handleFileInput}
+            type="file"
+            id="file"
+            ref={inputFileRef}
+            style={{ display: "none" }}
+          />
+
+          <Button
+            size="compact"
+            onClick={handleInputFileRefClick}
+            kind={KIND.tertiary}
+            overrides={{
+              StartEnhancer: {
+                style: {
+                  marginRight: "4px",
+                },
+              },
+            }}
+          >
+            Importar
+          </Button>
+
           <Button
             size="compact"
             onClick={makeDownloadTemplate}
