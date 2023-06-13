@@ -1,18 +1,21 @@
 // @ts-nocheck
-import React from "react"
 import { LightTheme, ThemeProvider } from "baseui"
-import { Drawer, SIZE } from "baseui/drawer"
 import { Button, KIND } from "baseui/button"
-import { useSelector } from "react-redux"
-import { selectPages } from "./store/slices/design-editor/selectors"
+import { Drawer, SIZE } from "baseui/drawer"
 import { nanoid } from "nanoid"
-import { useAppDispatch } from "./store/store"
+import React from "react"
+import { useSelector } from "react-redux"
+
 import { addPage } from "./store/slices/design-editor/actions"
+import { selectPages } from "./store/slices/design-editor/selectors"
+import { useAppDispatch } from "./store/store"
 
 const Pages = () => {
   const [isOpen, setIsOpen] = React.useState(false)
-  const pages = useSelector(selectPages)
+
   const dispatch = useAppDispatch()
+  const pages = useSelector(selectPages)
+
   const handleAddPage = () => {
     dispatch(
       addPage({
@@ -21,6 +24,7 @@ const Pages = () => {
       })
     )
   }
+
   return (
     <ThemeProvider theme={LightTheme}>
       <Button

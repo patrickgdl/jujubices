@@ -1,14 +1,16 @@
-import React from "react"
+import { useEditor } from "@layerhub-io/react"
 import { useStyletron } from "baseui"
 import { Block } from "baseui/block"
+import React from "react"
+import { useSelector } from "react-redux"
 import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
 import Scrollable from "~/components/Scrollable"
-import { images } from "~/constants/mock-data"
-import { useEditor } from "@layerhub-io/react"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
+import { selectTemplates } from "~/store/slices/imagekit/selectors"
 
 const Images = () => {
   const editor = useEditor()
+  const templates = useSelector(selectTemplates)
   const setIsSidebarOpen = useSetIsSidebarOpen()
 
   const addObject = React.useCallback(
@@ -44,8 +46,8 @@ const Images = () => {
       <Scrollable>
         <Block padding="0 1.5rem">
           <div style={{ display: "grid", gap: "8px", gridTemplateColumns: "1fr 1fr" }}>
-            {images.map((image, index) => {
-              return <ImageItem key={index} onClick={() => addObject(image.src.large)} preview={image.src.small} />
+            {templates.map((image, index) => {
+              return <ImageItem key={index} onClick={() => addObject(image.url)} preview={image.thumbnail} />
             })}
           </div>
         </Block>
@@ -56,6 +58,7 @@ const Images = () => {
 
 const ImageItem = ({ preview, onClick }: { preview: any; onClick?: (option: any) => void }) => {
   const [css] = useStyletron()
+
   return (
     <div
       onClick={onClick}

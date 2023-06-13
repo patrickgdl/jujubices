@@ -8,6 +8,7 @@ import { getFonts } from "./store/slices/fonts/actions"
 import { getPixabayResources } from "./store/slices/resources/actions"
 import { getUploads } from "./store/slices/uploads/actions"
 import { useAppDispatch } from "./store/store"
+import { getImageKitTemplates } from "./store/slices/imagekit/actions"
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch()
@@ -47,6 +48,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     dispatch(getFonts())
+    dispatch(getImageKitTemplates())
     dispatch(getUploads())
     dispatch(getPublicComponents())
     dispatch(getPixabayResources())

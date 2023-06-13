@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from "axios"
 import { IDesign, IComponent } from "~/interfaces/DesignEditor"
 import { Resource } from "~/interfaces/editor"
+import { FileObject } from "~/interfaces/imagekit"
 
 type IElement = any
 type IFontFamily = any
@@ -65,6 +66,19 @@ class ApiService {
       try {
         const response = await this.base.delete(`/uploads/${id}`)
         resolve(response)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
+  // ImageKit Images
+
+  getImageKitTemplate(): Promise<FileObject[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data } = await this.base.get("/imagekit/templates")
+        resolve(data)
       } catch (err) {
         reject(err)
       }
