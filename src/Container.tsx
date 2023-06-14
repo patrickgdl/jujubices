@@ -5,7 +5,6 @@ import useAppContext from "~/hooks/useAppContext"
 import { getPublicComponents } from "./store/slices/components/actions"
 import { getPublicDesigns } from "./store/slices/designs/actions"
 import { getFonts } from "./store/slices/fonts/actions"
-import { getPixabayResources } from "./store/slices/resources/actions"
 import { getUploads } from "./store/slices/uploads/actions"
 import { useAppDispatch } from "./store/store"
 import { getImageKitTemplates } from "./store/slices/imagekit/actions"
@@ -51,7 +50,6 @@ const Container = ({ children }: { children: React.ReactNode }) => {
     dispatch(getImageKitTemplates())
     dispatch(getUploads())
     dispatch(getPublicComponents())
-    dispatch(getPixabayResources())
     dispatch(getPublicDesigns())
   }, [])
 

@@ -7,7 +7,6 @@ import DropZone from "~/components/Dropzone"
 import { useEditor } from "@layerhub-io/react"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 import { nanoid } from "nanoid"
-import { captureFrame, loadVideoResource } from "~/utils/video"
 import { ILayer } from "@layerhub-io/types"
 import { toBase64 } from "~/utils/data"
 
@@ -20,22 +19,14 @@ export default function () {
   const handleDropFiles = async (files: FileList) => {
     const file = files[0]
 
-    const isVideo = file.type.includes("video")
     const base64 = (await toBase64(file)) as string
     let preview = base64
-    if (isVideo) {
-      const video = await loadVideoResource(base64)
-      const frame = await captureFrame(video)
-      preview = frame
-    }
-
-    const type = isVideo ? "StaticVideo" : "StaticImage"
 
     const upload = {
       id: nanoid(),
       src: base64,
       preview: preview,
-      type: type,
+      type: "StaticImage",
     }
 
     setUploads([...uploads, upload])
@@ -52,6 +43,7 @@ export default function () {
   const addImageToCanvas = (props: Partial<ILayer>) => {
     editor.objects.add(props)
   }
+
   return (
     <DropZone handleDropFiles={handleDropFiles}>
       <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>

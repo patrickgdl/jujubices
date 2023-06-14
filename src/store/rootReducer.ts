@@ -4,7 +4,6 @@ import { componentsReducer } from "./slices/components/reducer"
 import { designEditorReducer } from "./slices/design-editor/reducer"
 import { designsReducer } from "./slices/designs/reducer"
 import { fontsReducer } from "./slices/fonts/reducer"
-import { resourcesReducer } from "./slices/resources/reducer"
 import { uploadsReducer } from "./slices/uploads/reducer"
 import { imagekitReducer } from "./slices/imagekit/reducer"
 
@@ -13,7 +12,6 @@ const rootReducer = combineReducers({
   fonts: fontsReducer,
   imagekit: imagekitReducer,
   uploads: uploadsReducer,
-  resources: resourcesReducer,
   designs: designsReducer,
   components: componentsReducer,
 })
