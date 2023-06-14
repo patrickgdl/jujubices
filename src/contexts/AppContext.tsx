@@ -2,6 +2,7 @@ import { PanelType } from "~/constants/app-options"
 import React, { createContext, useState } from "react"
 
 type Template = any
+
 interface IAppContext {
   isMobile: boolean | undefined
   setIsMobile: React.Dispatch<React.SetStateAction<boolean | undefined>>
@@ -28,7 +29,7 @@ export const AppContext = createContext<IAppContext>({
   setUploads: () => {},
   shapes: [],
   setShapes: () => {},
-  activePanel: PanelType.TEMPLATES,
+  activePanel: PanelType.IMAGES,
   setActivePanel: () => {},
   activeSubMenu: null,
   setActiveSubMenu: (value: string) => {},
@@ -41,7 +42,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [templates, setTemplates] = useState<Template[]>([])
   const [uploads, setUploads] = useState<any[]>([])
   const [shapes, setShapes] = useState<Template[]>([])
-  const [activePanel, setActivePanel] = useState<PanelType>(PanelType.TEMPLATES)
+  const [activePanel, setActivePanel] = useState<PanelType>(PanelType.IMAGES)
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null)
   const [currentTemplate, setCurrentTemplate] = useState(null)
 

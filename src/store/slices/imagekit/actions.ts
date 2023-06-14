@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit"
-import { FileObject } from "~/interfaces/imagekit"
+import { FileObject } from "~/types/imagekit"
 import api from "~/services/api"
 
 export const setTemplates = createAction<FileObject[]>("imagekit/setTemplates")

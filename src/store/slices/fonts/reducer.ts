@@ -1,4 +1,4 @@
-import { IFontFamily } from "~/interfaces/editor"
+import { IFontFamily } from "~/types/editor"
 import { createReducer } from "@reduxjs/toolkit"
 import { queryFonts, setFonts } from "./actions"
 

@@ -1,6 +1,6 @@
 import { IScene } from "@layerhub-io/types"
 import React from "react"
-import { ContextMenuSceneRequest, ContextMenuTimelineRequest, IDesign } from "~/interfaces/DesignEditor"
+import { ContextMenuSceneRequest, ContextMenuTimelineRequest, IDesign } from "~/types/design-editor"
 
 interface ISceneEditorContext {
   scenes: IScene[]

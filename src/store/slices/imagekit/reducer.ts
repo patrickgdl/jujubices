@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
 import { setTemplates } from "./actions"
-import { FileObject } from "~/interfaces/imagekit"
+import { FileObject } from "~/types/imagekit"
 
 export interface ImageKitState {
   templates: FileObject[]

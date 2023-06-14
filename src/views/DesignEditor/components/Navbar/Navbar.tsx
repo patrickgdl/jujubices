@@ -8,7 +8,7 @@ import React from "react"
 import Logo from "~/components/Icons/Logo"
 import Play from "~/components/Icons/Play"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
-import { IDesign } from "~/interfaces/DesignEditor"
+import { IDesign } from "~/types/design-editor"
 import { loadTemplateFonts } from "~/utils/fonts"
 
 import DesignTitle from "./DesignTitle"

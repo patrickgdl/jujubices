@@ -2,7 +2,6 @@ import TextProperties from "./TextProperties"
 import Text from "./Text"
 import Customize from "./Customize"
 import FontSelector from "./FontSelector"
-import Templates from "./Templates"
 import Uploads from "./Uploads"
 import Images from "./Images"
 import Layers from "./Layers"
@@ -18,7 +17,6 @@ export default {
   Texto: Text,
   Customizar: Customize,
   FontSelector: FontSelector,
-  Templates: Templates,
   Uploads: Uploads,
   Images: Images,
   Elements: Elements,

@@ -16,7 +16,7 @@ import { getTextOptions } from "~/utils/object-options"
 import { fontStyleLabels } from "~/constants/fonts"
 import { Select } from "baseui/select"
 import { loadFonts } from "~/utils/fonts"
-import { TextOptions } from "~/interfaces/editor"
+import { TextOptions } from "~/types/editor"
 import { defaultTextOptions } from "~/constants/contants"
 
 const TextProperties = () => {

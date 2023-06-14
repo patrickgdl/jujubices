@@ -1,4 +1,4 @@
-import { Page } from "~/interfaces/common"
+import { Page } from "~/types/common"
 import { createReducer } from "@reduxjs/toolkit"
 import { addPage, removePage } from "./actions"
 import { nanoid } from "nanoid"
