@@ -1,11 +1,11 @@
 export const BASE_ITEMS = [
   {
-    id: "customize",
-    name: "Customizar",
+    id: "images",
+    name: "Imagens",
   },
   {
-    id: "images",
-    name: "Images",
+    id: "customize",
+    name: "Customizar",
   },
   {
     id: "uploads",
@@ -18,6 +18,6 @@ export const BASE_ITEMS = [
 ]
 
 export enum PanelType {
-  IMAGES = "Images",
+  IMAGENS = "Imagens",
   BACKGROUND = "Background",
 }

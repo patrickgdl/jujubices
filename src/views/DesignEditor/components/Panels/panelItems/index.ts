@@ -18,7 +18,7 @@ export default {
   Customizar: Customize,
   FontSelector: FontSelector,
   Uploads: Uploads,
-  Images: Images,
+  Imagens: Images,
   Elements: Elements,
   Graphics: Graphics,
   Layers: Layers,

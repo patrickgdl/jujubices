@@ -23,7 +23,7 @@ export default function () {
         id: nanoid(),
         type: "StaticText",
         width: 420,
-        text: "Add some text",
+        text: "Adicione texto aqui",
         fontSize: 92,
         fontFamily: font.name,
         textAlign: "center",
@@ -47,7 +47,7 @@ export default function () {
           padding: "1.5rem",
         }}
       >
-        <Block>Text</Block>
+        <Block>Texto</Block>
 
         <Block onClick={() => setIsSidebarOpen(false)} $style={{ cursor: "pointer", display: "flex" }}>
           <AngleDoubleLeft size={18} />

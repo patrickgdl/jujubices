@@ -1,8 +1,7 @@
 import { createClient } from "@supabase/supabase-js"
+import type { Database } from "~/types/database.types"
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
 
-// Note: supabaseAdmin uses the SERVICE_ROLE_KEY which we must only use in a secure server-side context
-// as it has admin priviliges and overwrites RLS policies!
-export default createClient(supabaseUrl, supabaseKey || "")
+export default createClient<Database>(supabaseUrl, supabaseKey)

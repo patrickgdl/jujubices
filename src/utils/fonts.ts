@@ -31,6 +31,7 @@ export const loadFonts = (fonts: FontItem[]) => {
   const promisesList = fonts.map((font) => {
     return new FontFace(font.name, `url(${font.url})`).load().catch((err) => err)
   })
+
   return new Promise((resolve, reject) => {
     Promise.all(promisesList)
       .then((res) => {

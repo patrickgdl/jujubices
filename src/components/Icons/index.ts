@@ -27,7 +27,7 @@ class Icons {
   static Elements = Elements
   static Texto = Text
   static Search = Search
-  static Images = Images
+  static Imagens = Images
   static Graphics = Graphics
   static Uploads = Uploads
   static Logo = Logo

@@ -29,7 +29,6 @@ function fuzzySearch(items: IFontFamily[], query: string) {
       }
     })
     if (matches == search.length) {
-      // console.log(i, found, 'was found');
       // @ts-ignore
       found.push(i)
     }
@@ -44,13 +43,12 @@ export const fontsReducer = createReducer(initialState, (builder) => {
   })
 
   builder.addCase(queryFonts, (state, { payload }) => {
-    const { take, skip, query } = payload
+    const { skip, query } = payload
+
     if (query) {
       state.result = fuzzySearch(state.fonts, query)
     } else {
       state.result = state.fonts.slice(0, skip * 100)
     }
-    // const data = fuzzySearch(state.fonts, "open")
-    // console.log(data)
   })
 })

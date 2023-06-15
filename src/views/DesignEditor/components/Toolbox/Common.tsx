@@ -1,23 +1,24 @@
-import React from "react"
-import { Button, SIZE, KIND } from "baseui/button"
-import { Checkbox } from "baseui/checkbox"
-import { Block } from "baseui/block"
-import { StatefulTooltip, PLACEMENT } from "baseui/tooltip"
 import { useActiveObject, useEditor } from "@layerhub-io/react"
+import { Block } from "baseui/block"
+import { Button, KIND, SIZE } from "baseui/button"
+import { Checkbox } from "baseui/checkbox"
 import { StatefulPopover } from "baseui/popover"
-import DeleteIcon from "~/components/Icons/Delete"
-import UnlockedIcon from "~/components/Icons/Unlocked"
-import LockedIcon from "~/components/Icons/Locked"
-import DuplicateIcon from "~/components/Icons/Duplicate"
-import LayersIcon from "~/components/Icons/Layers"
+import { PLACEMENT, StatefulTooltip } from "baseui/tooltip"
+import React from "react"
+import AlignBottom from "~/components/Icons/AlignBottom"
 import AlignCenter from "~/components/Icons/AlignCenter"
 import AlignLeft from "~/components/Icons/AlignLeft"
+import AlignMiddle from "~/components/Icons/AlignMiddle"
 import AlignRight from "~/components/Icons/AlignRight"
 import AlignTop from "~/components/Icons/AlignTop"
-import AlignMiddle from "~/components/Icons/AlignMiddle"
 import BringToFront from "~/components/Icons/BringToFront"
+import DeleteIcon from "~/components/Icons/Delete"
+import DuplicateIcon from "~/components/Icons/Duplicate"
+import LayersIcon from "~/components/Icons/Layers"
+import LockedIcon from "~/components/Icons/Locked"
 import SendToBack from "~/components/Icons/SendToBack"
-import AlignBottom from "~/components/Icons/AlignBottom"
+import UnlockedIcon from "~/components/Icons/Unlocked"
+
 import Opacity from "./Shared/Opacity"
 
 const Common = () => {
@@ -78,14 +79,16 @@ const Common = () => {
       {(state.isGroup || !state.isMultiple) && <CommonLayers />}
 
       <CommonAlign />
+
       <Opacity />
+
       <LockUnlock />
-      <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Duplicate">
+      <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Duplicar">
         <Button onClick={() => editor.objects.clone()} size={SIZE.mini} kind={KIND.tertiary}>
           <DuplicateIcon size={22} />
         </Button>
       </StatefulTooltip>
-      <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Delete">
+      <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Deletar">
         <Button onClick={() => editor.objects.remove()} size={SIZE.mini} kind={KIND.tertiary}>
           <DeleteIcon size={24} />
         </Button>
@@ -117,7 +120,7 @@ const CommonLayers = () => {
               kind={KIND.tertiary}
               size={SIZE.mini}
             >
-              Bring to front
+              Trazer pra frente
             </Button>
             <Button
               startEnhancer={<SendToBack size={24} />}
@@ -125,7 +128,7 @@ const CommonLayers = () => {
               kind={KIND.tertiary}
               size={SIZE.mini}
             >
-              Send to back
+              Jogar para trás
             </Button>
           </Block>
 
@@ -167,7 +170,12 @@ const CommonLayers = () => {
       autoFocus
     >
       <Block>
-        <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Layers">
+        <StatefulTooltip
+          placement={PLACEMENT.bottom}
+          showArrow={true}
+          accessibilityType="tooltip"
+          content="Layers/Camadas"
+        >
           <Button size={SIZE.mini} kind={KIND.tertiary}>
             <LayersIcon size={19} />
           </Button>
@@ -179,6 +187,7 @@ const CommonLayers = () => {
 
 const CommonAlign = () => {
   const editor = useEditor()
+
   return (
     <StatefulPopover
       placement={PLACEMENT.bottomRight}
@@ -208,7 +217,7 @@ const CommonAlign = () => {
       autoFocus
     >
       <Block>
-        <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Align">
+        <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Alinhar">
           <Button size={SIZE.mini} kind={KIND.tertiary}>
             <AlignCenter size={24} />
           </Button>

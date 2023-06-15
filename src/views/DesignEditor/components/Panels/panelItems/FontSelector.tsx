@@ -1,41 +1,45 @@
-import React from "react"
-import Search from "~/components/Icons/Search"
-import { Input, SIZE } from "baseui/input"
-import useAppContext from "~/hooks/useAppContext"
-import { useStyletron } from "baseui"
 import { useEditor } from "@layerhub-io/react"
-import { loadFonts } from "~/utils/fonts"
-import { groupBy } from "lodash"
-import Scrollable from "~/components/Scrollable"
+import { useStyletron } from "baseui"
 import { Block } from "baseui/block"
 import { Delete } from "baseui/icon"
+import { Input, SIZE } from "baseui/input"
+import { groupBy } from "lodash"
+import React from "react"
 import { useSelector } from "react-redux"
+import { useDebounce } from "use-debounce"
+import Search from "~/components/Icons/Search"
+import InfiniteScrolling from "~/components/InfiniteScrolling"
+import Scrollable from "~/components/Scrollable"
+import useAppContext from "~/hooks/useAppContext"
+import { queryFonts } from "~/store/slices/fonts/actions"
 import { selectFonts } from "~/store/slices/fonts/selectors"
 import { useAppDispatch } from "~/store/store"
-import { queryFonts } from "~/store/slices/fonts/actions"
-import InfiniteScrolling from "~/components/InfiniteScrolling"
-import { useDebounce } from "use-debounce"
+import { loadFonts } from "~/utils/fonts"
 
 export default function () {
-  const [hasMore, setHasMore] = React.useState(true)
-  const [pageNumber, setPageNumber] = React.useState(1)
-  const [query, setQuery] = React.useState("")
-  const { setActiveSubMenu } = useAppContext()
-  const fonts = useSelector(selectFonts)
-  const [commonFonts, setCommonFonts] = React.useState<any[]>([])
-  const [searchQuery] = useDebounce(query, 250)
   const [css] = useStyletron()
   const editor = useEditor()
-  const dispath = useAppDispatch()
+  const dispatch = useAppDispatch()
+
+  const [query, setQuery] = React.useState("")
+  const [hasMore, setHasMore] = React.useState(true)
+  const [pageNumber, setPageNumber] = React.useState(1)
+  const [commonFonts, setCommonFonts] = React.useState<any[]>([])
+
+  const fonts = useSelector(selectFonts)
+  const { setActiveSubMenu } = useAppContext()
+  const [searchQuery] = useDebounce(query, 250)
 
   React.useEffect(() => {
     const grouped = groupBy(fonts, "family")
     const standardFonts = Object.keys(grouped).map((key) => {
       const familyFonts = grouped[key]
-      const standardFont = familyFonts.find((familyFont) => familyFont.postScriptName.includes("-Regular"))
+      const standardFont = familyFonts.find((familyFont) => familyFont?.postScriptName?.includes("-Regular"))
+
       if (standardFont) {
         return standardFont
       }
+
       return familyFonts[familyFonts.length - 1]
     })
     setCommonFonts(standardFonts)
@@ -57,7 +61,7 @@ export default function () {
   }
 
   React.useEffect(() => {
-    dispath(
+    dispatch(
       queryFonts({
         query: searchQuery,
         skip: pageNumber,
@@ -65,6 +69,7 @@ export default function () {
       })
     )
     setHasMore(false)
+
     if (!searchQuery) {
       setHasMore(true)
     } else {
@@ -74,7 +79,7 @@ export default function () {
 
   const fetchData = React.useCallback(() => {
     if (!searchQuery) {
-      dispath(
+      dispatch(
         queryFonts({
           query: searchQuery,
           skip: pageNumber,
@@ -97,7 +102,7 @@ export default function () {
           padding: "1.5rem",
         }}
       >
-        <Block>Select a font</Block>
+        <Block>Selecione uma fonte</Block>
 
         <Block onClick={() => setActiveSubMenu("")} $style={{ cursor: "pointer", display: "flex" }}>
           <Delete size={24} />
@@ -115,7 +120,7 @@ export default function () {
           }}
           clearable
           onChange={(e) => setQuery((e.target as any).value)}
-          placeholder="Search font"
+          placeholder="Pesquisar fonte"
           size={SIZE.compact}
           startEnhancer={<Search size={16} />}
         />

@@ -1,6 +1,5 @@
 import { Block } from "baseui/block"
 import { Modal, ModalBody, ROLE, SIZE } from "baseui/modal"
-import React from "react"
 
 import Graphic from "./Graphic"
 
