@@ -8,6 +8,7 @@ import React from "react"
 import Logo from "~/components/Icons/Logo"
 import Play from "~/components/Icons/Play"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import supabase from "~/services/supabase"
 import { IDesign } from "~/types/design-editor"
 import { loadTemplateFonts } from "~/utils/fonts"
 
@@ -29,7 +30,6 @@ const Navbar = () => {
   const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign, scenes } = useDesignEditorContext()
 
   const parseGraphicJSON = () => {
-    console.log({ currentDesign })
     const currentScene = editor.scene.exportToJSON()
 
     if (currentDesign) {
@@ -43,9 +43,10 @@ const Navbar = () => {
         previews: [],
         published: false,
       }
-      makeDownload(graphicTemplate)
+      return graphicTemplate
     } else {
       console.log("NO CURRENT DESIGN")
+      return null
     }
   }
 
@@ -59,7 +60,29 @@ const Navbar = () => {
 
   const makeDownloadTemplate = async () => {
     if (editor) {
-      return parseGraphicJSON()
+      const template = parseGraphicJSON()
+
+      if (!template) return
+
+      makeDownload(template)
+    }
+  }
+
+  const saveOnSupabase = async () => {
+    if (editor) {
+      const template = parseGraphicJSON()
+
+      if (!template) return
+
+      const { data, error } = await supabase.from("templates").insert({
+        template: JSON.stringify(template),
+      })
+
+      if (error) {
+        console.log(error)
+      } else {
+        console.log(data)
+      }
     }
   }
 
@@ -170,6 +193,21 @@ const Navbar = () => {
             }}
           >
             Exportar
+          </Button>
+
+          <Button
+            size="compact"
+            onClick={saveOnSupabase}
+            kind={KIND.tertiary}
+            overrides={{
+              StartEnhancer: {
+                style: {
+                  marginRight: "4px",
+                },
+              },
+            }}
+          >
+            Salvar
           </Button>
 
           <Button

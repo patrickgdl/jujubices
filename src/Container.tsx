@@ -3,8 +3,9 @@ import ResizeObserver from "resize-observer-polyfill"
 import useAppContext from "~/hooks/useAppContext"
 
 import { getFonts } from "./store/slices/fonts/actions"
-import { useAppDispatch } from "./store/store"
 import { getImageKitTemplates } from "./store/slices/imagekit/actions"
+import { getTemplates } from "./store/slices/templates/actions"
+import { useAppDispatch } from "./store/store"
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch()
@@ -45,6 +46,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     dispatch(getFonts())
     dispatch(getImageKitTemplates())
+    dispatch(getTemplates())
   }, [])
 
   return (

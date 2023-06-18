@@ -45,7 +45,7 @@ const TextFill = () => {
           padding: "1.5rem",
         }}
       >
-        <Block>Text Fill</Block>
+        <Block>Cor do Texto</Block>
 
         <Block $style={{ cursor: "pointer", display: "flex" }}>
           <Delete size={24} />

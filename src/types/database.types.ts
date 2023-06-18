@@ -76,6 +76,24 @@ export interface Database {
         }
         Relationships: []
       }
+      templates: {
+        Row: {
+          created_at: string | null
+          id: number
+          template: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          template?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          template?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

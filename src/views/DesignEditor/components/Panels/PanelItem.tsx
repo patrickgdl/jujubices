@@ -7,6 +7,7 @@ import { Block } from "baseui/block"
 interface State {
   panel: string
 }
+
 const PanelsList = () => {
   const [state, setState] = React.useState<State>({ panel: "Texto" })
 

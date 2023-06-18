@@ -99,7 +99,7 @@ const ContextMenu = () => {
               editor.cancelContextMenuRequest()
             }}
             icon="Duplicate"
-            label="copy"
+            label="Copiar"
           >
             <Duplicate size={24} />
           </ContextMenuItem>
@@ -109,7 +109,7 @@ const ContextMenu = () => {
               editor.cancelContextMenuRequest()
             }}
             icon="Paste"
-            label="paste"
+            label="Colar"
           >
             <Paste size={24} />
           </ContextMenuItem>
@@ -119,7 +119,7 @@ const ContextMenu = () => {
               editor.cancelContextMenuRequest()
             }}
             icon="Delete"
-            label="delete"
+            label="Deletar"
           >
             <Delete size={24} />
           </ContextMenuItem>
@@ -130,7 +130,7 @@ const ContextMenu = () => {
               editor.cancelContextMenuRequest()
             }}
             icon="Forward"
-            label="bring forward"
+            label="Trazer para frente"
           >
             <BringToFront size={24} />
           </ContextMenuItem>
@@ -140,7 +140,7 @@ const ContextMenu = () => {
               editor.cancelContextMenuRequest()
             }}
             icon="Backward"
-            label="send backward"
+            label="Levar para trás"
           >
             <SendToBack size={24} />
           </ContextMenuItem>
@@ -150,7 +150,7 @@ const ContextMenu = () => {
               editor.cancelContextMenuRequest()
             }}
             icon="Elements"
-            label="Save as component"
+            label="Salvar como componente"
           >
             <Elements size={24} />
           </ContextMenuItem>
@@ -161,7 +161,7 @@ const ContextMenu = () => {
               editor.cancelContextMenuRequest()
             }}
             icon="Locked"
-            label="lock"
+            label="Bloquear"
           >
             <Locked size={24} />
           </ContextMenuItem>
@@ -173,7 +173,7 @@ const ContextMenu = () => {
                 editor.cancelContextMenuRequest()
               }}
               icon="Images"
-              label="Set as background image"
+              label="Colocar como imagem de fundo"
             >
               <Elements size={24} />
             </ContextMenuItem>
@@ -200,7 +200,7 @@ const ContextMenu = () => {
               editor.cancelContextMenuRequest()
             }}
             icon="Unlocked"
-            label="unlock"
+            label="Desbloquear"
           >
             <Unlocked size={24} />
           </ContextMenuItem>
