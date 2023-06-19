@@ -1,3 +1,3 @@
 import { RootState } from "~/store/rootReducer"
 
-export const selectTemplates = (state: RootState) => state.imagekit.templates
+export const selectBackgrounds = (state: RootState) => state.imagekit.backgrounds

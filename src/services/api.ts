@@ -10,10 +10,46 @@ class ApiService {
   }
 
   // ImageKit Images
-  getImageKitTemplate(): Promise<FileObject[]> {
+  getImageKitBackgrounds(): Promise<FileObject[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data } = await this.base.get("/imagekit/backgrounds")
+        resolve(data)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
+  getImageKitTemplates(): Promise<FileObject[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const { data } = await this.base.get("/imagekit/templates")
+        resolve(data)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
+  uploadImageKitTemplate(file: File): Promise<string> {
+    const formData = new FormData()
+    formData.append("file", file)
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data } = await this.base.post("imagekit/templates", formData)
+
+        // {
+        //   onUploadProgress: (e) => {
+        //     const progress = parseInt(Math.round((e.loaded * 100) / e.total))
+
+        //     updateFile(file.id, {
+        //       progress,
+        //     })
+        //   },
+        // }
+
         resolve(data)
       } catch (err) {
         reject(err)

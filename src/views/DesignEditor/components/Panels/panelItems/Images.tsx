@@ -6,11 +6,11 @@ import { useSelector } from "react-redux"
 import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
 import Scrollable from "~/components/Scrollable"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
-import { selectTemplates } from "~/store/slices/imagekit/selectors"
+import { selectBackgrounds } from "~/store/slices/imagekit/selectors"
 
 const Images = () => {
   const editor = useEditor()
-  const templates = useSelector(selectTemplates)
+  const backgrounds = useSelector(selectBackgrounds)
   const setIsSidebarOpen = useSetIsSidebarOpen()
 
   const addObject = React.useCallback(
@@ -46,7 +46,7 @@ const Images = () => {
       <Scrollable>
         <Block padding="0 1.5rem">
           <div style={{ display: "grid", gap: "8px", gridTemplateColumns: "1fr 1fr" }}>
-            {templates.map((image, index) => {
+            {backgrounds.map((image, index) => {
               return <ImageItem key={index} onClick={() => addObject(image.url)} preview={image.thumbnail} />
             })}
           </div>

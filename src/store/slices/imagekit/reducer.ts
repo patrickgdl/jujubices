@@ -1,17 +1,17 @@
 import { createReducer } from "@reduxjs/toolkit"
-import { setTemplates } from "./actions"
+import { setBackgrounds } from "./actions"
 import { FileObject } from "~/types/imagekit"
 
 export interface ImageKitState {
-  templates: FileObject[]
+  backgrounds: FileObject[]
 }
 
 const initialState: ImageKitState = {
-  templates: [],
+  backgrounds: [],
 }
 
 export const imagekitReducer = createReducer(initialState, (builder) => {
-  builder.addCase(setTemplates, (state, { payload }) => {
-    state.templates = payload
+  builder.addCase(setBackgrounds, (state, { payload }) => {
+    state.backgrounds = payload
   })
 })

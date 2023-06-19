@@ -13,6 +13,7 @@ const ContextMenu = () => {
   const contextMenuRequest = useContextMenuRequest()
   const editor = useEditor()
   const activeObject: any = useActiveObject()
+
   const handleAsComponentHandler = async () => {
     if (editor) {
       const component: any = await editor.scene.exportAsComponent()
@@ -21,6 +22,7 @@ const ContextMenu = () => {
       }
     }
   }
+
   if (!contextMenuRequest || !contextMenuRequest.target) {
     return <></>
   }
@@ -173,7 +175,7 @@ const ContextMenu = () => {
                 editor.cancelContextMenuRequest()
               }}
               icon="Images"
-              label="Colocar como imagem de fundo"
+              label="Imagem de fundo"
             >
               <Elements size={24} />
             </ContextMenuItem>
