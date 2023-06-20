@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios"
-import { FileObject } from "~/types/imagekit"
+import { FileObject, UploadResponse } from "~/types/imagekit"
 
 class ApiService {
   base: AxiosInstance
@@ -9,11 +9,10 @@ class ApiService {
     })
   }
 
-  // ImageKit Images
-  getImageKitBackgrounds(): Promise<FileObject[]> {
+  getFromImageKit(folder: string): Promise<FileObject[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        const { data } = await this.base.get("/imagekit/backgrounds")
+        const { data } = await this.base.get(`/imagekit/${folder}`)
         resolve(data)
       } catch (err) {
         reject(err)
@@ -21,34 +20,13 @@ class ApiService {
     })
   }
 
-  getImageKitTemplates(): Promise<FileObject[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const { data } = await this.base.get("/imagekit/templates")
-        resolve(data)
-      } catch (err) {
-        reject(err)
-      }
-    })
-  }
-
-  uploadImageKitTemplate(file: File): Promise<string> {
+  uploadToImageKit(file: File, folder: string): Promise<UploadResponse> {
     const formData = new FormData()
     formData.append("file", file)
 
     return new Promise(async (resolve, reject) => {
       try {
-        const { data } = await this.base.post("imagekit/templates", formData)
-
-        // {
-        //   onUploadProgress: (e) => {
-        //     const progress = parseInt(Math.round((e.loaded * 100) / e.total))
-
-        //     updateFile(file.id, {
-        //       progress,
-        //     })
-        //   },
-        // }
+        const { data } = await this.base.post(`imagekit/${folder}`, formData)
 
         resolve(data)
       } catch (err) {

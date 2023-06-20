@@ -13,6 +13,7 @@ import { IDesign } from "~/types/design-editor"
 import { loadTemplateFonts } from "~/utils/fonts"
 
 import DesignTitle from "./DesignTitle"
+import api from "~/services/api"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -29,8 +30,9 @@ const Navbar = () => {
   const editor = useEditor()!
   const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign, scenes } = useDesignEditorContext()
 
-  const parseGraphicJSON = () => {
+  const parseGraphicJSON = async () => {
     const currentScene = editor.scene.exportToJSON()
+    const image = (await editor.renderer.render(currentScene)) as string
 
     if (currentDesign) {
       const graphicTemplate: IDesign = {
@@ -40,7 +42,7 @@ const Navbar = () => {
         frame: currentDesign.frame,
         scenes: [currentScene],
         metadata: {},
-        previews: [],
+        preview: { id: "", src: image },
         published: false,
       }
       return graphicTemplate
@@ -70,12 +72,27 @@ const Navbar = () => {
 
   const saveOnSupabase = async () => {
     if (editor) {
-      const template = parseGraphicJSON()
+      const template = await parseGraphicJSON()
 
       if (!template) return
 
+      const { preview } = template
+      const { src: dataURL, id } = preview
+
+      const response = await fetch(dataURL) // make a request for dataURL
+      const blob = await response.blob() // just to make a blob from the response
+
+      const file = new File([blob], `${id}.png`, {
+        type: blob.type,
+      })
+
+      const { fileId, url } = await api.uploadToImageKit(file, "templates")
+
       const { data, error } = await supabase.from("templates").insert({
-        template: JSON.stringify(template),
+        template: JSON.stringify({
+          ...template,
+          preview: { id: fileId, src: url },
+        }),
       })
 
       if (error) {

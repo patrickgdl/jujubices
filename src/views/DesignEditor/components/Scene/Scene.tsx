@@ -33,7 +33,7 @@ const Scene = () => {
           frame: defaultTemplate.frame,
           metadata: {},
           name: "Untitled Design",
-          previews: [],
+          preview: { id: "", src: "" },
           scenes: [],
           type: "GRAPHIC",
           published: false,
