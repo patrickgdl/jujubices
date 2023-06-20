@@ -5,21 +5,6 @@ export interface Page {
   name: string
   preview: string
 }
-
-export interface ContextMenuTimelineRequest {
-  id: string
-  top: number
-  left: number
-  visible: boolean
-}
-
-export interface ContextMenuSceneRequest {
-  id: string
-  top: number
-  left: number
-  visible: boolean
-}
-
 export interface IDesign {
   id: string
   name: string

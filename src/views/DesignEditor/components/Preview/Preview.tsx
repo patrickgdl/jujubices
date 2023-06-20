@@ -7,6 +7,7 @@ interface ComponentProps {
   isOpen: boolean
   setIsOpen: (v: boolean) => void
 }
+
 const Preview = ({ isOpen, setIsOpen }: ComponentProps) => {
   return (
     <Modal

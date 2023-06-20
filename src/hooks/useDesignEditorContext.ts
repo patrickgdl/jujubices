@@ -3,39 +3,23 @@ import { DesignEditorContext } from "~/contexts/DesignEditor"
 
 const useDesignEditorContext = () => {
   const {
-    displayPlayback,
-    setDisplayPlayback,
-    setDisplayPreview,
     displayPreview,
+    setDisplayPreview,
     currentScene,
     setCurrentScene,
-    setScenes,
     scenes,
-    maxTime,
-    setMaxTime,
-    contextMenuTimelineRequest,
-    setContextMenuTimelineRequest,
-    contextMenuSceneRequest,
-    setContextMenuSceneRequest,
+    setScenes,
     currentDesign,
     setCurrentDesign,
   } = useContext(DesignEditorContext)
 
   return {
-    displayPlayback,
-    setDisplayPlayback,
-    setDisplayPreview,
     displayPreview,
+    setDisplayPreview,
     currentScene,
     setCurrentScene,
-    setScenes,
     scenes,
-    maxTime,
-    setMaxTime,
-    contextMenuTimelineRequest,
-    setContextMenuTimelineRequest,
-    contextMenuSceneRequest,
-    setContextMenuSceneRequest,
+    setScenes,
     currentDesign,
     setCurrentDesign,
   }

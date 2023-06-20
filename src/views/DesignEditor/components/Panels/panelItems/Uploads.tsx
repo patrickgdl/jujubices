@@ -9,6 +9,7 @@ import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 import { nanoid } from "nanoid"
 import { ILayer } from "@layerhub-io/types"
 import { toBase64 } from "~/utils/data"
+import api from "~/services/api"
 
 export default function () {
   const inputFileRef = React.useRef<HTMLInputElement>(null)
@@ -18,6 +19,8 @@ export default function () {
 
   const handleDropFiles = async (files: FileList) => {
     const file = files[0]
+
+    await api.uploadImageKitTemplate(file)
 
     const base64 = (await toBase64(file)) as string
     let preview = base64
