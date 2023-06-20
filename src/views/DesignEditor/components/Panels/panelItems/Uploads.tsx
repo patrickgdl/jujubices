@@ -1,14 +1,12 @@
-import React from "react"
+import { useEditor } from "@layerhub-io/react"
+import { ILayer } from "@layerhub-io/types"
 import { Block } from "baseui/block"
+import { Button, SIZE } from "baseui/button"
+import React from "react"
+import DropZone from "~/components/Dropzone"
 import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
 import Scrollable from "~/components/Scrollable"
-import { Button, SIZE } from "baseui/button"
-import DropZone from "~/components/Dropzone"
-import { useEditor } from "@layerhub-io/react"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
-import { nanoid } from "nanoid"
-import { ILayer } from "@layerhub-io/types"
-import { toBase64 } from "~/utils/data"
 import api from "~/services/api"
 
 export default function () {
@@ -20,15 +18,12 @@ export default function () {
   const handleDropFiles = async (files: FileList) => {
     const file = files[0]
 
-    await api.uploadImageKitTemplate(file)
-
-    const base64 = (await toBase64(file)) as string
-    let preview = base64
+    const { fileId, url, thumbnailUrl } = await api.uploadToImageKit(file, "backgrounds")
 
     const upload = {
-      id: nanoid(),
-      src: base64,
-      preview: preview,
+      id: fileId,
+      src: url,
+      preview: thumbnailUrl,
       type: "StaticImage",
     }
 
