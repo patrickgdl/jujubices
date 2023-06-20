@@ -3,6 +3,7 @@ import { ILayer } from "@layerhub-io/types"
 import { Block } from "baseui/block"
 import { Button, SIZE } from "baseui/button"
 import React from "react"
+import { toast } from "react-hot-toast"
 import DropZone from "~/components/Dropzone"
 import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
 import Scrollable from "~/components/Scrollable"
@@ -11,7 +12,10 @@ import api from "~/services/api"
 
 export default function () {
   const inputFileRef = React.useRef<HTMLInputElement>(null)
+
   const [uploads, setUploads] = React.useState<any[]>([])
+  const [saving, setSvaing] = React.useState<boolean>(false)
+
   const editor = useEditor()
   const setIsSidebarOpen = useSetIsSidebarOpen()
 
@@ -19,6 +23,8 @@ export default function () {
     const file = files[0]
 
     const { fileId, url, thumbnailUrl } = await api.uploadToImageKit(file, "backgrounds")
+
+    toast.success("Background salvo com sucesso!")
 
     const upload = {
       id: fileId,
@@ -65,6 +71,7 @@ export default function () {
             <Button
               onClick={handleInputFileRefClick}
               size={SIZE.compact}
+              isLoading={saving}
               overrides={{
                 Root: {
                   style: {
