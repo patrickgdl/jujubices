@@ -4,7 +4,7 @@ import { DarkTheme, styled, ThemeProvider } from "baseui"
 import { Block } from "baseui/block"
 import { Button, KIND } from "baseui/button"
 import { Theme } from "baseui/theme"
-import React from "react"
+import React, { useState } from "react"
 import Logo from "~/components/Icons/Logo"
 import Play from "~/components/Icons/Play"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
@@ -14,6 +14,7 @@ import { loadTemplateFonts } from "~/utils/fonts"
 
 import DesignTitle from "./DesignTitle"
 import api from "~/services/api"
+import { toast } from "react-hot-toast"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -26,6 +27,7 @@ const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
 
 const Navbar = () => {
   const inputFileRef = React.useRef<HTMLInputElement>(null)
+  const [saving, setSaving] = React.useState<boolean>(false)
 
   const editor = useEditor()!
   const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign } = useDesignEditorContext()
@@ -72,33 +74,41 @@ const Navbar = () => {
 
   const saveOnSupabase = async () => {
     if (editor) {
-      const template = await parseGraphicJSON()
+      try {
+        setSaving(true)
 
-      if (!template) return
+        const template = await parseGraphicJSON()
 
-      const { preview } = template
-      const { src: dataURL, id } = preview
+        if (!template) return
 
-      const response = await fetch(dataURL) // make a request for dataURL
-      const blob = await response.blob() // just to make a blob from the response
+        const { preview } = template
+        const { src: dataURL, id } = preview
 
-      const file = new File([blob], `${id}.png`, {
-        type: blob.type,
-      })
+        const response = await fetch(dataURL) // make a request for dataURL
+        const blob = await response.blob() // just to make a blob from the response
 
-      const { fileId, url } = await api.uploadToImageKit(file, "templates")
+        const file = new File([blob], `${id}.png`, {
+          type: blob.type,
+        })
 
-      const { data, error } = await supabase.from("templates").insert({
-        template: JSON.stringify({
-          ...template,
-          preview: { id: fileId, src: url },
-        }),
-      })
+        const { fileId, url } = await api.uploadToImageKit(file, "templates")
 
-      if (error) {
+        const { error } = await supabase.from("templates").insert({
+          template: JSON.stringify({
+            ...template,
+            preview: { id: fileId, src: url },
+          }),
+        })
+
+        toast.success("Template salvo com sucesso!")
+
+        if (error) {
+          console.log(error)
+        }
+      } catch (error) {
         console.log(error)
-      } else {
-        console.log(data)
+      } finally {
+        setSaving(false)
       }
     }
   }
@@ -212,6 +222,7 @@ const Navbar = () => {
             size="compact"
             onClick={saveOnSupabase}
             kind={KIND.tertiary}
+            isLoading={saving}
             overrides={{
               StartEnhancer: {
                 style: {

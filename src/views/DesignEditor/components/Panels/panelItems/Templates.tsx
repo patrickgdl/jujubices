@@ -43,7 +43,6 @@ const Templates = () => {
 
   const handleImportTemplate = React.useCallback(
     async (data: any) => {
-      console.log(JSON.parse(data))
       const template = await loadGraphicTemplate(JSON.parse(data))
 
       setScenes(template.scenes)

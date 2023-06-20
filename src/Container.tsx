@@ -6,6 +6,7 @@ import { getFonts } from "./store/slices/fonts/actions"
 import { getImageKitBackgrounds } from "./store/slices/imagekit/actions"
 import { getTemplates } from "./store/slices/templates/actions"
 import { useAppDispatch } from "./store/store"
+import { Toaster } from "react-hot-toast"
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch()
@@ -59,6 +60,8 @@ const Container = ({ children }: { children: React.ReactNode }) => {
         width: "100vw",
       }}
     >
+      <Toaster position="bottom-center" />
+
       {children}
     </div>
   )
