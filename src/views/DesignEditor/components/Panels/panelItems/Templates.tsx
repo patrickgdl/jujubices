@@ -1,27 +1,54 @@
 import { useEditor } from "@layerhub-io/react"
+import { IScene } from "@layerhub-io/types"
 import { useStyletron } from "baseui"
 import { Block } from "baseui/block"
 import React from "react"
 import { useSelector } from "react-redux"
 import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
 import Scrollable from "~/components/Scrollable"
+import useDesignEditorContext from "~/hooks/useDesignEditorContext"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 import { selectTemplates } from "~/store/slices/templates/selectors"
+import { IDesign } from "~/types/design-editor"
+import { loadTemplateFonts } from "~/utils/fonts"
 
 const Templates = () => {
   const editor = useEditor()
-  const { templates } = useSelector(selectTemplates)
   const setIsSidebarOpen = useSetIsSidebarOpen()
+  const { templates } = useSelector(selectTemplates)
+  const { setScenes, setCurrentDesign } = useDesignEditorContext()
 
-  const addObject = React.useCallback(
-    (url: string) => {
-      if (editor) {
-        const options = {
-          type: "StaticImage",
-          src: url,
-        }
-        editor.objects.add(options)
+  const loadGraphicTemplate = async (payload: IDesign) => {
+    const scenes = []
+    const { scenes: scns, ...design } = payload
+
+    for (const scn of scns) {
+      const scene: IScene = {
+        name: scn.name,
+        frame: payload.frame,
+        id: scn.id,
+        layers: scn.layers,
+        metadata: {},
       }
+
+      await loadTemplateFonts(scene)
+
+      const preview = (await editor.renderer.render(scene)) as string
+
+      scenes.push({ ...scene, preview })
+    }
+
+    return { scenes, design }
+  }
+
+  const handleImportTemplate = React.useCallback(
+    async (data: any) => {
+      console.log(JSON.parse(data))
+      const template = await loadGraphicTemplate(JSON.parse(data))
+
+      setScenes(template.scenes)
+      //   @ts-ignore
+      setCurrentDesign(template.design)
     },
     [editor]
   )
@@ -46,11 +73,16 @@ const Templates = () => {
       <Scrollable>
         <Block padding="0 1.5rem">
           <div style={{ display: "grid", gap: "8px", gridTemplateColumns: "1fr 1fr" }}>
-            {/* {templates.map((image, index) => {
-              return <ImageItem key={index} onClick={() => addObject(image.url)} preview={image.thumbnail} />
-            })} */}
+            {templates.map(({ template }, index) => {
+              const parsed = JSON.parse(template as string)
+              const { preview } = parsed
 
-            <pre>{JSON.stringify(templates, null, 2)}</pre>
+              return (
+                <React.Fragment key={index}>
+                  {preview && <ImageItem onClick={() => handleImportTemplate(template)} preview={preview.src} />}
+                </React.Fragment>
+              )
+            })}
           </div>
         </Block>
       </Scrollable>

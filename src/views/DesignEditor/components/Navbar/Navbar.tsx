@@ -28,7 +28,7 @@ const Navbar = () => {
   const inputFileRef = React.useRef<HTMLInputElement>(null)
 
   const editor = useEditor()!
-  const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign, scenes } = useDesignEditorContext()
+  const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign } = useDesignEditorContext()
 
   const parseGraphicJSON = async () => {
     const currentScene = editor.scene.exportToJSON()
@@ -128,11 +128,7 @@ const Navbar = () => {
 
   const handleImportTemplate = React.useCallback(
     async (data: any) => {
-      let template
-      template = await loadGraphicTemplate(data)
-
-      console.log({ template })
-      console.log({ scenes })
+      const template = await loadGraphicTemplate(data)
 
       setScenes(template.scenes)
       //   @ts-ignore
