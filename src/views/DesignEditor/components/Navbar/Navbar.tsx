@@ -4,17 +4,19 @@ import { DarkTheme, styled, ThemeProvider } from "baseui"
 import { Block } from "baseui/block"
 import { Button, KIND } from "baseui/button"
 import { Theme } from "baseui/theme"
-import React, { useState } from "react"
+import React from "react"
+import { toast } from "react-hot-toast"
+import { Link, useNavigate } from "react-router-dom"
 import Logo from "~/components/Icons/Logo"
 import Play from "~/components/Icons/Play"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import { useUser } from "~/hooks/useUser"
+import api from "~/services/api"
 import supabase from "~/services/supabase"
 import { IDesign } from "~/types/design-editor"
 import { loadTemplateFonts } from "~/utils/fonts"
 
 import DesignTitle from "./DesignTitle"
-import api from "~/services/api"
-import { toast } from "react-hot-toast"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -26,6 +28,9 @@ const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
 }))
 
 const Navbar = () => {
+  const { user } = useUser()
+  const navigate = useNavigate()
+
   const inputFileRef = React.useRef<HTMLInputElement>(null)
   const [saving, setSaving] = React.useState<boolean>(false)
 
@@ -233,6 +238,44 @@ const Navbar = () => {
           >
             Salvar
           </Button>
+
+          {user ? (
+            <Button
+              size="compact"
+              onClick={async () => {
+                await supabase.auth.signOut()
+                navigate("/login")
+              }}
+              kind={KIND.tertiary}
+              isLoading={saving}
+              overrides={{
+                StartEnhancer: {
+                  style: {
+                    marginRight: "4px",
+                  },
+                },
+              }}
+            >
+              Sair
+            </Button>
+          ) : (
+            <Link to="/login">
+              <Button
+                size="compact"
+                kind={KIND.tertiary}
+                isLoading={saving}
+                overrides={{
+                  StartEnhancer: {
+                    style: {
+                      marginRight: "4px",
+                    },
+                  },
+                }}
+              >
+                Login
+              </Button>
+            </Link>
+          )}
 
           <Button
             size="compact"

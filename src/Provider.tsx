@@ -1,7 +1,7 @@
 import "./translations"
 
 import { Provider as ScenifyProvider } from "@layerhub-io/react"
-import { TimerProvider } from "@layerhub-io/use-timer"
+import { SessionContextProvider } from "@supabase/auth-helpers-react"
 import { BaseProvider, LightTheme } from "baseui"
 import i18next from "i18next"
 import React from "react"
@@ -12,27 +12,31 @@ import { Provider as StyletronProvider } from "styletron-react"
 
 import { AppProvider } from "./contexts/AppContext"
 import { DesignEditorProvider } from "./contexts/DesignEditor"
+import { UserContextProvider } from "./hooks/useUser"
+import supabase from "./services/supabase"
 import { store } from "./store/store"
 
 const engine = new Styletron()
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ReduxProvider store={store}>
-      <DesignEditorProvider>
-        <TimerProvider>
-          <AppProvider>
-            <ScenifyProvider>
-              <StyletronProvider value={engine}>
-                <BaseProvider theme={LightTheme}>
-                  <I18nextProvider i18n={i18next}>{children}</I18nextProvider>
-                </BaseProvider>
-              </StyletronProvider>
-            </ScenifyProvider>
-          </AppProvider>
-        </TimerProvider>
-      </DesignEditorProvider>
-    </ReduxProvider>
+    <SessionContextProvider supabaseClient={supabase}>
+      <UserContextProvider>
+        <ReduxProvider store={store}>
+          <DesignEditorProvider>
+            <AppProvider>
+              <ScenifyProvider>
+                <StyletronProvider value={engine}>
+                  <BaseProvider theme={LightTheme}>
+                    <I18nextProvider i18n={i18next}>{children}</I18nextProvider>
+                  </BaseProvider>
+                </StyletronProvider>
+              </ScenifyProvider>
+            </AppProvider>
+          </DesignEditorProvider>
+        </ReduxProvider>
+      </UserContextProvider>
+    </SessionContextProvider>
   )
 }
 

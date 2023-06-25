@@ -49,6 +49,7 @@ export default function App() {
                 button_label: "Entrar",
                 loading_button_label: "Entrando...",
                 social_provider_text: "Logue com {{provider}}",
+                link_text: "Já tem uma conta? Entre",
               },
               forgotten_password: {
                 email_label: "Seu e-mail",
@@ -60,6 +61,13 @@ export default function App() {
                 confirmation_text: "Um e-mail foi enviado para você",
               },
               sign_up: {
+                email_label: "Seu e-mail",
+                password_label: "Sua senha",
+                email_input_placeholder: "Seu e-mail",
+                password_input_placeholder: "Sua senha",
+                button_label: "Cadastrar",
+                loading_button_label: "Cadastrando...",
+                social_provider_text: "Cadastre-se com {{provider}}",
                 link_text: "Não tem uma conta? Cadastre-se",
               },
             },
