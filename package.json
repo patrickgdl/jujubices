@@ -6,18 +6,18 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "supabase:types": "sh ./scripts/supabase-types.sh"
+    "supabase:types": "sh ./scripts/supabase-gen-types.sh"
   },
   "dependencies": {
-    "@layerhub-io/react": "^0.3.2",
-    "@layerhub-io/react-custom-scrollbar": "^0.0.1",
-    "@layerhub-io/use-timer": "^0.1.1",
+    "@layerhub-io/react": "0.3.2",
+    "@layerhub-io/react-custom-scrollbar": "0.0.1",
+    "@layerhub-io/use-timer": "0.1.1",
     "@reduxjs/toolkit": "^1.8.1",
-    "@supabase/auth-helpers-react": "^0.4.0",
-    "@supabase/auth-ui-react": "^0.4.2",
+    "@supabase/auth-helpers-react": "0.4.0",
+    "@supabase/auth-ui-react": "0.4.2",
     "@supabase/supabase-js": "^2.25.0",
     "are-passive-events-supported": "^1.1.1",
-    "axios": "^0.27.2",
+    "axios": "0.27.2",
     "baseui": "^13.0.0",
     "i18next": "^21.8.13",
     "lodash": "^4.17.21",
@@ -36,7 +36,7 @@
     "use-latest": "^1.2.1"
   },
   "devDependencies": {
-    "@layerhub-io/types": "^0.3.0",
+    "@layerhub-io/types": "0.3.0",
     "@types/lodash": "^4.14.182",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",

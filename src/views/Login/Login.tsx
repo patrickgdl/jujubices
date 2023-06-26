@@ -5,7 +5,7 @@ import { Block } from "baseui/block"
 import { useEffect, useState } from "react"
 import supabase from "~/services/supabase"
 
-export default function App() {
+export default function Login() {
   const [session, setSession] = useState<Session | null>(null)
 
   useEffect(() => {

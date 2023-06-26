@@ -1,14 +1,30 @@
 import { useEffect, useState, createContext, useContext } from "react"
-import { useUser as useSupaUser, useSessionContext } from "@supabase/auth-helpers-react"
+import { useUser as useSupaUser, useSessionContext, User } from "@supabase/auth-helpers-react"
+import supabase from "~/services/supabase"
+import type { User as UserType } from "~/types/user"
 
-export const UserContext = createContext(undefined)
+export type UserContextType = {
+  accessToken: string | null
+  user: User | null
+  userDetails: UserType | null
+  isLoading: boolean
+  subscription: null // TODO: SubscriptionType
+}
+
+export const UserContext = createContext<UserContextType>({
+  accessToken: null,
+  user: null,
+  userDetails: null,
+  isLoading: true,
+  subscription: null,
+})
 
 export const UserContextProvider = (props: any) => {
   const user = useSupaUser()
-  const { session, isLoading: isLoadingUser, supabaseClient: supabase } = useSessionContext()
+  const { session, isLoading: isLoadingUser } = useSessionContext()
   const accessToken = session?.access_token ?? null
 
-  const [userDetails, setUserDetails] = useState(null)
+  const [userDetails, setUserDetails] = useState<UserType | null>(null)
   const [subscription, setSubscription] = useState(null)
   const [isLoadingData, setIsloadingData] = useState(false)
 
@@ -51,8 +67,10 @@ export const UserContextProvider = (props: any) => {
 
 export const useUser = () => {
   const context = useContext(UserContext)
+
   if (context === undefined) {
     throw new Error(`useUser deve ser usado dentro de um UserContextProvider.`)
   }
+
   return context
 }
