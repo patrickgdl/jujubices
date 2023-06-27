@@ -1,18 +1,22 @@
-import { createAction, createAsyncThunk } from "@reduxjs/toolkit"
+import { createAsyncThunk } from "@reduxjs/toolkit"
 import supabase from "~/services/supabase"
-import { ITemplate } from "~/types/templates"
 
-export const setTemplates = createAction<ITemplate[]>("templates/setTemplates")
+export const getTemplates = createAsyncThunk("templates/getTemplates", async (_, thunkAPI) => {
+  const { data, error } = await supabase.from("templates").select("*")
 
-export const getTemplates = createAsyncThunk<void, never, { rejectValue: string }>(
-  "templates/getTemplates",
-  async (_, { rejectWithValue, dispatch }) => {
-    const { data, error } = await supabase.from("templates").select("*")
-
-    if (error) {
-      return rejectWithValue(error.message)
-    }
-
-    dispatch(setTemplates(data))
+  if (error) {
+    return thunkAPI.rejectWithValue(error.message)
   }
-)
+
+  return data
+})
+
+export const getTemplateById = createAsyncThunk("templates/getTemplateById", async (id: string, thunkAPI) => {
+  const { data, error } = await supabase.from("templates").select("*").eq("id", id).single()
+
+  if (error) {
+    return thunkAPI.rejectWithValue(error.message)
+  }
+
+  return data
+})

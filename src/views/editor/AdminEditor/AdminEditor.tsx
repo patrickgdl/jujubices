@@ -1,16 +1,16 @@
-import GraphicEditor from "./GraphicEditor"
+import Editor from "./Editor"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
 import Preview from "./components/Preview"
 
-const DesignEditor = () => {
+const AdminEditor = () => {
   const { displayPreview, setDisplayPreview } = useDesignEditorContext()
 
   return (
     <>
       {displayPreview && <Preview isOpen={true} setIsOpen={setDisplayPreview} />}
-      <GraphicEditor />
+      <Editor />
     </>
   )
 }
 
-export default DesignEditor
+export default AdminEditor

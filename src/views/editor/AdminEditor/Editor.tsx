@@ -6,7 +6,7 @@ import Panels from "./components/Panels"
 import Toolbox from "./components/Toolbox"
 import Scene from "./components/Scene"
 
-const GraphicEditor = () => {
+const Editor = () => {
   return (
     <EditorContainer>
       <Navbar />
@@ -26,4 +26,4 @@ const GraphicEditor = () => {
   )
 }
 
-export default GraphicEditor
+export default Editor
