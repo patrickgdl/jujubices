@@ -2,7 +2,7 @@ import Editor from "./Editor"
 import useDesignEditorContext from "~/hooks/useDesignEditorContext"
 import Preview from "./components/Preview"
 
-const AdminEditor = () => {
+const Wrapper = () => {
   const { displayPreview, setDisplayPreview } = useDesignEditorContext()
 
   return (
@@ -13,4 +13,4 @@ const AdminEditor = () => {
   )
 }
 
-export default AdminEditor
+export default Wrapper

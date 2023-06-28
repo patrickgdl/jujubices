@@ -4,10 +4,6 @@ export const BASE_ITEMS = [
     name: "Imagens",
   },
   {
-    id: "templates",
-    name: "Templates",
-  },
-  {
     id: "customize",
     name: "Customizar",
   },

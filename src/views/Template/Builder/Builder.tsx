@@ -1,18 +1,20 @@
-import Editor from "./Editor"
-import useDesignEditorContext from "~/hooks/useDesignEditorContext"
-import Preview from "./components/Preview"
 import { useEditor } from "@layerhub-io/react"
+import { IScene } from "@layerhub-io/types"
 import React from "react"
 import { useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
+import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import { getTemplateById } from "~/store/slices/templates/actions"
 import { selectTemplates } from "~/store/slices/templates/selectors"
 import { useAppDispatch } from "~/store/store"
 import { IDesign } from "~/types/design-editor"
-import { IScene } from "@layerhub-io/types"
+import { Template } from "~/types/templates"
 import { loadTemplateFonts } from "~/utils/fonts"
-import { getTemplateById } from "~/store/slices/templates/actions"
-import { useParams } from "react-router-dom"
 
-const UserEditor = () => {
+import Editor from "./components/Editor"
+import Preview from "./components/Preview"
+
+const Builder = () => {
   const params = useParams()
 
   const editor = useEditor()
@@ -46,7 +48,7 @@ const UserEditor = () => {
 
   const handleImportTemplate = React.useCallback(
     async (data: any) => {
-      const template = await loadGraphicTemplate(JSON.parse(data))
+      const template = await loadGraphicTemplate(data)
 
       setScenes(template.scenes)
       //   @ts-ignore
@@ -65,7 +67,9 @@ const UserEditor = () => {
   React.useEffect(() => {
     if (selectedTemplate) {
       const { template } = selectedTemplate
-      handleImportTemplate(template)
+      const parsedTemplate = JSON.parse(template as string)
+      console.log((parsedTemplate as Template).scenes[0].layers.filter((l: any) => l.type === "StaticText"))
+      handleImportTemplate(parsedTemplate)
     }
   }, [selectedTemplate])
 
@@ -77,4 +81,4 @@ const UserEditor = () => {
   )
 }
 
-export default UserEditor
+export default Builder

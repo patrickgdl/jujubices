@@ -1,9 +1,9 @@
-import Canvas from "./components/Canvas"
-import EditorContainer from "./components/EditorContainer"
-import Graphic from "./components/Graphic"
-import Navbar from "./components/Navbar"
-import Panel from "./components/Panel"
-import Scene from "./components/Scene"
+import Canvas from "../Canvas"
+import EditorContainer from "../EditorContainer"
+import Graphic from "../Graphic"
+import Navbar from "../Navbar"
+import Panel from "../Panel"
+import Scene from "../Scene"
 
 const Editor = () => {
   return (

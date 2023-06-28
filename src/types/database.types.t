@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -79,18 +79,18 @@ export interface Database {
       templates: {
         Row: {
           created_at: string | null
-          id: number
           template: Json | null
+          uuid: string
         }
         Insert: {
           created_at?: string | null
-          id?: number
           template?: Json | null
+          uuid?: string
         }
         Update: {
           created_at?: string | null
-          id?: number
           template?: Json | null
+          uuid?: string
         }
         Relationships: []
       }

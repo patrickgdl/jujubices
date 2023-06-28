@@ -1,12 +1,10 @@
 import React, { useEffect, useRef } from "react"
 import ResizeObserver from "resize-observer-polyfill"
 import useAppContext from "~/hooks/useAppContext"
-
-import { getFonts } from "./store/slices/fonts/actions"
-import { getImageKitBackgrounds } from "./store/slices/imagekit/actions"
-import { getTemplates } from "./store/slices/templates/actions"
-import { useAppDispatch } from "./store/store"
-import { Toaster } from "react-hot-toast"
+import { getFonts } from "~/store/slices/fonts/actions"
+import { getImageKitBackgrounds } from "~/store/slices/imagekit/actions"
+import { getTemplates } from "~/store/slices/templates/actions"
+import { useAppDispatch } from "~/store/store"
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch()
@@ -54,14 +52,12 @@ const Container = ({ children }: { children: React.ReactNode }) => {
     <div
       ref={containerRef}
       style={{
-        flex: 1,
-        display: "flex",
-        height: "100vh",
         width: "100vw",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <Toaster position="bottom-center" />
-
       {children}
     </div>
   )

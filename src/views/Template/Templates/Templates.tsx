@@ -37,13 +37,13 @@ const Templates = () => {
         <Scrollable>
           <Block padding="0 1.5rem">
             <div style={{ display: "grid", gap: "8px", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
-              {templates.map(({ id, template }, index) => {
+              {templates.map(({ uuid, template }, index) => {
                 const parsed = JSON.parse(template as string)
                 const { preview } = parsed
 
                 return (
                   <React.Fragment key={index}>
-                    {preview && <ImageItem onClick={() => navigate(`/editor/${id}`)} preview={preview.src} />}
+                    {preview && <ImageItem onClick={() => navigate(`/template/${uuid}`)} preview={preview.src} />}
                   </React.Fragment>
                 )
               })}

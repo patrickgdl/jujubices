@@ -14,8 +14,6 @@ import api from "~/services/api"
 import supabase from "~/services/supabase"
 import { IDesign } from "~/types/design-editor"
 
-import DesignTitle from "./DesignTitle"
-
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
   background: $theme.colors.black,
@@ -104,7 +102,20 @@ const Navbar = () => {
           <Logo size={36} />
         </div>
 
-        <DesignTitle />
+        <Button
+          size="compact"
+          onClick={() => setDisplayPreview(true)}
+          kind={KIND.tertiary}
+          overrides={{
+            StartEnhancer: {
+              style: {
+                marginRight: "4px",
+              },
+            },
+          }}
+        >
+          <Play size={24} />
+        </Button>
 
         <Block $style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
           <Button
@@ -160,21 +171,6 @@ const Navbar = () => {
               </Button>
             </Link>
           )}
-
-          <Button
-            size="compact"
-            onClick={() => setDisplayPreview(true)}
-            kind={KIND.tertiary}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "4px",
-                },
-              },
-            }}
-          >
-            <Play size={24} />
-          </Button>
         </Block>
       </Container>
     </ThemeProvider>
