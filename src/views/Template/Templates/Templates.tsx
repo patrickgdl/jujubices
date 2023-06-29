@@ -1,15 +1,22 @@
 import { Block } from "baseui/block"
 import React from "react"
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import Scrollable from "~/components/Scrollable"
+import { getTemplates } from "~/store/slices/templates/actions"
 import { selectTemplates } from "~/store/slices/templates/selectors"
+import { useAppDispatch } from "~/store/store"
 
 import { ImageItem } from "./ImageItem"
-import { useNavigate } from "react-router-dom"
 
 const Templates = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { templates } = useSelector(selectTemplates)
+
+  React.useEffect(() => {
+    dispatch(getTemplates())
+  }, [])
 
   return (
     <Block

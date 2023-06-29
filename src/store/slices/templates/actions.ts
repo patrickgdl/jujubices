@@ -12,7 +12,7 @@ export const getTemplates = createAsyncThunk("templates/getTemplates", async (_,
 })
 
 export const getTemplateById = createAsyncThunk("templates/getTemplateById", async (id: string, thunkAPI) => {
-  const { data, error } = await supabase.from("templates").select("*").eq("id", id).single()
+  const { data, error } = await supabase.from("templates").select("*").eq("uuid", id).single()
 
   if (error) {
     return thunkAPI.rejectWithValue(error.message)

@@ -3,14 +3,13 @@ import ResizeObserver from "resize-observer-polyfill"
 import useAppContext from "~/hooks/useAppContext"
 import { getFonts } from "~/store/slices/fonts/actions"
 import { getImageKitBackgrounds } from "~/store/slices/imagekit/actions"
-import { getTemplates } from "~/store/slices/templates/actions"
 import { useAppDispatch } from "~/store/store"
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch()
+  const { isMobile, setIsMobile } = useAppContext()
 
   const containerRef = useRef<HTMLDivElement>(null)
-  const { isMobile, setIsMobile } = useAppContext()
 
   const updateMediaQuery = (value: number) => {
     if (!isMobile && value >= 800) {
@@ -45,7 +44,6 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     dispatch(getFonts())
     dispatch(getImageKitBackgrounds())
-    dispatch(getTemplates())
   }, [])
 
   return (

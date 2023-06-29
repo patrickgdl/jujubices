@@ -181,7 +181,24 @@ const Navbar = () => {
           <Logo size={36} />
         </div>
 
-        <DesignTitle />
+        <Block $style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <DesignTitle />
+
+          <Button
+            size="compact"
+            onClick={() => setDisplayPreview(true)}
+            kind={KIND.tertiary}
+            overrides={{
+              StartEnhancer: {
+                style: {
+                  marginRight: "2px",
+                },
+              },
+            }}
+          >
+            <Play size={24} />
+          </Button>
+        </Block>
 
         <Block $style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
           <input
@@ -276,21 +293,6 @@ const Navbar = () => {
               </Button>
             </Link>
           )}
-
-          <Button
-            size="compact"
-            onClick={() => setDisplayPreview(true)}
-            kind={KIND.tertiary}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "4px",
-                },
-              },
-            }}
-          >
-            <Play size={24} />
-          </Button>
         </Block>
       </Container>
     </ThemeProvider>
