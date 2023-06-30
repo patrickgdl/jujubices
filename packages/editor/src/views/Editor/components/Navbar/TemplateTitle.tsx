@@ -1,32 +1,32 @@
 import React from "react"
 import { Input } from "baseui/input"
 import { Block } from "baseui/block"
-import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 
 interface State {
   name: string
   width: number
 }
 
-const DesignTitle = () => {
+const TemplateTitle = () => {
   const [state, setState] = React.useState<State>({ name: "Sem título", width: 0 })
 
-  const { currentDesign, setCurrentDesign } = useDesignEditorContext()
+  const { currentTemplate, setCurrentTemplate } = useTemplateEditorContext()
   const inputTitleRef = React.useRef<Input>(null)
   const spanRef = React.useRef<HTMLDivElement | null>(null)
 
   const handleInputChange = (name: string) => {
     setState({ ...state, name: name, width: spanRef.current?.clientWidth! })
-    setCurrentDesign({ ...currentDesign, name })
+    setCurrentTemplate({ ...currentTemplate, name })
   }
 
   React.useEffect(() => {
-    const name = currentDesign.name
+    const name = currentTemplate.name
     if (name || name === "") {
       spanRef.current!.innerHTML = name
       setState({ ...state, name: name, width: spanRef.current?.clientWidth! + 20 })
     }
-  }, [currentDesign.name])
+  }, [currentTemplate.name])
 
   React.useEffect(() => {
     setState({ ...state, width: spanRef.current?.clientWidth! + 20 })
@@ -97,4 +97,4 @@ const DesignTitle = () => {
   )
 }
 
-export default DesignTitle
+export default TemplateTitle

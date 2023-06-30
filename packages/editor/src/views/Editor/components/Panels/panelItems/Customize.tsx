@@ -13,7 +13,7 @@ import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
 import SwapHorizontal from "~/components/Icons/SwapHorizontal"
 import Scrollable from "~/components/Scrollable"
 import { sampleFrames } from "~/constants/editor"
-import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 
 const colors = ["#ffffff", "#9B9B9B", "#4A4A4A", "#000000", "#A70C2C", "#DA9A15", "#F8E71D", "#47821A", "#4990E2"]
@@ -177,7 +177,7 @@ const ResizeTemplate = () => {
 
   const frame = useFrame()
   const editor = useEditor()
-  const { currentDesign, setCurrentDesign } = useDesignEditorContext()
+  const { currentTemplate, setCurrentTemplate } = useTemplateEditorContext()
 
   React.useEffect(() => {
     if (frame) {
@@ -197,8 +197,8 @@ const ResizeTemplate = () => {
         height: parseInt(size.height),
       })
 
-      setCurrentDesign({
-        ...currentDesign,
+      setCurrentTemplate({
+        ...currentTemplate,
         frame: {
           width: parseInt(size.width),
           height: parseInt(size.height),

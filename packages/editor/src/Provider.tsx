@@ -11,7 +11,7 @@ import { Client as Styletron } from "styletron-engine-atomic"
 import { Provider as StyletronProvider } from "styletron-react"
 
 import { AppProvider } from "./contexts/AppContext"
-import { DesignEditorProvider } from "./contexts/DesignEditor"
+import { TemplateEditorProvider } from "./contexts/TemplateEditor"
 import { UserContextProvider } from "./hooks/useUser"
 import supabase from "./services/supabase"
 import { store } from "./store/store"
@@ -23,7 +23,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
     <SessionContextProvider supabaseClient={supabase}>
       <UserContextProvider>
         <ReduxProvider store={store}>
-          <DesignEditorProvider>
+          <TemplateEditorProvider>
             <AppProvider>
               <ScenifyProvider>
                 <StyletronProvider value={engine}>
@@ -33,7 +33,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
                 </StyletronProvider>
               </ScenifyProvider>
             </AppProvider>
-          </DesignEditorProvider>
+          </TemplateEditorProvider>
         </ReduxProvider>
       </UserContextProvider>
     </SessionContextProvider>

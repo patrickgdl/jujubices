@@ -1,8 +1,8 @@
 import { useContext } from "react"
-import { DesignEditorContext } from "~/contexts/DesignEditor"
+import { TemplateEditorContext } from "~/contexts/TemplateEditor"
 
 const useSetIsSidebarOpen = () => {
-  const { setIsSidebarOpen } = useContext(DesignEditorContext)
+  const { setIsSidebarOpen } = useContext(TemplateEditorContext)
   return setIsSidebarOpen
 }
 

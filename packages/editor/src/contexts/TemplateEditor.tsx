@@ -1,14 +1,14 @@
 import { IScene } from "@layerhub-io/types"
 import React from "react"
-import { IDesign } from "~/types/design-editor"
+import { Template } from "~/types/templates"
 
 interface ISceneEditorContext {
   scenes: IScene[]
   setScenes: (value: ((prevState: IScene[]) => IScene[]) | IScene[]) => void
   currentScene: IScene | null
   setCurrentScene: React.Dispatch<React.SetStateAction<IScene | null>>
-  currentDesign: IDesign
-  setCurrentDesign: React.Dispatch<React.SetStateAction<IDesign>>
+  currentTemplate: Template
+  setCurrentTemplate: React.Dispatch<React.SetStateAction<Template>>
   isSidebarOpen: boolean
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
   displayPreview: boolean
@@ -17,12 +17,12 @@ interface ISceneEditorContext {
   setCurrentPreview: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const DesignEditorContext = React.createContext<ISceneEditorContext>({
+export const TemplateEditorContext = React.createContext<ISceneEditorContext>({
   scenes: [],
   setScenes: () => {},
   currentScene: null,
   setCurrentScene: () => {},
-  currentDesign: {
+  currentTemplate: {
     id: "",
     frame: {
       width: 1080,
@@ -35,7 +35,7 @@ export const DesignEditorContext = React.createContext<ISceneEditorContext>({
     type: "",
     published: false,
   },
-  setCurrentDesign: () => {},
+  setCurrentTemplate: () => {},
   isSidebarOpen: true,
   setIsSidebarOpen: () => {},
   displayPreview: false,
@@ -44,10 +44,10 @@ export const DesignEditorContext = React.createContext<ISceneEditorContext>({
   setCurrentPreview: () => {},
 })
 
-export const DesignEditorProvider = ({ children }: { children: React.ReactNode }) => {
+export const TemplateEditorProvider = ({ children }: { children: React.ReactNode }) => {
   const [scenes, setScenes] = React.useState<IScene[]>([])
   const [currentScene, setCurrentScene] = React.useState<IScene | null>(null)
-  const [currentDesign, setCurrentDesign] = React.useState<IDesign>({
+  const [currentTemplate, setCurrentTemplate] = React.useState<Template>({
     id: "",
     frame: {
       width: 1080,
@@ -69,8 +69,8 @@ export const DesignEditorProvider = ({ children }: { children: React.ReactNode }
     setScenes,
     currentScene,
     setCurrentScene,
-    currentDesign,
-    setCurrentDesign,
+    currentTemplate,
+    setCurrentTemplate,
     isSidebarOpen,
     setIsSidebarOpen,
     displayPreview,
@@ -79,5 +79,5 @@ export const DesignEditorProvider = ({ children }: { children: React.ReactNode }
     setCurrentPreview,
   }
 
-  return <DesignEditorContext.Provider value={context}>{children}</DesignEditorContext.Provider>
+  return <TemplateEditorContext.Provider value={context}>{children}</TemplateEditorContext.Provider>
 }

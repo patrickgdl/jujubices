@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 import useImportTemplate from "~/hooks/useImportTemplate"
 
 import Preview from "./components/Preview"
@@ -9,7 +9,7 @@ const Wrapper = () => {
   const params = useParams()
 
   const _ = useImportTemplate({ templateId: params.id || "" })
-  const { displayPreview, setDisplayPreview } = useDesignEditorContext()
+  const { displayPreview, setDisplayPreview } = useTemplateEditorContext()
 
   return (
     <>

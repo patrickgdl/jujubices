@@ -1,10 +1,10 @@
 import { createReducer } from "@reduxjs/toolkit"
-import { ITemplate } from "~/types/templates"
+import { SupabaseTemplate } from "~/types/templates"
 import { getTemplateById, getTemplates } from "./actions"
 
 export interface TemplateState {
-  templates: ITemplate[]
-  selectedTemplate?: ITemplate
+  templates: SupabaseTemplate[]
+  selectedTemplate?: SupabaseTemplate
 }
 
 const initialState: TemplateState = {

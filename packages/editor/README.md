@@ -27,3 +27,25 @@ npm run dev
 ```
 
 App should be running now.
+
+## Editor/Template structure
+
+```
+interface Template {
+  id: string
+  type: string
+  name: string
+  frame: IFrame
+  scenes: IScene[]
+  metadata: any
+  preview: {
+    id: string
+    src: string
+  }
+  published: boolean
+}
+```
+
+Every template has a `frame` and `scenes`. `frame` is the measure of the template (width and height) and `scenes` has all the layers of the template (image, texts, backgrounds).
+
+`preview` is the image that will be shown on the template list.

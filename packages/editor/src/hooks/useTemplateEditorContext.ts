@@ -1,7 +1,7 @@
 import { useContext } from "react"
-import { DesignEditorContext } from "~/contexts/DesignEditor"
+import { TemplateEditorContext } from "~/contexts/TemplateEditor"
 
-const useDesignEditorContext = () => {
+const useTemplateEditorContext = () => {
   const {
     displayPreview,
     setDisplayPreview,
@@ -9,9 +9,9 @@ const useDesignEditorContext = () => {
     setCurrentScene,
     scenes,
     setScenes,
-    currentDesign,
-    setCurrentDesign,
-  } = useContext(DesignEditorContext)
+    currentTemplate,
+    setCurrentTemplate,
+  } = useContext(TemplateEditorContext)
 
   return {
     displayPreview,
@@ -20,9 +20,9 @@ const useDesignEditorContext = () => {
     setCurrentScene,
     scenes,
     setScenes,
-    currentDesign,
-    setCurrentDesign,
+    currentTemplate,
+    setCurrentTemplate,
   }
 }
 
-export default useDesignEditorContext
+export default useTemplateEditorContext

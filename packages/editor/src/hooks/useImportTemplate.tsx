@@ -5,11 +5,10 @@ import { useSelector } from "react-redux"
 import { getTemplateById } from "~/store/slices/templates/actions"
 import { selectTemplates } from "~/store/slices/templates/selectors"
 import { useAppDispatch } from "~/store/store"
-import { IDesign } from "~/types/design-editor"
-import { Template } from "~/types/templates"
 import { loadTemplateFonts } from "~/utils/fonts"
 
-import useDesignEditorContext from "./useDesignEditorContext"
+import useTemplateEditorContext from "./useTemplateEditorContext"
+import { Template } from "~/types/templates"
 
 type Props = {
   templateId: string
@@ -17,14 +16,14 @@ type Props = {
 
 const useImportTemplate = ({ templateId }: Props) => {
   const editor = useEditor()
-  const { setScenes, setCurrentDesign } = useDesignEditorContext()
+  const { setScenes, setCurrentTemplate } = useTemplateEditorContext()
 
   const dispatch = useAppDispatch()
   const { selectedTemplate } = useSelector(selectTemplates)
 
-  const loadTemplate = async (payload: IDesign) => {
+  const loadTemplate = async (payload: Template) => {
     const scenes: any[] = []
-    const { scenes: scns, ...design } = payload
+    const { scenes: scns, ...rest } = payload
 
     for (const scn of scns) {
       const scene: IScene = {
@@ -42,15 +41,15 @@ const useImportTemplate = ({ templateId }: Props) => {
       scenes.push({ ...scene, preview })
     }
 
-    return { scenes, design }
+    return { scenes, rest }
   }
 
   const handleImportTemplate = async (data: any) => {
-    const { scenes, design } = await loadTemplate(data)
+    const { scenes, rest } = await loadTemplate(data)
 
     setScenes(scenes)
     // @ts-ignore
-    setCurrentDesign(design)
+    setCurrentTemplate(rest)
   }
 
   React.useEffect(() => {
@@ -65,13 +64,13 @@ const useImportTemplate = ({ templateId }: Props) => {
       const parsedTemplate = JSON.parse(template as string)
 
       if (editor) {
-        console.log((parsedTemplate as Template).scenes[0].layers.filter((l: any) => l.type === "StaticText"))
+        // console.log((parsedTemplate as Template).scenes[0].layers.filter((l: any) => l.type === "StaticText"))
         handleImportTemplate(parsedTemplate)
       }
     }
   }, [selectedTemplate, editor])
 
-  return { setScenes, setCurrentDesign }
+  return { setScenes, setCurrentTemplate }
 }
 
 export default useImportTemplate

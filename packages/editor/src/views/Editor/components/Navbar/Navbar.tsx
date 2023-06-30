@@ -9,14 +9,14 @@ import { toast } from "react-hot-toast"
 import { Link, useNavigate } from "react-router-dom"
 import Logo from "~/components/Icons/Logo"
 import Play from "~/components/Icons/Play"
-import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 import { useUser } from "~/hooks/useUser"
 import api from "~/services/api"
 import supabase from "~/services/supabase"
-import { IDesign } from "~/types/design-editor"
 import { loadTemplateFonts } from "~/utils/fonts"
 
-import DesignTitle from "./DesignTitle"
+import TemplateTitle from "./TemplateTitle"
+import { Template } from "~/types/templates"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -35,18 +35,18 @@ const Navbar = () => {
   const [saving, setSaving] = React.useState<boolean>(false)
 
   const editor = useEditor()!
-  const { setDisplayPreview, setScenes, setCurrentDesign, currentDesign } = useDesignEditorContext()
+  const { setDisplayPreview, setScenes, setCurrentTemplate, currentTemplate } = useTemplateEditorContext()
 
   const parseGraphicJSON = async () => {
     const currentScene = editor.scene.exportToJSON()
     const image = (await editor.renderer.render(currentScene)) as string
 
-    if (currentDesign) {
-      const graphicTemplate: IDesign = {
-        id: currentDesign.id,
+    if (currentTemplate) {
+      const graphicTemplate: Template = {
+        id: currentTemplate.id,
         type: "GRAPHIC",
-        name: currentDesign.name,
-        frame: currentDesign.frame,
+        name: currentTemplate.name,
+        frame: currentTemplate.frame,
         scenes: [currentScene],
         metadata: {},
         preview: { id: "", src: image },
@@ -54,7 +54,7 @@ const Navbar = () => {
       }
       return graphicTemplate
     } else {
-      console.log("NO CURRENT DESIGN")
+      console.log("NO CURRENT TEMPLATE")
       return null
     }
   }
@@ -118,9 +118,9 @@ const Navbar = () => {
     }
   }
 
-  const loadGraphicTemplate = async (payload: IDesign) => {
+  const loadGraphicTemplate = async (payload: Template) => {
     const scenes = []
-    const { scenes: scns, ...design } = payload
+    const { scenes: scns, ...rest } = payload
 
     for (const scn of scns) {
       const scene: IScene = {
@@ -138,16 +138,16 @@ const Navbar = () => {
       scenes.push({ ...scene, preview })
     }
 
-    return { scenes, design }
+    return { scenes, rest }
   }
 
   const handleImportTemplate = React.useCallback(
     async (data: any) => {
-      const template = await loadGraphicTemplate(data)
+      const { scenes, rest } = await loadGraphicTemplate(data)
 
-      setScenes(template.scenes)
+      setScenes(scenes)
       //   @ts-ignore
-      setCurrentDesign(template.design)
+      setCurrentTemplate(rest)
     },
     [editor]
   )
@@ -162,8 +162,8 @@ const Navbar = () => {
       const reader = new FileReader()
       reader.onload = (res) => {
         const result = res.target!.result as string
-        const design = JSON.parse(result)
-        handleImportTemplate(design)
+        const template = JSON.parse(result)
+        handleImportTemplate(template)
       }
       reader.onerror = (err) => {
         console.log(err)
@@ -182,7 +182,7 @@ const Navbar = () => {
         </div>
 
         <Block $style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <DesignTitle />
+          <TemplateTitle />
 
           <Button
             size="compact"

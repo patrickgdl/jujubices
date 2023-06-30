@@ -8,11 +8,11 @@ import { toast } from "react-hot-toast"
 import { Link, useNavigate } from "react-router-dom"
 import Logo from "~/components/Icons/Logo"
 import Play from "~/components/Icons/Play"
-import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 import { useUser } from "~/hooks/useUser"
 import api from "~/services/api"
 import supabase from "~/services/supabase"
-import { IDesign } from "~/types/design-editor"
+import { Template } from "~/types/templates"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -30,18 +30,18 @@ const Navbar = () => {
   const [saving, setSaving] = React.useState<boolean>(false)
 
   const editor = useEditor()!
-  const { setDisplayPreview, currentDesign } = useDesignEditorContext()
+  const { setDisplayPreview, currentTemplate } = useTemplateEditorContext()
 
   const parseGraphicJSON = async () => {
     const currentScene = editor.scene.exportToJSON()
     const image = (await editor.renderer.render(currentScene)) as string
 
-    if (currentDesign) {
-      const graphicTemplate: IDesign = {
-        id: currentDesign.id,
+    if (currentTemplate) {
+      const graphicTemplate: Template = {
+        id: currentTemplate.id,
         type: "GRAPHIC",
-        name: currentDesign.name,
-        frame: currentDesign.frame,
+        name: currentTemplate.name,
+        frame: currentTemplate.frame,
         scenes: [currentScene],
         metadata: {},
         preview: { id: "", src: image },
@@ -49,7 +49,7 @@ const Navbar = () => {
       }
       return graphicTemplate
     } else {
-      console.log("NO CURRENT DESIGN")
+      console.log("NO CURRENT TEMPLATE")
       return null
     }
   }

@@ -6,21 +6,21 @@ import React from "react"
 import { useSelector } from "react-redux"
 import AngleDoubleLeft from "~/components/Icons/AngleDoubleLeft"
 import Scrollable from "~/components/Scrollable"
-import useDesignEditorContext from "~/hooks/useDesignEditorContext"
+import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 import { selectTemplates } from "~/store/slices/templates/selectors"
-import { IDesign } from "~/types/design-editor"
 import { loadTemplateFonts } from "~/utils/fonts"
+import { Template } from "~/types/templates"
 
 const Templates = () => {
   const editor = useEditor()
   const setIsSidebarOpen = useSetIsSidebarOpen()
   const { templates } = useSelector(selectTemplates)
-  const { setScenes, setCurrentDesign } = useDesignEditorContext()
+  const { setScenes, setCurrentTemplate } = useTemplateEditorContext()
 
-  const loadGraphicTemplate = async (payload: IDesign) => {
+  const loadGraphicTemplate = async (payload: Template) => {
     const scenes = []
-    const { scenes: scns, ...design } = payload
+    const { scenes: scns, ...rest } = payload
 
     for (const scn of scns) {
       const scene: IScene = {
@@ -38,16 +38,16 @@ const Templates = () => {
       scenes.push({ ...scene, preview })
     }
 
-    return { scenes, design }
+    return { scenes, rest }
   }
 
   const handleImportTemplate = React.useCallback(
     async (data: any) => {
-      const template = await loadGraphicTemplate(JSON.parse(data))
+      const { scenes, rest } = await loadGraphicTemplate(JSON.parse(data))
 
-      setScenes(template.scenes)
+      setScenes(scenes)
       //   @ts-ignore
-      setCurrentDesign(template.design)
+      setCurrentTemplate(rest)
     },
     [editor]
   )

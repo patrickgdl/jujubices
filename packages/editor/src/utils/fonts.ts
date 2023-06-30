@@ -20,8 +20,8 @@ const getFontsFromObjects = (objects: Partial<ILayer>[]) => {
   return fonts
 }
 
-export const loadTemplateFonts = async (design: IScene) => {
-  const fonts = getFontsFromObjects(design.layers)
+export const loadTemplateFonts = async (scene: IScene) => {
+  const fonts = getFontsFromObjects(scene.layers)
   if (fonts.length > 0) {
     await loadFonts(fonts)
   }
