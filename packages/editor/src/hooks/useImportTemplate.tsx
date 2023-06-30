@@ -11,43 +11,28 @@ import useTemplateEditorContext from "./useTemplateEditorContext"
 import { Template } from "~/types/templates"
 
 type Props = {
-  templateId: string
+  templateId: string | undefined
 }
 
 const useImportTemplate = ({ templateId }: Props) => {
   const editor = useEditor()
-  const { setScenes, setCurrentTemplate } = useTemplateEditorContext()
+  const { setCurrentScene, setCurrentTemplate } = useTemplateEditorContext()
 
   const dispatch = useAppDispatch()
   const { selectedTemplate } = useSelector(selectTemplates)
 
   const loadTemplate = async (payload: Template) => {
-    const scenes: any[] = []
-    const { scenes: scns, ...rest } = payload
+    const { scene, ...rest } = payload
 
-    for (const scn of scns) {
-      const scene: IScene = {
-        name: scn.name,
-        frame: payload.frame,
-        id: scn.id,
-        layers: scn.layers,
-        metadata: {},
-      }
+    await loadTemplateFonts(scene)
 
-      await loadTemplateFonts(scene)
-
-      const preview = (await editor.renderer.render(scene)) as string
-
-      scenes.push({ ...scene, preview })
-    }
-
-    return { scenes, rest }
+    return { scene, rest }
   }
 
-  const handleImportTemplate = async (data: any) => {
-    const { scenes, rest } = await loadTemplate(data)
+  const handleImportTemplate = async (data: Template) => {
+    const { scene, rest } = await loadTemplate(data)
 
-    setScenes(scenes)
+    setCurrentScene(scene)
     // @ts-ignore
     setCurrentTemplate(rest)
   }
@@ -64,13 +49,11 @@ const useImportTemplate = ({ templateId }: Props) => {
       const parsedTemplate = JSON.parse(template as string)
 
       if (editor) {
-        // console.log((parsedTemplate as Template).scenes[0].layers.filter((l: any) => l.type === "StaticText"))
+        // console.log((parsedTemplate as Template).scene.layers.filter((l: any) => l.type === "StaticText"))
         handleImportTemplate(parsedTemplate)
       }
     }
   }, [selectedTemplate, editor])
-
-  return { setScenes, setCurrentTemplate }
 }
 
 export default useImportTemplate

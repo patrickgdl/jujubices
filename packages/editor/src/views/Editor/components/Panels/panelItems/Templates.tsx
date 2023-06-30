@@ -16,38 +16,17 @@ const Templates = () => {
   const editor = useEditor()
   const setIsSidebarOpen = useSetIsSidebarOpen()
   const { templates } = useSelector(selectTemplates)
-  const { setScenes, setCurrentTemplate } = useTemplateEditorContext()
-
-  const loadGraphicTemplate = async (payload: Template) => {
-    const scenes = []
-    const { scenes: scns, ...rest } = payload
-
-    for (const scn of scns) {
-      const scene: IScene = {
-        name: scn.name,
-        frame: payload.frame,
-        id: scn.id,
-        layers: scn.layers,
-        metadata: {},
-      }
-
-      await loadTemplateFonts(scene)
-
-      const preview = (await editor.renderer.render(scene)) as string
-
-      scenes.push({ ...scene, preview })
-    }
-
-    return { scenes, rest }
-  }
+  const { setCurrentScene, setCurrentTemplate } = useTemplateEditorContext()
 
   const handleImportTemplate = React.useCallback(
     async (data: any) => {
-      const { scenes, rest } = await loadGraphicTemplate(JSON.parse(data))
+      const template = JSON.parse(data) as Template
+      const { scene } = template
 
-      setScenes(scenes)
-      //   @ts-ignore
-      setCurrentTemplate(rest)
+      await loadTemplateFonts(scene)
+
+      setCurrentScene(scene)
+      setCurrentTemplate(template)
     },
     [editor]
   )
@@ -69,6 +48,7 @@ const Templates = () => {
           <AngleDoubleLeft size={18} />
         </Block>
       </Block>
+
       <Scrollable>
         <Block padding="0 1.5rem">
           <div style={{ display: "grid", gap: "8px", gridTemplateColumns: "1fr 1fr" }}>

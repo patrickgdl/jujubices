@@ -42,7 +42,7 @@ const Navbar = () => {
         type: "GRAPHIC",
         name: currentTemplate.name,
         frame: currentTemplate.frame,
-        scenes: [currentScene],
+        scene: currentScene,
         metadata: {},
         preview: { id: "", src: image },
         published: false,

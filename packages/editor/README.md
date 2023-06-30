@@ -36,7 +36,7 @@ interface Template {
   type: string
   name: string
   frame: IFrame
-  scenes: IScene[]
+  scene: IScene
   metadata: any
   preview: {
     id: string
@@ -46,6 +46,6 @@ interface Template {
 }
 ```
 
-Every template has a `frame` and `scenes`. `frame` is the measure of the template (width and height) and `scenes` has all the layers of the template (image, texts, backgrounds).
+Every template has a `frame` and `scene`. `frame` is the measure of the template (width and height) and `scene` has all the layers of the template (image, texts, backgrounds).
 
 `preview` is the image that will be shown on the template list.

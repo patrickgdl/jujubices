@@ -13,10 +13,11 @@ import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 import { useUser } from "~/hooks/useUser"
 import api from "~/services/api"
 import supabase from "~/services/supabase"
+import { Template } from "~/types/templates"
+import { makeJSONDownload } from "~/utils/download"
 import { loadTemplateFonts } from "~/utils/fonts"
 
 import TemplateTitle from "./TemplateTitle"
-import { Template } from "~/types/templates"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -35,36 +36,37 @@ const Navbar = () => {
   const [saving, setSaving] = React.useState<boolean>(false)
 
   const editor = useEditor()!
-  const { setDisplayPreview, setScenes, setCurrentTemplate, currentTemplate } = useTemplateEditorContext()
+  const { setDisplayPreview, setCurrentScene, setCurrentTemplate, currentTemplate } = useTemplateEditorContext()
 
   const parseGraphicJSON = async () => {
-    const currentScene = editor.scene.exportToJSON()
-    const image = (await editor.renderer.render(currentScene)) as string
-
     if (currentTemplate) {
+      if (!currentTemplate.name) {
+        toast.error("Por favor, insira um nome para o template")
+        return null
+      }
+
+      // export current scene as JSON
+      const currentScene = editor.scene.exportToJSON()
+
+      // render current scene as a dataURL image
+      const image = (await editor.renderer.render(currentScene)) as string
+
       const graphicTemplate: Template = {
         id: currentTemplate.id,
         type: "GRAPHIC",
         name: currentTemplate.name,
         frame: currentTemplate.frame,
-        scenes: [currentScene],
+        scene: currentScene,
         metadata: {},
-        preview: { id: "", src: image },
+        preview: { id: currentTemplate.name, src: image },
         published: false,
       }
+
       return graphicTemplate
     } else {
       console.log("NO CURRENT TEMPLATE")
       return null
     }
-  }
-
-  const makeDownload = (data: Object) => {
-    const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data))}`
-    const a = document.createElement("a")
-    a.href = dataStr
-    a.download = "template.json"
-    a.click()
   }
 
   const makeDownloadTemplate = async () => {
@@ -73,7 +75,7 @@ const Navbar = () => {
 
       if (!template) return
 
-      makeDownload(template)
+      makeJSONDownload(template)
     }
   }
 
@@ -118,36 +120,21 @@ const Navbar = () => {
     }
   }
 
-  const loadGraphicTemplate = async (payload: Template) => {
-    const scenes = []
-    const { scenes: scns, ...rest } = payload
+  const generatePreview = async (scene: IScene) => {
+    const preview = (await editor.renderer.render(scene)) as string
 
-    for (const scn of scns) {
-      const scene: IScene = {
-        name: scn.name,
-        frame: payload.frame,
-        id: scn.id,
-        layers: scn.layers,
-        metadata: {},
-      }
-
-      await loadTemplateFonts(scene)
-
-      const preview = (await editor.renderer.render(scene)) as string
-
-      scenes.push({ ...scene, preview })
-    }
-
-    return { scenes, rest }
+    return preview
   }
 
   const handleImportTemplate = React.useCallback(
-    async (data: any) => {
-      const { scenes, rest } = await loadGraphicTemplate(data)
+    async (data: Template) => {
+      const { scene } = data
+      await loadTemplateFonts(scene)
 
-      setScenes(scenes)
-      //   @ts-ignore
-      setCurrentTemplate(rest)
+      const preview = await generatePreview(scene)
+
+      setCurrentScene({ ...scene, preview })
+      setCurrentTemplate(data)
     },
     [editor]
   )

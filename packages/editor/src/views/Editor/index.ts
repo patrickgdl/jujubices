@@ -1,2 +1,2 @@
-import Wrapper from "./Wrapper"
-export default Wrapper
+import Editor from "./Editor"
+export default Editor

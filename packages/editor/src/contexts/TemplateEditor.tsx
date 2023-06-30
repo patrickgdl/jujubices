@@ -1,10 +1,9 @@
 import { IScene } from "@layerhub-io/types"
 import React from "react"
+import { getDefaultTemplate } from "~/constants/template-editor"
 import { Template } from "~/types/templates"
 
 interface ISceneEditorContext {
-  scenes: IScene[]
-  setScenes: (value: ((prevState: IScene[]) => IScene[]) | IScene[]) => void
   currentScene: IScene | null
   setCurrentScene: React.Dispatch<React.SetStateAction<IScene | null>>
   currentTemplate: Template
@@ -18,8 +17,6 @@ interface ISceneEditorContext {
 }
 
 export const TemplateEditorContext = React.createContext<ISceneEditorContext>({
-  scenes: [],
-  setScenes: () => {},
   currentScene: null,
   setCurrentScene: () => {},
   currentTemplate: {
@@ -31,7 +28,10 @@ export const TemplateEditorContext = React.createContext<ISceneEditorContext>({
     metadata: {},
     name: "",
     preview: { id: "", src: "" },
-    scenes: [],
+    scene: getDefaultTemplate({
+      width: 1080,
+      height: 1920,
+    }),
     type: "",
     published: false,
   },
@@ -45,7 +45,6 @@ export const TemplateEditorContext = React.createContext<ISceneEditorContext>({
 })
 
 export const TemplateEditorProvider = ({ children }: { children: React.ReactNode }) => {
-  const [scenes, setScenes] = React.useState<IScene[]>([])
   const [currentScene, setCurrentScene] = React.useState<IScene | null>(null)
   const [currentTemplate, setCurrentTemplate] = React.useState<Template>({
     id: "",
@@ -56,7 +55,10 @@ export const TemplateEditorProvider = ({ children }: { children: React.ReactNode
     metadata: {},
     name: "",
     preview: { id: "", src: "" },
-    scenes: [],
+    scene: getDefaultTemplate({
+      width: 1080,
+      height: 1920,
+    }),
     type: "",
     published: false,
   })
@@ -65,8 +67,6 @@ export const TemplateEditorProvider = ({ children }: { children: React.ReactNode
   const [currentPreview, setCurrentPreview] = React.useState<string>("")
 
   const context = {
-    scenes,
-    setScenes,
     currentScene,
     setCurrentScene,
     currentTemplate,

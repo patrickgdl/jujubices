@@ -12,7 +12,7 @@ export interface Template {
   type: string
   name: string
   frame: IFrame
-  scenes: IScene[]
+  scene: IScene
   metadata: any
   preview: {
     id: string
