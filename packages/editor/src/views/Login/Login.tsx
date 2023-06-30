@@ -2,7 +2,7 @@ import { Auth } from "@supabase/auth-ui-react"
 import { ThemeSupa } from "@supabase/auth-ui-shared"
 import { Session } from "@supabase/supabase-js"
 import { Block } from "baseui/block"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import supabase from "~/services/supabase"
 
 export default function Login() {
