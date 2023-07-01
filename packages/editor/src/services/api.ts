@@ -34,6 +34,22 @@ class ApiService {
       }
     })
   }
+
+  updateImageKit(file: File, folder: string, oldFiledId: string): Promise<UploadResponse> {
+    const formData = new FormData()
+    formData.append("file", file)
+    formData.append("oldFiledId", oldFiledId)
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data } = await this.base.post(`imagekit/${folder}`, formData)
+
+        resolve(data)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
 }
 
 export default new ApiService()

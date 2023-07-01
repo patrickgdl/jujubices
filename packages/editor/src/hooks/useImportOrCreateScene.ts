@@ -5,9 +5,16 @@ import React from "react"
 import { getDefaultTemplate } from "~/constants/template-editor"
 import { TemplateEditorContext } from "~/contexts/TemplateEditor"
 
-const useImportOrAddScene = () => {
+import useLoadTemplate from "./useLoadTemplate"
+
+/**
+ * This hook is used to import a scene from the current template or create a new scene if there is no current template.
+ */
+const useImportOrCreateScene = () => {
+  const { currentScene } = useLoadTemplate()
+
   const editor = useEditor()
-  const { setCurrentScene, currentScene, setCurrentTemplate } = React.useContext(TemplateEditorContext)
+  const { setCurrentScene, setCurrentTemplate } = React.useContext(TemplateEditorContext)
 
   const renderCurrentScene = React.useCallback(
     async (scene: IScene) => {
@@ -23,6 +30,7 @@ const useImportOrAddScene = () => {
         // every time the current scene changes, we need to re-render the scene
         renderCurrentScene(currentScene)
       } else {
+        // if there is no current scene, we need to create a new scene and render it
         const defaultTemplate = getDefaultTemplate({
           width: 1080,
           height: 1920,
@@ -40,9 +48,11 @@ const useImportOrAddScene = () => {
         })
 
         setCurrentScene({ ...defaultTemplate })
+
+        renderCurrentScene(defaultTemplate)
       }
     }
   }, [editor, currentScene])
 }
 
-export default useImportOrAddScene
+export default useImportOrCreateScene

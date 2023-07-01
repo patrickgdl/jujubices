@@ -1,26 +1,22 @@
-import { useParams } from "react-router-dom"
 import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 
-import useImportScene from "~/hooks/useImportScene"
 import Canvas from "./components/Canvas"
-import EditorContainer from "./components/EditorContainer"
+import Container from "./components/Container"
 import Navbar from "./components/Navbar"
 import Panel from "./components/Panel"
-import useImportTemplate from "~/hooks/useImportTemplate"
 import Preview from "~/components/Preview/Preview"
+import useImportOrCreateScene from "~/hooks/useImportOrCreateScene"
 
 const Builder = () => {
-  useImportScene()
-  const params = useParams()
-
-  useImportTemplate({ templateId: params.id })
   const { displayPreview, setDisplayPreview } = useTemplateEditorContext()
+
+  useImportOrCreateScene()
 
   return (
     <>
       {displayPreview && <Preview isOpen={true} setIsOpen={setDisplayPreview} />}
 
-      <EditorContainer>
+      <Container>
         <Navbar />
 
         <div style={{ display: "flex", flex: 1 }}>
@@ -30,7 +26,7 @@ const Builder = () => {
             <Canvas />
           </div>
         </div>
-      </EditorContainer>
+      </Container>
     </>
   )
 }

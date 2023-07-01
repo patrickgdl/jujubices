@@ -6,7 +6,7 @@ import { Button, KIND } from "baseui/button"
 import { Theme } from "baseui/theme"
 import React from "react"
 import { toast } from "react-hot-toast"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Logo from "~/components/Icons/Logo"
 import Play from "~/components/Icons/Play"
 import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
@@ -18,6 +18,7 @@ import { makeJSONDownload } from "~/utils/download"
 import { loadTemplateFonts } from "~/utils/fonts"
 
 import TemplateTitle from "./TemplateTitle"
+import NavbarActions from "./NavbarActions"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -32,13 +33,13 @@ const Navbar = () => {
   const { user } = useUser()
   const navigate = useNavigate()
 
-  const inputFileRef = React.useRef<HTMLInputElement>(null)
-  const [saving, setSaving] = React.useState<boolean>(false)
+  const [loading, setLoading] = React.useState<boolean>(false)
 
   const editor = useEditor()!
-  const { setDisplayPreview, setCurrentScene, setCurrentTemplate, currentTemplate } = useTemplateEditorContext()
+  const { isEditing, setDisplayPreview, setCurrentScene, setCurrentTemplate, currentTemplate } =
+    useTemplateEditorContext()
 
-  const parseGraphicJSON = async () => {
+  const parseToJSONWithPreview = async () => {
     if (currentTemplate) {
       if (!currentTemplate.name) {
         toast.error("Por favor, insira um nome para o template")
@@ -58,7 +59,10 @@ const Navbar = () => {
         frame: currentTemplate.frame,
         scene: currentScene,
         metadata: {},
-        preview: { id: currentTemplate.name, src: image },
+        preview: {
+          id: isEditing ? currentTemplate.preview.id : currentTemplate.name,
+          src: image,
+        },
         published: false,
       }
 
@@ -69,9 +73,9 @@ const Navbar = () => {
     }
   }
 
-  const makeDownloadTemplate = async () => {
+  const handleDownload = async () => {
     if (editor) {
-      const template = parseGraphicJSON()
+      const template = parseToJSONWithPreview()
 
       if (!template) return
 
@@ -79,12 +83,12 @@ const Navbar = () => {
     }
   }
 
-  const saveOnSupabase = async () => {
+  const handleSubmit = async () => {
     if (editor) {
       try {
-        setSaving(true)
+        setLoading(true)
 
-        const template = await parseGraphicJSON()
+        const template = await parseToJSONWithPreview()
 
         if (!template) return
 
@@ -98,24 +102,45 @@ const Navbar = () => {
           type: blob.type,
         })
 
-        const { fileId, url } = await api.uploadToImageKit(file, "templates")
+        if (!isEditing) {
+          const { fileId, url } = await api.uploadToImageKit(file, "templates")
 
-        const { error } = await supabase.from("templates").insert({
-          template: JSON.stringify({
-            ...template,
-            preview: { id: fileId, src: url },
-          }),
-        })
+          const { error } = await supabase.from("templates").insert({
+            template: JSON.stringify({
+              ...template,
+              preview: { id: fileId, src: url },
+            }),
+          })
 
-        toast.success("Template salvo com sucesso!")
+          toast.success("Template salvo com sucesso!")
 
-        if (error) {
-          console.log(error)
+          if (error) {
+            toast.error("Erro ao salvar template")
+          }
+        } else {
+          // this is going to delete the old preview image from imagekit and upload a new one
+          const { fileId, url } = await api.updateImageKit(file, "templates", currentTemplate.preview.id)
+
+          const { error } = await supabase
+            .from("templates")
+            .update({
+              template: JSON.stringify({
+                ...template,
+                preview: { id: fileId, src: url },
+              }),
+            })
+            .match({ id: template.id })
+
+          toast.success("Template atualizado com sucesso!")
+
+          if (error) {
+            toast.error("Erro ao atualizar template")
+          }
         }
       } catch (error) {
         console.log(error)
       } finally {
-        setSaving(false)
+        setLoading(false)
       }
     }
   }
@@ -126,7 +151,7 @@ const Navbar = () => {
     return preview
   }
 
-  const handleImportTemplate = React.useCallback(
+  const handleImport = React.useCallback(
     async (data: Template) => {
       const { scene } = data
       await loadTemplateFonts(scene)
@@ -139,18 +164,14 @@ const Navbar = () => {
     [editor]
   )
 
-  const handleInputFileRefClick = () => {
-    inputFileRef.current?.click()
-  }
-
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
     if (file) {
       const reader = new FileReader()
       reader.onload = (res) => {
         const result = res.target!.result as string
         const template = JSON.parse(result)
-        handleImportTemplate(template)
+        handleImport(template)
       }
       reader.onerror = (err) => {
         console.log(err)
@@ -160,8 +181,12 @@ const Navbar = () => {
     }
   }
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    navigate("/login")
+  }
+
   return (
-    // @ts-ignore
     <ThemeProvider theme={DarkTheme}>
       <Container>
         <div style={{ color: "#ffffff" }}>
@@ -187,100 +212,15 @@ const Navbar = () => {
           </Button>
         </Block>
 
-        <Block $style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-          <input
-            multiple={false}
-            onChange={handleFileInput}
-            type="file"
-            id="file"
-            ref={inputFileRef}
-            style={{ display: "none" }}
-          />
-
-          <Button
-            size="compact"
-            onClick={handleInputFileRefClick}
-            kind={KIND.tertiary}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "4px",
-                },
-              },
-            }}
-          >
-            Importar
-          </Button>
-
-          <Button
-            size="compact"
-            onClick={makeDownloadTemplate}
-            kind={KIND.tertiary}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "4px",
-                },
-              },
-            }}
-          >
-            Exportar
-          </Button>
-
-          <Button
-            size="compact"
-            onClick={saveOnSupabase}
-            kind={KIND.tertiary}
-            isLoading={saving}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "4px",
-                },
-              },
-            }}
-          >
-            Salvar
-          </Button>
-
-          {user ? (
-            <Button
-              size="compact"
-              onClick={async () => {
-                await supabase.auth.signOut()
-                navigate("/login")
-              }}
-              kind={KIND.tertiary}
-              isLoading={saving}
-              overrides={{
-                StartEnhancer: {
-                  style: {
-                    marginRight: "4px",
-                  },
-                },
-              }}
-            >
-              Sair
-            </Button>
-          ) : (
-            <Link to="/login">
-              <Button
-                size="compact"
-                kind={KIND.tertiary}
-                isLoading={saving}
-                overrides={{
-                  StartEnhancer: {
-                    style: {
-                      marginRight: "4px",
-                    },
-                  },
-                }}
-              >
-                Login
-              </Button>
-            </Link>
-          )}
-        </Block>
+        <NavbarActions
+          loading={loading}
+          editing={isEditing}
+          loggedIn={!!user}
+          onSubmit={handleSubmit}
+          onLogout={handleLogout}
+          onDownload={handleDownload}
+          onFileChange={handleFileChange}
+        />
       </Container>
     </ThemeProvider>
   )
