@@ -8,8 +8,16 @@ import { selectTemplates } from "~/store/slices/templates/selectors"
 import { useAppDispatch } from "~/store/store"
 
 import { ImageItem } from "./ImageItem"
+import useUserRole from "~/hooks/useUserRole"
+
+const NEXT_ROUTE = {
+  admin: "/editor",
+  user: "/template",
+} as { [key: string]: string }
 
 const Templates = () => {
+  const role = useUserRole()
+
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { templates } = useSelector(selectTemplates)
@@ -45,12 +53,16 @@ const Templates = () => {
           <Block padding="0 1.5rem">
             <div style={{ display: "grid", gap: "8px", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
               {templates.map(({ uuid, template }, index) => {
+                console.log(template)
                 const parsed = JSON.parse(template as string)
+                console.log(parsed)
                 const { preview } = parsed
 
                 return (
                   <React.Fragment key={index}>
-                    {preview && <ImageItem onClick={() => navigate(`/template/${uuid}`)} preview={preview.src} />}
+                    {preview && (
+                      <ImageItem onClick={() => navigate(`${NEXT_ROUTE[role]}/${uuid}`)} preview={preview.src} />
+                    )}
                   </React.Fragment>
                 )
               })}

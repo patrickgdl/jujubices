@@ -8,7 +8,7 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "dev": "concurrently \"npm run dev:editor\" \"npm run dev:site\"",
+    "dev:all": "concurrently \"npm run dev:editor\" \"npm run dev:site\"",
     "dev:editor": "npm run dev -w @jujubices/editor",
     "dev:site": "npm run dev -w @jujubices/site"
   },

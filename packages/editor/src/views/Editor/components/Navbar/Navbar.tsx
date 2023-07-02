@@ -19,6 +19,8 @@ import { loadTemplateFonts } from "~/utils/fonts"
 
 import TemplateTitle from "./TemplateTitle"
 import NavbarActions from "./NavbarActions"
+import { useSelector } from "react-redux"
+import { selectTemplates } from "~/store/slices/templates/selectors"
 
 const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
   height: "64px",
@@ -32,6 +34,7 @@ const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
 const Navbar = () => {
   const { user } = useUser()
   const navigate = useNavigate()
+  const { selectedTemplate } = useSelector(selectTemplates)
 
   const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -60,7 +63,7 @@ const Navbar = () => {
         scene: currentScene,
         metadata: {},
         preview: {
-          id: isEditing ? currentTemplate.preview.id : currentTemplate.name,
+          id: "",
           src: image,
         },
         published: false,
@@ -93,12 +96,12 @@ const Navbar = () => {
         if (!template) return
 
         const { preview } = template
-        const { src: dataURL, id } = preview
+        const { src: dataURL } = preview
 
         const response = await fetch(dataURL) // make a request for dataURL
         const blob = await response.blob() // just to make a blob from the response
 
-        const file = new File([blob], `${id}.png`, {
+        const file = new File([blob], `${template.name}.png`, {
           type: blob.type,
         })
 
@@ -129,7 +132,7 @@ const Navbar = () => {
                 preview: { id: fileId, src: url },
               }),
             })
-            .match({ id: template.id })
+            .match({ uuid: selectedTemplate?.uuid })
 
           toast.success("Template atualizado com sucesso!")
 
@@ -139,6 +142,7 @@ const Navbar = () => {
         }
       } catch (error) {
         console.log(error)
+        toast.error("Erro ao salvar template")
       } finally {
         setLoading(false)
       }

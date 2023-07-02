@@ -9,22 +9,16 @@ import useSelectedTemplate from "./useSelectedTemplate"
 /**
  * This hook is used to load the fonts for the template and set the current scene and template.
  */
-const useSetSceneAndTemplate = () => {
+const useLoadTemplate = () => {
   const editor = useEditor()
   const { setCurrentScene, currentScene, setCurrentTemplate, currentTemplate } = useTemplateEditorContext()
 
   const { template } = useSelectedTemplate()
 
-  const loadTemplate = async (payload: Template) => {
-    const { scene, ...rest } = payload
+  const loadFontsAndSetTemplate = async (data: Template) => {
+    const { scene, ...rest } = data
 
     await loadTemplateFonts(scene)
-
-    return { scene, rest }
-  }
-
-  const handleSetSceneAndTemplate = async (data: Template) => {
-    const { scene, rest } = await loadTemplate(data)
 
     setCurrentScene(scene)
     setCurrentTemplate({ ...rest, scene })
@@ -34,7 +28,7 @@ const useSetSceneAndTemplate = () => {
     if (template) {
       if (editor) {
         // console.log(template.scene.layers.filter((l: any) => l.type === "StaticText"))
-        handleSetSceneAndTemplate(template)
+        loadFontsAndSetTemplate(template)
       }
     }
   }, [template, editor])
@@ -45,4 +39,4 @@ const useSetSceneAndTemplate = () => {
   }
 }
 
-export default useSetSceneAndTemplate
+export default useLoadTemplate

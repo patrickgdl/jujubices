@@ -11,7 +11,7 @@ import useTemplateEditorContext from "./useTemplateEditorContext"
 /**
  * This hook is used to get the selected template from the store and parse it into a usable format.
  * If there is no selected template, it will return an empty template.
- * @returns The parsed template.
+ * @returns The parsed template and the Supabase template.
  */
 const useSelectedTemplate = () => {
   const editor = useEditor()
@@ -41,7 +41,7 @@ const useSelectedTemplate = () => {
     }
   }, [selectedTemplate, editor])
 
-  return { template }
+  return { template, selectedTemplate }
 }
 
 export default useSelectedTemplate
