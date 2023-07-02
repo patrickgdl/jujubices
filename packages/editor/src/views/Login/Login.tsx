@@ -24,7 +24,9 @@ export default function Login() {
 
   if (!session) {
     return (
-      <Block $style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100vw" }}>
+      <Block
+        $style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", width: "100vw" }}
+      >
         <Auth
           supabaseClient={supabase}
           appearance={{
