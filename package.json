@@ -1,16 +1,18 @@
 {
   "workspaces": [
     "packages/editor",
-    "packages/site"
+    "packages/site",
+    "packages/api"
   ],
   "name": "jujubices",
   "description": "Jujubice's packages",
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "dev:all": "concurrently \"npm run dev:editor\" \"npm run dev:site\"",
+    "dev:all": "concurrently \"npm run dev:editor\" \"npm run dev:site\" \"npm run dev:api\"",
     "dev:editor": "npm run dev -w @jujubices/editor",
-    "dev:site": "npm run dev -w @jujubices/site"
+    "dev:site": "npm run dev -w @jujubices/site",
+    "dev:api": "npm run dev -w @jujubices/api"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"
