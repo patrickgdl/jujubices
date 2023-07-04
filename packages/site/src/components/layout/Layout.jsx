@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Layout({ children }) {
   return (
     <div className={`relative bg-white overflow-hidden ${inter.className} `}>
-      <header class="absolute inset-x-0 top-0 z-50">
+      <header className="absolute inset-x-0 top-0 z-50">
         <Navbar />
       </header>
 

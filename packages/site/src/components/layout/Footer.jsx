@@ -3,7 +3,7 @@ import Link from "next/link";
 export function Footer() {
   return (
     <footer className="mx-auto max-w-6xl px-6">
-      <div className="grid grid-cols-1 gap-8 border-b border-zinc-600 py-12 text-slate-800 transition-colors duration-150 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-8 border-b border-zinc-200 py-12 text-slate-800 transition-colors duration-150 lg:grid-cols-12">
         <div className="col-span-1 lg:col-span-3">
           <ul className="flex flex-initial flex-col md:flex-1">
             <li className="py-3 md:py-0 md:pb-4">
@@ -52,17 +52,6 @@ export function Footer() {
               </Link>
             </li>
           </ul>
-        </div>
-
-        <div className="col-span-1 flex items-start text-slate-800 lg:col-span-6 lg:justify-end">
-          <div className="flex h-10 items-center space-x-6">
-            <a
-              aria-label="Github Repository"
-              href="https://github.com/patrickgdl/jujubices"
-            >
-              Github
-            </a>
-          </div>
         </div>
       </div>
 

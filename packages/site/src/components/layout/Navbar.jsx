@@ -24,10 +24,10 @@ export const Navbar = () => {
           </a>
         </div>
 
-        <div class="flex lg:hidden">
+        <div className="flex lg:hidden">
           <button
             type="button"
-            class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
           >
             <Popover.Button className="bg-gray-50 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
               <span className="sr-only">Abrir menu principal</span>
@@ -48,7 +48,7 @@ export const Navbar = () => {
           ))}
         </div>
 
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link
             href="/login"
             className="text-sm cursor-pointer font-semibold leading-6 text-gray-900"
