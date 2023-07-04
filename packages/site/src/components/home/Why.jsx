@@ -40,7 +40,7 @@ export const Why = () => {
 
       {features.map((feature) => (
         <div key={feature.name} className="pt-6">
-          <div className="flow-root rounded-lg bg-gradient-to-br from-fuchsia-100 to-pink-200 px-6 pb-8 saturate-150">
+          <div className="flow-root rounded-lg bg-gradient-to-br from-fuchsia-50 to-pink-50 px-6 pb-8 saturate-100">
             <div className="-mt-6">
               <div>
                 <span className="inline-flex items-center justify-center rounded-md border bg-white p-3 shadow-lg">

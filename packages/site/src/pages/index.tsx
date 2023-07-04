@@ -1,21 +1,17 @@
-import { Inter } from "next/font/google";
-
 import React from "react";
 import { Toaster } from "react-hot-toast";
 
 import { Background, Features, Hero, More, Why } from "../components/home";
 import Layout from "../components/layout";
 
-const inter = Inter({ subsets: ["latin"] });
-
 const Home = () => {
   return (
     <Layout>
-      <div className="bg-white font-display">
+      <div className="relative isolate">
         <Background />
 
         <div className="h-screen">
-          <div className="flex h-[calc(100%_-_120px)] flex-col items-center justify-center text-center">
+          <div className="flex h-[calc(100%_-_150px)] flex-col items-center justify-center text-center">
             <Hero />
           </div>
         </div>
