@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 const SelectEditor = () => {
   const navigate = useNavigate()
-  const [selectedEditor, setSelectedEditor] = React.useState("background")
+  const [selectedEditor, setSelectedEditor] = React.useState("editor")
 
   return (
     <Block
@@ -27,12 +27,12 @@ const SelectEditor = () => {
           }}
         >
           <Block
-            onClick={() => setSelectedEditor("background")}
+            onClick={() => setSelectedEditor("editor")}
             $style={{
               height: "180px",
               width: "180px",
-              background: selectedEditor === "background" ? "#000000" : "rgb(231, 236, 239)",
-              color: selectedEditor === "background" ? "#ffffff" : "#333333",
+              background: selectedEditor === "editor" ? "#000000" : "rgb(231, 236, 239)",
+              color: selectedEditor === "editor" ? "#ffffff" : "#333333",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

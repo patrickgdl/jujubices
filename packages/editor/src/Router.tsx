@@ -15,7 +15,6 @@ const Router = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/template" element={<Templates />} />
-        <Route path="/background" element={<div>backgrounds</div>} />
         <Route
           path="/selector"
           element={
