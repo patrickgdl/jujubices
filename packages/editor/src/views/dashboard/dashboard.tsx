@@ -1,6 +1,7 @@
 import { Button } from "~/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/ui/tabs"
+
 import { MainNav } from "./components/main-nav"
 import { Overview } from "./components/overview"
 import { RecentSales } from "./components/recent-sales"
