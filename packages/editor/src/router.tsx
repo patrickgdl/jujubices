@@ -36,9 +36,9 @@ const Router = () => {
         <Route
           path="/selector"
           element={
-            <AdminOnlyRoute>
-              <SelectEditor />
-            </AdminOnlyRoute>
+            // <AdminOnlyRoute>
+            <SelectEditor />
+            // </AdminOnlyRoute>
           }
         />
         <Route
