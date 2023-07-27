@@ -42,18 +42,16 @@ const Flip = () => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent>
-        <div className="w-[180px]">
-          <Button className="justify-start" onClick={flipHorizontally} variant="ghost" size="full">
-            <FlipHorizontal size={24} />
-            Flip horizontal
-          </Button>
+      <PopoverContent className="w-full">
+        <Button className="justify-start" onClick={flipHorizontally} variant="ghost" size="full">
+          <FlipHorizontal size={24} />
+          Flip horizontal
+        </Button>
 
-          <Button className="justify-start" onClick={flipVertically} variant="ghost" size="full">
-            <FlipVertical size={24} />
-            Flip vertical
-          </Button>
-        </div>
+        <Button className="justify-start" onClick={flipVertically} variant="ghost" size="full">
+          <FlipVertical size={24} />
+          Flip vertical
+        </Button>
       </PopoverContent>
     </Popover>
   )

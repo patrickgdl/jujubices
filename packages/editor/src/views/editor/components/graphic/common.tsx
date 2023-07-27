@@ -74,7 +74,7 @@ const Common = () => {
         </Button>
       </div>
 
-      <div className="flex items-center justify-center w-full">
+      <div className="flex items-center justify-center w-64">
         <div>
           <Tooltip>
             <TooltipTrigger>
