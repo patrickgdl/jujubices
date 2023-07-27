@@ -1,6 +1,5 @@
 import { useEditor } from "@layerhub-io/react"
-import { Block } from "baseui/block"
-import { Delete } from "baseui/icon"
+import { Cross2Icon } from "@radix-ui/react-icons"
 import { throttle } from "lodash"
 import { HexColorPicker } from "react-colorful"
 import Scrollable from "~/components/scrollable"
@@ -28,46 +27,38 @@ const CanvasFill = () => {
   }, 100)
 
   return (
-    <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <Block
-        $style={{
-          display: "flex",
-          alignItems: "center",
-          fontWeight: 500,
-          justifyContent: "space-between",
-          padding: "1.5rem",
-        }}
-      >
-        <Block>Cor de Background</Block>
+    <div className="flex flex-1 flex-col">
+      <div className="flex items-center font-medium justify-between p-6">
+        <div>Cor de Background</div>
 
-        <Block $style={{ cursor: "pointer", display: "flex" }}>
-          <Delete size={24} />
-        </Block>
-      </Block>
+        <div className="cursor-pointer flex">
+          <Cross2Icon />
+        </div>
+      </div>
 
       <Scrollable>
-        <Block padding="0 1.5rem">
+        <div className="px-6">
           <HexColorPicker onChange={updateCanvasBackground} style={{ width: "100%" }} />
 
-          <Block>
-            <Block $style={{ padding: "0.75rem 0", fontWeight: 500, fontSize: "14px" }}>Preset colors</Block>
-            <Block $style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr", gap: "0.25rem" }}>
+          <div>
+            <div className="py-3 font-medium text-sm">Cores pré-definidas</div>
+
+            <div className="grid grid-cols-6 gap-1">
               {PRESET_COLORS.map((color, index) => (
-                <Block
-                  $style={{
-                    cursor: "pointer",
-                  }}
+                <div
+                  className="cursor-pointer h-9"
                   onClick={() => updateCanvasBackground(color)}
-                  backgroundColor={color}
-                  height="38px"
+                  style={{
+                    backgroundColor: color,
+                  }}
                   key={index}
                 />
               ))}
-            </Block>
-          </Block>
-        </Block>
+            </div>
+          </div>
+        </div>
       </Scrollable>
-    </Block>
+    </div>
   )
 }
 

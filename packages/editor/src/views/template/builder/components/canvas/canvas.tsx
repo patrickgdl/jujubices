@@ -2,7 +2,7 @@ import { Canvas as LayerhubCanvas } from "@layerhub-io/react"
 
 const Canvas = () => {
   return (
-    <div style={{ flex: 1, display: "flex", position: "relative" }}>
+    <div className="flex relative flex-1">
       <LayerhubCanvas
         config={{
           background: "#f1f2f6",

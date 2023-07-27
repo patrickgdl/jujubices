@@ -1,5 +1,4 @@
 import React from "react"
-import { Block } from "baseui/block"
 import { useEditor } from "@layerhub-io/react"
 
 const Graphic = () => {
@@ -23,9 +22,9 @@ const Graphic = () => {
   }, [editor])
 
   return (
-    <Block $style={{ flex: 1, alignItems: "center", justifyContent: "center", display: "flex", padding: "5rem" }}>
+    <div className="flex-1 flex items-center justify-center p-20">
       {!loading && <img width="auto" height="100%" src={state.image} />}
-    </Block>
+    </div>
   )
 }
 

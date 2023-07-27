@@ -1,6 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 
-import AdminOnlyRoute from "./components/admin-only-route"
 import ProtectedRoute from "./components/protected-route"
 import Dashboard from "./views/dashboard"
 import Editor from "./views/editor"
@@ -36,25 +35,25 @@ const Router = () => {
         <Route
           path="/selector"
           element={
-            // <AdminOnlyRoute>
-            <SelectEditor />
-            // </AdminOnlyRoute>
+            <ProtectedRoute>
+              <SelectEditor />
+            </ProtectedRoute>
           }
         />
         <Route
           path="/editor"
           element={
-            <AdminOnlyRoute>
+            <ProtectedRoute>
               <Editor />
-            </AdminOnlyRoute>
+            </ProtectedRoute>
           }
         />
         <Route
           path="/editor/:id"
           element={
-            <AdminOnlyRoute>
+            <ProtectedRoute>
               <Editor />
-            </AdminOnlyRoute>
+            </ProtectedRoute>
           }
         />
 

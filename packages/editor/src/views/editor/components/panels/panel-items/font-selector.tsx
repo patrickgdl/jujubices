@@ -1,13 +1,9 @@
 import { useEditor } from "@layerhub-io/react"
-import { useStyletron } from "baseui"
-import { Block } from "baseui/block"
-import { Delete } from "baseui/icon"
-import { Input, SIZE } from "baseui/input"
+import { Cross2Icon } from "@radix-ui/react-icons"
 import { groupBy } from "lodash"
 import React from "react"
 import { useSelector } from "react-redux"
 import { useDebounce } from "use-debounce"
-import Search from "~/components/icons/Search"
 import InfiniteScrolling from "~/components/infinite-scrolling"
 import Scrollable from "~/components/scrollable"
 import useAppContext from "~/hooks/useAppContext"
@@ -15,9 +11,9 @@ import { queryFonts } from "~/store/slices/fonts/actions"
 import { selectFonts } from "~/store/slices/fonts/selectors"
 import { useAppDispatch } from "~/store/store"
 import { loadFonts } from "~/utils/fonts"
+import { Input } from "~/ui/input"
 
 export default function () {
-  const [css] = useStyletron()
   const editor = useEditor()
   const dispatch = useAppDispatch()
 
@@ -92,9 +88,9 @@ export default function () {
   }, [pageNumber, searchQuery])
 
   return (
-    <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <Block
-        $style={{
+    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
           display: "flex",
           alignItems: "center",
           fontWeight: 500,
@@ -102,49 +98,27 @@ export default function () {
           padding: "1.5rem",
         }}
       >
-        <Block>Selecione uma fonte</Block>
+        <div>Selecione uma fonte</div>
 
-        <Block onClick={() => setActiveSubMenu("")} $style={{ cursor: "pointer", display: "flex" }}>
-          <Delete size={24} />
-        </Block>
-      </Block>
+        <div onClick={() => setActiveSubMenu("")} style={{ cursor: "pointer", display: "flex" }}>
+          <Cross2Icon />
+        </div>
+      </div>
 
-      <Block $style={{ padding: "0 1.5rem 1rem" }}>
-        <Input
-          overrides={{
-            Root: {
-              style: {
-                paddingLeft: "8px",
-              },
-            },
-          }}
-          clearable
-          onChange={(e) => setQuery((e.target as any).value)}
-          placeholder="Pesquisar fonte"
-          size={SIZE.compact}
-          startEnhancer={<Search size={16} />}
-        />
-      </Block>
+      <div style={{ padding: "0 1.5rem 1rem" }}>
+        <Input onChange={(e) => setQuery((e.target as any).value)} placeholder="Pesquisar fonte" />
+      </div>
 
       <Scrollable>
-        <Block $style={{ padding: "0 1.5rem", display: "grid", gap: "0.2rem" }}>
+        <div style={{ padding: "0 1.5rem", display: "grid", gap: "0.2rem" }}>
           <InfiniteScrolling fetchData={fetchData} hasMore={hasMore}>
-            <Block $style={{ display: "grid" }}>
+            <div style={{ display: "grid" }}>
               {commonFonts.map((font, index) => {
                 return (
                   <div
                     key={index}
                     onClick={() => handleFontFamilyChange(font)}
-                    className={css({
-                      height: "40px",
-                      display: "flex",
-                      alignItems: "center",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                      ":hover": {
-                        backgroundColor: "rgb(245,246,247)",
-                      },
-                    })}
+                    className="flex items-center cursor-pointer text-sm h-10 hover:bg-gray-100"
                     id={font.id}
                   >
                     <img src={font.preview} />
@@ -152,10 +126,10 @@ export default function () {
                   </div>
                 )
               })}
-            </Block>
+            </div>
           </InfiniteScrolling>
-        </Block>
+        </div>
       </Scrollable>
-    </Block>
+    </div>
   )
 }

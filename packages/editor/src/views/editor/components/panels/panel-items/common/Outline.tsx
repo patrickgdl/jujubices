@@ -1,10 +1,10 @@
 import React from "react"
-import { Checkbox } from "baseui/checkbox"
-import { StatefulPopover, PLACEMENT } from "baseui/popover"
 import { HexColorPicker } from "react-colorful"
-import { Slider } from "baseui/slider"
-import { Input } from "baseui/input"
 import { useActiveObject, useEditor } from "@layerhub-io/react"
+import { Checkbox } from "~/ui/checkbox"
+import { Popover, PopoverContent, PopoverTrigger } from "~/ui/popover"
+import { Input } from "~/ui/input"
+import { Slider } from "~/ui/slider"
 
 interface Options {
   enabled: boolean
@@ -44,7 +44,7 @@ const Outline = () => {
       }
     } else {
       if (editor && options.enabled) {
-      editor.objects.update({ [type]: value })
+        editor.objects.update({ [type]: value })
       }
     }
   }
@@ -67,9 +67,24 @@ const Outline = () => {
             <Checkbox checked={options.enabled} onChange={(e) => handleChange("enabled", (e.target as any).checked)} />
             Outline
           </div>
-          <StatefulPopover
-            placement={PLACEMENT.bottomLeft}
-            content={
+
+          <Popover>
+            <PopoverTrigger>
+              <div
+                style={{
+                  height: "28px",
+                  width: "28px",
+                  backgroundSize: "100% 100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  backgroundColor: options.stroke,
+                }}
+              />
+            </PopoverTrigger>
+
+            <PopoverContent>
               <div
                 style={{
                   padding: "1rem",
@@ -83,31 +98,13 @@ const Outline = () => {
               >
                 <HexColorPicker onChange={(color) => handleChange("stroke", color)} />
                 <Input
-                  overrides={{ Input: { style: { textAlign: "center" } } }}
                   value={options.stroke}
                   onChange={(e) => handleChange("color", (e.target as any).value)}
                   placeholder="#000000"
-                  clearOnEscape
                 />
               </div>
-            }
-            accessibilityType="tooltip"
-          >
-            <div>
-              <div
-                style={{
-                  height: "28px",
-                  width: "28px",
-                  backgroundSize: "100% 100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  backgroundColor: options.stroke,
-                }}
-              />
-            </div>
-          </StatefulPopover>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
       <div style={{ height: "10px" }} />
@@ -115,28 +112,7 @@ const Outline = () => {
       <div style={{ padding: "0 8px" }}>
         <div>
           <div style={{ fontSize: "14px" }}>Size</div>
-          <Slider
-            overrides={{
-              InnerThumb: () => null,
-              ThumbValue: () => null,
-              TickBar: () => null,
-              Thumb: {
-                style: {
-                  height: "12px",
-                  width: "12px",
-                  paddingLeft: 0,
-                },
-              },
-              Track: {
-                style: {
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                },
-              },
-            }}
-            value={[options.strokeWidth]}
-            onChange={({ value }) => handleChange("strokeWidth", value[0])}
-          />
+          <Slider value={[options.strokeWidth]} onValueChange={(value) => handleChange("strokeWidth", value[0])} />
         </div>
       </div>
     </div>

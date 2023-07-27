@@ -41,8 +41,8 @@ const TemplateTitle = () => {
 
       <div className={`flex w-[${state.width}px]`}>
         <Input
-          onChange={(e: any) => handleInputChange(e.target.value)}
           className="bg-transparent border-none shadow-none"
+          onChange={(e: any) => handleInputChange(e.target.value)}
           value={state.name}
           ref={inputTitleRef}
         />

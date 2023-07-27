@@ -80,7 +80,9 @@ export default function Templates() {
                                 width={1080}
                                 height={1920}
                                 onClick={() => navigate(`${NEXT_ROUTE[role]}/${uuid}`)}
-                                className={"h-auto w-auto object-cover transition-all hover:scale-105 aspect-[9/16]"}
+                                className={
+                                  "h-auto w-auto cursor-pointer object-cover transition-all hover:scale-105 aspect-[9/16]"
+                                }
                               />
                             </div>
                           </div>

@@ -1,10 +1,9 @@
-import { Block } from "baseui/block"
 import Common from "./Common"
 
 const Multiple = () => {
   return (
-    <Block
-      $style={{
+    <div
+      style={{
         flex: 1,
         display: "flex",
         alignItems: "center",
@@ -12,9 +11,9 @@ const Multiple = () => {
         justifyContent: "space-between",
       }}
     >
-      <Block>Multiple</Block>
+      <div>Multiple</div>
       <Common />
-    </Block>
+    </div>
   )
 }
 

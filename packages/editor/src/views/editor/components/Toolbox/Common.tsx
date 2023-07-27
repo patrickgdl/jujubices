@@ -1,9 +1,4 @@
 import { useActiveObject, useEditor } from "@layerhub-io/react"
-import { Block } from "baseui/block"
-import { Button, KIND, SIZE } from "baseui/button"
-import { Checkbox } from "baseui/checkbox"
-import { StatefulPopover } from "baseui/popover"
-import { PLACEMENT, StatefulTooltip } from "baseui/tooltip"
 import React from "react"
 import AlignBottom from "~/components/icons/AlignBottom"
 import AlignCenter from "~/components/icons/AlignCenter"
@@ -18,6 +13,10 @@ import LayersIcon from "~/components/icons/Layers"
 import LockedIcon from "~/components/icons/Locked"
 import SendToBack from "~/components/icons/SendToBack"
 import UnlockedIcon from "~/components/icons/Unlocked"
+import { Button } from "~/ui/button"
+import { Checkbox } from "~/ui/checkbox"
+import { Popover, PopoverContent, PopoverTrigger } from "~/ui/popover"
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/ui/tooltip"
 
 import Opacity from "./Shared/Opacity"
 
@@ -51,15 +50,14 @@ const Common = () => {
   }, [editor, activeObject])
 
   return (
-    <Block $style={{ display: "flex", alignItems: "center" }}>
+    <div style={{ display: "flex", alignItems: "center" }}>
       {state.isGroup ? (
         <Button
           onClick={() => {
             editor.objects.ungroup()
             setState({ ...state, isGroup: false })
           }}
-          size={SIZE.compact}
-          kind={KIND.tertiary}
+          variant="ghost"
         >
           Ungroup
         </Button>
@@ -69,8 +67,7 @@ const Common = () => {
             editor.objects.group()
             setState({ ...state, isGroup: true })
           }}
-          size={SIZE.compact}
-          kind={KIND.tertiary}
+          variant="ghost"
         >
           Group
         </Button>
@@ -83,17 +80,27 @@ const Common = () => {
       <Opacity />
 
       <LockUnlock />
-      <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Duplicar">
-        <Button onClick={() => editor.objects.clone()} size={SIZE.mini} kind={KIND.tertiary}>
-          <DuplicateIcon size={22} />
-        </Button>
-      </StatefulTooltip>
-      <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Deletar">
-        <Button onClick={() => editor.objects.remove()} size={SIZE.mini} kind={KIND.tertiary}>
-          <DeleteIcon size={24} />
-        </Button>
-      </StatefulTooltip>
-    </Block>
+
+      <Tooltip>
+        <TooltipTrigger>
+          <Button onClick={() => editor.objects.clone()} size="icon" variant="ghost">
+            <DuplicateIcon size={22} />
+          </Button>
+        </TooltipTrigger>
+
+        <TooltipContent>Duplicar</TooltipContent>
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger>
+          <Button onClick={() => editor.objects.remove()} size="icon" variant="ghost">
+            <DeleteIcon size={24} />
+          </Button>
+        </TooltipTrigger>
+
+        <TooltipContent>Deletar</TooltipContent>
+      </Tooltip>
+    </div>
   )
 }
 
@@ -109,79 +116,43 @@ const CommonLayers = () => {
     }
   }, [activeObject])
   return (
-    <StatefulPopover
-      placement={PLACEMENT.bottomRight}
-      content={() => (
-        <Block padding="12px" backgroundColor="#ffffff">
-          <Block display="grid" gridTemplateColumns="1fr 1fr" gridGap="8px">
-            <Button
-              startEnhancer={<BringToFront size={24} />}
-              onClick={() => editor.objects.bringToFront()}
-              kind={KIND.tertiary}
-              size={SIZE.mini}
-            >
-              Trazer pra frente
-            </Button>
-            <Button
-              startEnhancer={<SendToBack size={24} />}
-              onClick={() => editor.objects.sendToBack()}
-              kind={KIND.tertiary}
-              size={SIZE.mini}
-            >
-              Jogar para trás
-            </Button>
-          </Block>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button size="icon" variant="ghost">
+          <Tooltip>
+            <TooltipTrigger>
+              <LayersIcon size={19} />
+            </TooltipTrigger>
 
-          <Block
-            $style={{
-              display: "flex",
-              fontSize: "12px",
-              alignItems: "center",
-              gap: "0.5rem",
-              fontWeight: 500,
-              fontFamily: "system-ui,",
-              padding: "0.5rem 0.5rem",
-              cursor: "pointer",
-              ":hover": {
-                background: "rgb(244,245,246)",
-              },
-            }}
-          >
-            <Checkbox
-              overrides={{
-                Checkmark: {
-                  style: {
-                    height: "16px",
-                    width: "16px",
-                  },
-                },
-              }}
-              checked={checked}
-              onChange={() => {
-                editor.objects.update({ clipToFrame: !checked })
-                setChecked(!checked)
-              }}
-            />
-            <Block>Clip to frame</Block>
-          </Block>
-        </Block>
-      )}
-      returnFocus
-      autoFocus
-    >
-      <Block>
-        <StatefulTooltip
-          placement={PLACEMENT.bottom}
-          showArrow={true}
-          accessibilityType="tooltip"
-          content="Layers/Camadas"
-        >
-          <Button size={SIZE.mini} kind={KIND.tertiary}>
-            <LayersIcon size={19} />
+            <TooltipContent>Layers/Camadas</TooltipContent>
+          </Tooltip>
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent className="w-full">
+        <div className="grid grid-cols-2 gap-2">
+          <Button onClick={() => editor.objects.bringToFront()} variant="ghost">
+            <BringToFront size={24} />
+            Trazer pra frente
           </Button>
-        </StatefulTooltip>
-      </Block>
-    </StatefulPopover>
+          <Button onClick={() => editor.objects.sendToBack()} variant="ghost">
+            <SendToBack size={24} />
+            Jogar para trás
+          </Button>
+        </div>
+
+        <div className="flex gap-2 items-center px-4 py-2 rounded-md">
+          <Checkbox
+            checked={checked}
+            onCheckedChange={() => {
+              editor.objects.update({ clipToFrame: !checked })
+              setChecked(!checked)
+            }}
+          />
+          <div className="text-sm font-medium">Clip to frame</div>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }
 
@@ -189,41 +160,42 @@ const CommonAlign = () => {
   const editor = useEditor()
 
   return (
-    <StatefulPopover
-      placement={PLACEMENT.bottomRight}
-      content={() => (
-        <Block padding="12px" backgroundColor="#ffffff" display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap="8px">
-          <Button onClick={() => editor.objects.alignLeft()} kind={KIND.tertiary} size={SIZE.mini}>
+    <Popover>
+      <PopoverTrigger>
+        <Button size="icon" variant="ghost">
+          <Tooltip>
+            <TooltipTrigger>
+              <AlignCenter size={24} />
+            </TooltipTrigger>
+
+            <TooltipContent>Alinhar</TooltipContent>
+          </Tooltip>
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent className="w-full">
+        <div className="grid grid-cols-3 gap-2">
+          <Button onClick={() => editor.objects.alignLeft()} variant="ghost" size="icon">
             <AlignLeft size={24} />
           </Button>
-          <Button onClick={() => editor.objects.alignCenter()} kind={KIND.tertiary} size={SIZE.mini}>
+          <Button onClick={() => editor.objects.alignCenter()} variant="ghost" size="icon">
             <AlignCenter size={24} />
           </Button>
-          <Button onClick={() => editor.objects.alignRight()} kind={KIND.tertiary} size={SIZE.mini}>
+          <Button onClick={() => editor.objects.alignRight()} variant="ghost" size="icon">
             <AlignRight size={24} />
           </Button>
-          <Button onClick={() => editor.objects.alignTop()} kind={KIND.tertiary} size={SIZE.mini}>
+          <Button onClick={() => editor.objects.alignTop()} variant="ghost" size="icon">
             <AlignTop size={24} />
           </Button>
-          <Button onClick={() => editor.objects.alignMiddle()} kind={KIND.tertiary} size={SIZE.mini}>
+          <Button onClick={() => editor.objects.alignMiddle()} variant="ghost" size="icon">
             <AlignMiddle size={24} />
           </Button>
-          <Button onClick={() => editor.objects.alignBottom()} kind={KIND.tertiary} size={SIZE.mini}>
+          <Button onClick={() => editor.objects.alignBottom()} variant="ghost" size="icon">
             <AlignBottom size={24} />
           </Button>
-        </Block>
-      )}
-      returnFocus
-      autoFocus
-    >
-      <Block>
-        <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Alinhar">
-          <Button size={SIZE.mini} kind={KIND.tertiary}>
-            <AlignCenter size={24} />
-          </Button>
-        </StatefulTooltip>
-      </Block>
-    </StatefulPopover>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }
 
@@ -240,31 +212,39 @@ const LockUnlock = () => {
   }, [activeObject])
 
   return state.locked ? (
-    <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Lock">
-      <Button
-        onClick={() => {
-          editor.objects.unlock()
-          setState({ locked: false })
-        }}
-        size={SIZE.mini}
-        kind={KIND.tertiary}
-      >
-        <UnlockedIcon size={24} />
-      </Button>
-    </StatefulTooltip>
+    <Tooltip>
+      <TooltipTrigger>
+        <Button
+          onClick={() => {
+            editor.objects.unlock()
+            setState({ locked: false })
+          }}
+          size="icon"
+          variant="ghost"
+        >
+          <UnlockedIcon size={24} />
+        </Button>
+      </TooltipTrigger>
+
+      <TooltipContent>Unlock</TooltipContent>
+    </Tooltip>
   ) : (
-    <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType="tooltip" content="Lock">
-      <Button
-        onClick={() => {
-          editor.objects.lock()
-          setState({ locked: true })
-        }}
-        size={SIZE.mini}
-        kind={KIND.tertiary}
-      >
-        <LockedIcon size={24} />
-      </Button>
-    </StatefulTooltip>
+    <Tooltip>
+      <TooltipTrigger>
+        <Button
+          onClick={() => {
+            editor.objects.lock()
+            setState({ locked: true })
+          }}
+          size="icon"
+          variant="ghost"
+        >
+          <LockedIcon size={24} />
+        </Button>
+      </TooltipTrigger>
+
+      <TooltipContent>Lock</TooltipContent>
+    </Tooltip>
   )
 }
 

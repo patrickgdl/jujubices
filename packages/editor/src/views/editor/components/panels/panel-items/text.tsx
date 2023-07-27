@@ -1,11 +1,10 @@
 import { useEditor } from "@layerhub-io/react"
-import { Block } from "baseui/block"
-import { Button, SIZE } from "baseui/button"
 import { nanoid } from "nanoid"
 import AngleDoubleLeft from "~/components/icons/AngleDoubleLeft"
 import Scrollable from "~/components/scrollable"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 import { FontItem } from "~/types/common"
+import { Button } from "~/ui/button"
 import { loadFonts } from "~/utils/fonts"
 
 export default function () {
@@ -37,9 +36,9 @@ export default function () {
   }
 
   return (
-    <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <Block
-        $style={{
+    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
           display: "flex",
           alignItems: "center",
           fontWeight: 500,
@@ -47,29 +46,19 @@ export default function () {
           padding: "1.5rem",
         }}
       >
-        <Block>Texto</Block>
+        <div>Texto</div>
 
-        <Block onClick={() => setIsSidebarOpen(false)} $style={{ cursor: "pointer", display: "flex" }}>
+        <div onClick={() => setIsSidebarOpen(false)} style={{ cursor: "pointer", display: "flex" }}>
           <AngleDoubleLeft size={18} />
-        </Block>
-      </Block>
+        </div>
+      </div>
       <Scrollable>
-        <Block padding={"0 1.5rem"}>
-          <Button
-            onClick={addObject}
-            size={SIZE.compact}
-            overrides={{
-              Root: {
-                style: {
-                  width: "100%",
-                },
-              },
-            }}
-          >
+        <div className="px-6">
+          <Button onClick={addObject} size="full">
             Adicionar texto
           </Button>
-        </Block>
+        </div>
       </Scrollable>
-    </Block>
+    </div>
   )
 }

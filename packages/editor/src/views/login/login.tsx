@@ -1,7 +1,6 @@
 import { useSessionContext } from "@supabase/auth-helpers-react"
 import { Auth } from "@supabase/auth-ui-react"
 import { ThemeSupa } from "@supabase/auth-ui-shared"
-import { Block } from "baseui/block"
 import React, { useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import supabase from "~/services/supabase"
@@ -30,9 +29,7 @@ export default function Login() {
   }
 
   return (
-    <Block
-      $style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", width: "100vw" }}
-    >
+    <div className="flex items-center justify-center w-screen h-screen">
       <Auth
         supabaseClient={supabase}
         appearance={{
@@ -81,6 +78,6 @@ export default function Login() {
           },
         }}
       />
-    </Block>
+    </div>
   )
 }

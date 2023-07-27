@@ -1,21 +1,7 @@
 import React from "react"
-import { Block } from "baseui/block"
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <Block
-      $style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        background: "#FFFFFF",
-        fontFamily: "Poppins",
-      }}
-    >
-      {children}
-    </Block>
-  )
+  return <div className="h-screen w-screen flex flex-col bg-white">{children}</div>
 }
 
 export default Container

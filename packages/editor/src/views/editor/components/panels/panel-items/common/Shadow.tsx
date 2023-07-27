@@ -1,10 +1,10 @@
 import React from "react"
-import { Checkbox } from "baseui/checkbox"
-import { StatefulPopover, PLACEMENT } from "baseui/popover"
 import { HexColorPicker } from "react-colorful"
-import { Slider } from "baseui/slider"
-import { Input } from "baseui/input"
 import { useActiveObject, useEditor } from "@layerhub-io/react"
+import { Checkbox } from "~/ui/checkbox"
+import { Popover, PopoverContent, PopoverTrigger } from "~/ui/popover"
+import { Input } from "~/ui/input"
+import { Slider } from "~/ui/slider"
 
 interface Options {
   enabled: boolean
@@ -64,16 +64,27 @@ const Shadow = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "0.2rem" }}>
-          <Checkbox
-            checked={options.enabled}
-            // @ts-ignore
-            onChange={(e) => handleChange("enabled", e.target.checked)}
-          />
+          <Checkbox checked={options.enabled} onChange={(e) => handleChange("enabled", (e.target as any).checked)} />
           Shadow
         </div>
-        <StatefulPopover
-          placement={PLACEMENT.bottomLeft}
-          content={
+
+        <Popover>
+          <PopoverTrigger>
+            <div
+              style={{
+                height: "28px",
+                width: "28px",
+                backgroundSize: "100% 100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                backgroundColor: options.color,
+              }}
+            />
+          </PopoverTrigger>
+
+          <PopoverContent>
             <div
               style={{
                 padding: "1rem",
@@ -87,31 +98,13 @@ const Shadow = () => {
             >
               <HexColorPicker onChange={(color) => handleChange("color", color)} />
               <Input
-                overrides={{ Input: { style: { textAlign: "center" } } }}
                 value={options.color}
                 onChange={(e) => handleChange("color", (e.target as any).value)}
                 placeholder="#000000"
-                clearOnEscape
               />
             </div>
-          }
-          accessibilityType="tooltip"
-        >
-          <div>
-            <div
-              style={{
-                height: "28px",
-                width: "28px",
-                backgroundSize: "100% 100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                backgroundColor: options.color,
-              }}
-            />
-          </div>
-        </StatefulPopover>
+          </PopoverContent>
+        </Popover>
       </div>
 
       <div style={{ height: "10px" }} />
@@ -119,28 +112,7 @@ const Shadow = () => {
       <div style={{ padding: "0 8px" }}>
         <div>
           <div style={{ fontSize: "14px" }}>Blur</div>
-          <Slider
-            overrides={{
-              InnerThumb: () => null,
-              ThumbValue: () => null,
-              TickBar: () => null,
-              Thumb: {
-                style: {
-                  height: "12px",
-                  width: "12px",
-                  paddingLeft: 0,
-                },
-              },
-              Track: {
-                style: {
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                },
-              },
-            }}
-            value={[options.blur]}
-            onChange={({ value }) => handleChange("blur", value)}
-          />
+          <Slider value={[options.blur]} onValueChange={(value) => handleChange("blur", value)} />
         </div>
       </div>
 
@@ -148,54 +120,12 @@ const Shadow = () => {
         <div style={{ height: "10px" }} />
         <div style={{ padding: "0 8px" }}>
           <div style={{ fontSize: "14px" }}>Offset Y</div>
-          <Slider
-            overrides={{
-              InnerThumb: () => null,
-              ThumbValue: () => null,
-              TickBar: () => null,
-              Thumb: {
-                style: {
-                  height: "12px",
-                  width: "12px",
-                  paddingLeft: 0,
-                },
-              },
-              Track: {
-                style: {
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                },
-              },
-            }}
-            value={[options.offsetY]}
-            onChange={({ value }) => handleChange("offsetY", value)}
-          />
+          <Slider value={[options.offsetY]} onValueChange={(value) => handleChange("offsetY", value)} />
         </div>
         <div style={{ padding: "0 8px" }}>
           <div>
             <div style={{ fontSize: "14px" }}>Offset X</div>
-            <Slider
-              overrides={{
-                InnerThumb: () => null,
-                ThumbValue: () => null,
-                TickBar: () => null,
-                Thumb: {
-                  style: {
-                    height: "12px",
-                    width: "12px",
-                    paddingLeft: 0,
-                  },
-                },
-                Track: {
-                  style: {
-                    paddingLeft: 0,
-                    paddingRight: 0,
-                  },
-                },
-              }}
-              value={[options.offsetX]}
-              onChange={({ value }) => handleChange("offsetX", value)}
-            />
+            <Slider value={[options.offsetX]} onValueChange={(value) => handleChange("offsetX", value)} />
           </div>
         </div>
       </div>

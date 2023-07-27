@@ -1,6 +1,5 @@
 import { useActiveObject, useEditor } from "@layerhub-io/react"
 import { ILayer } from "@layerhub-io/types"
-import { styled } from "baseui"
 import React from "react"
 import useAppContext from "~/hooks/useAppContext"
 import getSelectionType from "~/utils/get-selection-type"
@@ -12,12 +11,6 @@ const DEFAULT_TOOLBOX = "Canvas"
 interface ToolboxState {
   toolbox: string
 }
-
-const Container = styled("div", (props) => ({
-  boxShadow: "rgb(0 0 0 / 15%) 0px 1px 1px",
-  height: "50px",
-  display: "flex",
-}))
 
 const Toolbox = () => {
   const [state, setState] = React.useState<ToolboxState>({ toolbox: "Texto" })
@@ -70,15 +63,9 @@ const Toolbox = () => {
   const Component = Items[state.toolbox]
 
   return (
-    <Container>
-      {Component ? (
-        <Component />
-      ) : (
-        <div style={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center" }}>
-          {state.toolbox}
-        </div>
-      )}
-    </Container>
+    <div className="h-12 flex shadow-sm">
+      {Component ? <Component /> : <div className="flex items-center justify-center w-full">{state.toolbox}</div>}
+    </div>
   )
 }
 

@@ -5,19 +5,18 @@ import Underline from "~/components/icons/Underline"
 import Spacing from "~/components/icons/Spacing"
 
 import Shadow from "./common/Shadow"
-import { Input, SIZE } from "baseui/input"
-import { Button } from "baseui/button"
-import { ChevronRight } from "baseui/icon"
 import useAppContext from "~/hooks/useAppContext"
 import { useActiveObject, useEditor } from "@layerhub-io/react"
 import { useSelector } from "react-redux"
 import { selectFonts } from "~/store/slices/fonts/selectors"
 import { getTextOptions } from "~/utils/object-options"
 import { fontStyleLabels } from "~/constants/fonts"
-import { Select } from "baseui/select"
 import { loadFonts } from "~/utils/fonts"
 import { TextOptions } from "~/types/editor"
 import { defaultTextOptions } from "~/constants/contants"
+import { Input } from "~/ui/input"
+import { Button } from "~/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/ui/select"
 
 const TextProperties = () => {
   const fonts = useSelector(selectFonts)
@@ -103,43 +102,37 @@ const TextProperties = () => {
       <div style={{ display: "grid", gap: "0.5rem" }}>
         <div style={{ padding: "0 1.5rem" }}>
           <Input
-            overrides={{
-              Root: {
-                style: {
-                  paddingRight: "0px",
-                },
-              },
-            }}
             onFocus={() => setActiveSubMenu("FontSelector")}
-            endEnhancer={<ChevronRight size="18px" />}
-            size={SIZE.compact}
             value={state.fontFamily}
             placeholder="Controlled Input"
-            clearOnEscape
           />
         </div>
+
         <div style={{ padding: "0 1.5rem", display: "grid", gridTemplateColumns: "1fr 2fr", gap: "0.5rem" }}>
-          <Input size={SIZE.compact} value={24} />
+          <Input value={24} />
 
           <Select
-            size={SIZE.compact}
-            options={state.styles}
-            // @ts-ignore
-            value={[state.activeStyle]}
-            placeholder="Select color"
-            clearable={false}
-            onChange={(params) => {
-              // @ts-ignore
-              handleChange("fontStyle", params.value)
+            onValueChange={(params) => {
+              handleChange("fontStyle", params)
             }}
-          />
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Selecionar cor" />
+            </SelectTrigger>
+
+            <SelectContent>
+              {state.styles.map((option) => (
+                <SelectItem value={option}>{option}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div style={{ padding: "0 1.5rem" }}>
-        <Button size="compact" onClick={() => handleChange("underline", !activeObject.underline)} kind="tertiary">
+        <Button size="sm" onClick={() => handleChange("underline", !activeObject.underline)} variant="ghost">
           <Spacing size={24} />
         </Button>
-        <Button size="compact" onClick={() => handleChange("underline", !activeObject.underline)} kind="tertiary">
+        <Button size="sm" onClick={() => handleChange("underline", !activeObject.underline)} variant="ghost">
           <Underline size={24} />
         </Button>
       </div>

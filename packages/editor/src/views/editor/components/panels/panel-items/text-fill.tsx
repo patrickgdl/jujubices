@@ -1,10 +1,9 @@
 import React from "react"
-import { Block } from "baseui/block"
 import Scrollable from "~/components/scrollable"
 import { HexColorPicker } from "react-colorful"
-import { Delete } from "baseui/icon"
 import { throttle } from "lodash"
 import { useActiveObject, useEditor } from "@layerhub-io/react"
+import { Cross2Icon } from "@radix-ui/react-icons"
 
 const PRESET_COLORS = [
   "#f44336",
@@ -35,9 +34,9 @@ const TextFill = () => {
   }, 100)
 
   return (
-    <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <Block
-        $style={{
+    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
           display: "flex",
           alignItems: "center",
           fontWeight: 500,
@@ -45,34 +44,34 @@ const TextFill = () => {
           padding: "1.5rem",
         }}
       >
-        <Block>Cor do Texto</Block>
+        <div>Cor do Texto</div>
 
-        <Block $style={{ cursor: "pointer", display: "flex" }}>
-          <Delete size={24} />
-        </Block>
-      </Block>
+        <div style={{ cursor: "pointer", display: "flex" }}>
+          <Cross2Icon />
+        </div>
+      </div>
       <Scrollable>
-        <Block padding="0 1.5rem">
+        <div className="px-6">
           <HexColorPicker onChange={updateObjectFill} style={{ width: "100%" }} />
-          <Block>
-            <Block $style={{ padding: "0.75rem 0", fontWeight: 500, fontSize: "14px" }}>Preset colors</Block>
-            <Block $style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr", gap: "0.25rem" }}>
+          <div>
+            <div style={{ padding: "0.75rem 0", fontWeight: 500, fontSize: "14px" }}>Preset colors</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr", gap: "0.25rem" }}>
               {PRESET_COLORS.map((color, index) => (
-                <Block
-                  $style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => updateObjectFill(color)}
-                  backgroundColor={color}
-                  height="38px"
+                <div
                   key={index}
+                  onClick={() => updateObjectFill(color)}
+                  style={{
+                    cursor: "pointer",
+                    backgroundColor: color,
+                    height: "38px",
+                  }}
                 />
               ))}
-            </Block>
-          </Block>
-        </Block>
+            </div>
+          </div>
+        </div>
       </Scrollable>
-    </Block>
+    </div>
   )
 }
 

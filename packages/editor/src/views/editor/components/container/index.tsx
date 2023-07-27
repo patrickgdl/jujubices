@@ -47,15 +47,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div ref={containerRef} className="h-screen w-screen flex flex-col">
       {children}
     </div>
   )

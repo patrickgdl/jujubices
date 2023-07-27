@@ -10,8 +10,6 @@ interface ISceneEditorContext {
   setCurrentTemplate: React.Dispatch<React.SetStateAction<Template>>
   isSidebarOpen: boolean
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
-  displayPreview: boolean
-  setDisplayPreview: React.Dispatch<React.SetStateAction<boolean>>
   isEditing: boolean
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
   currentPreview: string
@@ -40,8 +38,6 @@ export const TemplateEditorContext = React.createContext<ISceneEditorContext>({
   setCurrentTemplate: () => {},
   isSidebarOpen: true,
   setIsSidebarOpen: () => {},
-  displayPreview: false,
-  setDisplayPreview: () => {},
   isEditing: false,
   setIsEditing: () => {},
   currentPreview: "",
@@ -68,7 +64,6 @@ export const TemplateEditorProvider = ({ children }: { children: React.ReactNode
   })
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true)
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
-  const [displayPreview, setDisplayPreview] = React.useState<boolean>(false)
   const [currentPreview, setCurrentPreview] = React.useState<string>("")
 
   const context = {
@@ -78,8 +73,6 @@ export const TemplateEditorProvider = ({ children }: { children: React.ReactNode
     setCurrentTemplate,
     isSidebarOpen,
     setIsSidebarOpen,
-    displayPreview,
-    setDisplayPreview,
     isEditing,
     setIsEditing,
     currentPreview,

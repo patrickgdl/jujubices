@@ -1,5 +1,4 @@
 import { useActiveObject, useContextMenuRequest, useEditor } from "@layerhub-io/react"
-import { useStyletron } from "baseui"
 import BringToFront from "~/components/icons/BringToFront"
 import Delete from "~/components/icons/Delete"
 import Duplicate from "~/components/icons/Duplicate"
@@ -224,24 +223,14 @@ const ContextMenuItem = ({
   disabled?: boolean
   children: React.ReactNode
 }) => {
-  const [css] = useStyletron()
   return (
     <div
       onClick={onClick}
-      className={css({
-        display: "flex",
-        height: "32px",
-        fontSize: "14px",
-        alignItems: "center",
-        padding: "0 1rem",
-        gap: "1rem",
-        cursor: "pointer",
+      style={{
         pointerEvents: disabled ? "none" : "auto",
         opacity: disabled ? 0.4 : 1,
-        ":hover": {
-          backgroundColor: "rgba(0,0,0,0.075)",
-        },
-      })}
+      }}
+      className="flex items-center h-8 text-sm px-4 gap-4 cursor-pointer hover:bg-gray-100"
     >
       {children} {label}
     </div>

@@ -1,31 +1,32 @@
-import React from "react"
 import { useActiveObject, useEditor } from "@layerhub-io/react"
-import { Input } from "baseui/input"
-import { Block } from "baseui/block"
-import { ChevronDown } from "baseui/icon"
-import Common from "./Common"
-import TextColor from "~/components/icons/TextColor"
+import Scrollbar from "@layerhub-io/react-custom-scrollbar"
+import { IStaticText } from "@layerhub-io/types"
+import { ChevronDownIcon } from "@radix-ui/react-icons"
+import React from "react"
+import { useSelector } from "react-redux"
 import Bold from "~/components/icons/Bold"
 import Italic from "~/components/icons/Italic"
-import Underline from "~/components/icons/Underline"
-import TextAlignCenter from "~/components/icons/TextAlignCenter"
-import { Button, SIZE, KIND } from "baseui/button"
-import { StatefulTooltip, PLACEMENT } from "baseui/tooltip"
 import LetterCase from "~/components/icons/LetterCase"
 import Spacing from "~/components/icons/Spacing"
-import { StatefulPopover } from "baseui/popover"
+import TextAlignCenter from "~/components/icons/TextAlignCenter"
 import TextAlignJustify from "~/components/icons/TextAlignJustify"
 import TextAlignLeft from "~/components/icons/TextAlignLeft"
 import TextAlignRight from "~/components/icons/TextAlignRight"
-import { Slider } from "baseui/slider"
-import useAppContext from "~/hooks/useAppContext"
+import TextColor from "~/components/icons/TextColor"
+import Underline from "~/components/icons/Underline"
 import { FONT_SIZES } from "~/constants/editor"
-import { IStaticText } from "@layerhub-io/types"
-import { getTextProperties } from "../../utils/text"
-import { loadFonts } from "~/utils/fonts"
-import Scrollbar from "@layerhub-io/react-custom-scrollbar"
-import { useSelector } from "react-redux"
+import useAppContext from "~/hooks/useAppContext"
 import { selectAllFonts } from "~/store/slices/fonts/selectors"
+import { Button } from "~/ui/button"
+import { Input } from "~/ui/input"
+import { Popover, PopoverContent, PopoverTrigger } from "~/ui/popover"
+import { Slider } from "~/ui/slider"
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/ui/tooltip"
+import { loadFonts } from "~/utils/fonts"
+
+import { getTextProperties } from "../../utils/text"
+import Common from "./Common"
+
 interface TextState {
   color: string
   bold: boolean
@@ -212,113 +213,101 @@ export default function () {
   }, [editor, state])
 
   return (
-    <Block
-      $style={{ flex: 1, display: "flex", alignItems: "center", padding: "0 12px", justifyContent: "space-between" }}
-    >
-      <Block display={"flex"} gridGap="0.5rem" alignItems={"center"}>
-        <Block
+    <div style={{ flex: 1, display: "flex", alignItems: "center", padding: "0 12px", justifyContent: "space-between" }}>
+      <div className="flex gap-2 items-center">
+        <div
           onClick={() => setActiveSubMenu("FontSelector")}
-          $style={{
-            border: "1px solid rgb(185,185,185)",
-            borderRadius: "4px",
-            padding: "0.2rem 0.45rem",
-            cursor: "pointer",
-            fontWeight: 500,
-            fontSize: "14px",
-            gap: "0.5rem",
-          }}
-          height={"24px"}
-          display={"flex"}
-          alignItems={"center"}
+          className="flex items-center gap-2 text-sm h-9 rounded border border-gray-300 px-2 py-1 cursor-pointer"
         >
-          <Block>{state.family}</Block>
-          <Block display={"flex"}>
-            <ChevronDown size={22} />
-          </Block>
-        </Block>
+          <div>{state.family}</div>
+
+          <div className="flex">
+            <ChevronDownIcon />
+          </div>
+        </div>
 
         <TextFontSize />
-        <Block display={"flex"} alignItems={"center"}>
-          <StatefulTooltip
-            placement={PLACEMENT.bottom}
-            showArrow={true}
-            accessibilityType={"tooltip"}
-            content="Cor do texto"
-          >
-            <Button onClick={() => setActiveSubMenu("TextFill")} size={SIZE.mini} kind={KIND.tertiary}>
-              <TextColor color={state.color} size={22} />
-            </Button>
-          </StatefulTooltip>
 
-          <StatefulTooltip
-            placement={PLACEMENT.bottom}
-            showArrow={true}
-            accessibilityType={"tooltip"}
-            content="Negrito"
-          >
-            <Button
-              style={{ ...(!state.bold && { color: "rgb(169,169,169)" }) }}
-              disabled={!state.styleOptions.hasBold}
-              onClick={makeBold}
-              size={SIZE.mini}
-              kind={KIND.tertiary}
-            >
-              <Bold size={20} />
-            </Button>
-          </StatefulTooltip>
+        <div className="flex items-center">
+          <Tooltip>
+            <TooltipTrigger>
+              <Button onClick={() => setActiveSubMenu("TextFill")} size="icon" variant="ghost">
+                <TextColor color={state.color} size={22} />
+              </Button>
+            </TooltipTrigger>
 
-          <StatefulTooltip
-            placement={PLACEMENT.bottom}
-            showArrow={true}
-            accessibilityType={"tooltip"}
-            content="Italico"
-          >
-            <Button
-              style={{ ...(!state.italic && { color: "rgb(169,169,169)" }) }}
-              disabled={!state.styleOptions.hasItalic}
-              onClick={makeItalic}
-              size={SIZE.mini}
-              kind={KIND.tertiary}
-            >
-              <Italic size={20} />
-            </Button>
-          </StatefulTooltip>
+            <TooltipContent>Cor do texto</TooltipContent>
+          </Tooltip>
 
-          <StatefulTooltip
-            placement={PLACEMENT.bottom}
-            showArrow={true}
-            accessibilityType={"tooltip"}
-            content="Underline"
-          >
-            <Button
-              style={{ ...(!state.underline && { color: "rgb(169,169,169)" }) }}
-              onClick={makeUnderline}
-              size={SIZE.mini}
-              kind={KIND.tertiary}
-            >
-              <Underline size={24} />
-            </Button>
-          </StatefulTooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                style={{ ...(!state.bold && { color: "rgb(169,169,169)" }) }}
+                disabled={!state.styleOptions.hasBold}
+                onClick={() => makeBold()}
+                size="icon"
+                variant="ghost"
+              >
+                <Bold size={20} />
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent>Negrito</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                style={{ ...(!state.italic && { color: "rgb(169,169,169)" }) }}
+                disabled={!state.styleOptions.hasItalic}
+                onClick={() => makeItalic()}
+                size="icon"
+                variant="ghost"
+              >
+                <Italic size={20} />
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent>Italico</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                style={{ ...(!state.underline && { color: "rgb(169,169,169)" }) }}
+                onClick={makeUnderline}
+                size="icon"
+                variant="ghost"
+              >
+                <Underline size={24} />
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent>Underline</TooltipContent>
+          </Tooltip>
 
           <TextLetterCase />
 
-          <Block width={"1px"} height={"24px"} backgroundColor="rgb(213,213,213)" margin={"0 4px"} />
+          <div className="w-[1px] h-6 bg-gray-200 mx-1" />
 
           <TextAlign />
 
-          <Block width={"1px"} height={"24px"} backgroundColor="rgb(213,213,213)" margin={"0 4px"} />
+          <div className="w-[1px] h-6 bg-gray-200 mx-1" />
 
           <TextSpacing />
-          <Block width={"1px"} height={"24px"} backgroundColor="rgb(213,213,213)" margin={"0 4px"} />
-          <Button onClick={() => setActiveSubMenu("TextEffects")} size={SIZE.compact} kind={KIND.tertiary}>
+
+          <div className="w-[1px] h-6 bg-gray-200 mx-1" />
+
+          <Button onClick={() => setActiveSubMenu("TextEffects")} variant="ghost">
             Efeitos
           </Button>
-          <Block width={"1px"} height={"24px"} backgroundColor="rgb(213,213,213)" margin={"0 4px"} />
-        </Block>
-      </Block>
+
+          <div className="w-[1px] h-6 bg-gray-200 mx-1" />
+        </div>
+      </div>
 
       <Common />
-    </Block>
+    </div>
   )
 }
 
@@ -340,83 +329,32 @@ function TextFontSize() {
   }
 
   return (
-    <StatefulPopover
-      content={({ close }) => (
+    <Popover>
+      <PopoverTrigger asChild>
+        <div className="w-18">
+          <Input value={value} onChange={(e: any) => onChange(e.target.value)} type="number" />
+        </div>
+      </PopoverTrigger>
+
+      <PopoverContent className="w-full">
         <Scrollbar style={{ height: "320px", width: "90px" }}>
-          <Block backgroundColor={"#ffffff"} padding={"10px 0"}>
+          <div className="bg-white py-3">
             {FONT_SIZES.map((size, index) => (
-              <Block
+              <div
                 onClick={() => {
                   onChange(size)
                   close()
                 }}
-                $style={{
-                  height: "32px",
-                  fontSize: "14px",
-                  cursor: "pointer",
-                  padding: "0 20px",
-                  display: "flex",
-                  alignItems: "center",
-                  ":hover": {
-                    background: "rgb(243,243,243)",
-                  },
-                }}
+                className="hover:bg-gray-200 cursor-pointer text-sm flex items-center h-8 px-5"
                 key={index}
               >
                 {size}
-              </Block>
+              </div>
             ))}
-          </Block>
+          </div>
         </Scrollbar>
-      )}
-    >
-      <Block width={"80px"}>
-        <Input
-          value={value}
-          onChange={(e: any) => onChange(e.target.value)}
-          endEnhancer={<ChevronDown size={22} />}
-          overrides={{
-            Input: {
-              style: {
-                backgroundColor: "#ffffff",
-                paddingRight: 0,
-                fontWeight: 500,
-                fontFamily: "Poppins",
-                fontSize: "14px",
-              },
-            },
-            EndEnhancer: {
-              style: {
-                paddingRight: "8px",
-                paddingLeft: 0,
-                backgroundColor: "#ffffff",
-              },
-            },
-            Root: {
-              style: {
-                paddingRight: 0,
-                borderTopWidth: "1px",
-                borderBottomWidth: "1px",
-                borderRightWidth: "1px",
-                borderLeftWidth: "1px",
-                borderBottomColor: "rgb(185,185,185)",
-                borderTopColor: "rgb(185,185,185)",
-                borderRightColor: "rgb(185,185,185)",
-                borderLeftColor: "rgb(185,185,185)",
-                borderEndEndRadius: "4px",
-                borderTopLeftRadius: "4px",
-                borderTopRightRadius: "4px",
-                borderStartEndRadius: "4px",
-                borderBottomLeftRadius: "4px",
-                backgroundColor: "#ffffff",
-              },
-            },
-          }}
-          type="number"
-          size={SIZE.mini}
-        />
-      </Block>
-    </StatefulPopover>
+      </PopoverContent>
+    </Popover>
   )
 }
 
@@ -425,28 +363,27 @@ function TextLetterCase() {
   const editor = useEditor()
 
   return (
-    <StatefulTooltip
-      placement={PLACEMENT.bottom}
-      showArrow={true}
-      accessibilityType={"tooltip"}
-      content="Máiusculas e Minúsculas"
-    >
-      <Button
-        onClick={() => {
-          if (!state.upper) {
-            setState({ upper: true })
-            editor.objects.toUppercase()
-          } else {
-            setState({ upper: false })
-            editor.objects.toLowerCase()
-          }
-        }}
-        size={SIZE.mini}
-        kind={KIND.tertiary}
-      >
-        <LetterCase size={24} />
-      </Button>
-    </StatefulTooltip>
+    <Tooltip>
+      <TooltipTrigger>
+        <Button
+          onClick={() => {
+            if (!state.upper) {
+              setState({ upper: true })
+              editor.objects.toUppercase()
+            } else {
+              setState({ upper: false })
+              editor.objects.toLowerCase()
+            }
+          }}
+          variant="ghost"
+          size="icon"
+        >
+          <LetterCase size={24} />
+        </Button>
+      </TooltipTrigger>
+
+      <TooltipContent>Máiusculas e Minúsculas</TooltipContent>
+    </Tooltip>
   )
 }
 
@@ -486,150 +423,59 @@ function TextSpacing() {
     }
   }
   return (
-    <StatefulPopover
-      showArrow={true}
-      placement={PLACEMENT.bottom}
-      content={() => (
-        <Block padding={"12px"} width={"200px"} backgroundColor={"#ffffff"} display={"grid"} gridGap={"8px"}>
-          <Block>
-            <Block $style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <Block $style={{ fontSize: "14px" }}>Line height</Block>
-              <Block width={"52px"}>
-                <Input
-                  overrides={{
-                    Input: {
-                      style: {
-                        backgroundColor: "#ffffff",
-                        textAlign: "center",
-                      },
-                    },
-                    Root: {
-                      style: {
-                        borderBottomColor: "rgba(0,0,0,0.15)",
-                        borderTopColor: "rgba(0,0,0,0.15)",
-                        borderRightColor: "rgba(0,0,0,0.15)",
-                        borderLeftColor: "rgba(0,0,0,0.15)",
-                        borderTopWidth: "1px",
-                        borderBottomWidth: "1px",
-                        borderRightWidth: "1px",
-                        borderLeftWidth: "1px",
-                        height: "26px",
-                      },
-                    },
-                    InputContainer: {},
-                  }}
-                  size={SIZE.mini}
-                  onChange={() => {}}
-                  value={Math.round(state.lineHeight)}
-                />
-              </Block>
-            </Block>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Tooltip>
+            <TooltipTrigger>
+              <Spacing size={24} />
+            </TooltipTrigger>
 
-            <Block>
+            <TooltipContent>Espaçamento</TooltipContent>
+          </Tooltip>
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent>
+        <div className="p-3 w-48 bg-white grid gap-2">
+          <div>
+            <div className="flex items-center justify-between">
+              <div className="text-sm">Altura da Linha</div>
+              <div className="w-12">
+                <Input className="h-5" onChange={() => {}} value={Math.round(state.lineHeight)} />
+              </div>
+            </div>
+
+            <div>
               <Slider
-                overrides={{
-                  InnerThumb: () => null,
-                  ThumbValue: () => null,
-                  TickBar: () => null,
-                  Track: {
-                    style: {
-                      paddingRight: 0,
-                      paddingLeft: 0,
-                    },
-                  },
-                  Thumb: {
-                    style: {
-                      height: "12px",
-                      width: "12px",
-                    },
-                  },
-                }}
                 min={0}
                 max={100}
-                // step
-                marks={false}
                 value={[state.lineHeight]}
-                onChange={({ value }) => handleChange("lineHeight", value)}
+                onValueChange={(value) => handleChange("lineHeight", value)}
               />
-            </Block>
-          </Block>
-          <Block>
-            <Block $style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <Block $style={{ fontSize: "14px" }}>Char spacing</Block>
-              <Block width={"52px"}>
-                <Input
-                  overrides={{
-                    Input: {
-                      style: {
-                        backgroundColor: "#ffffff",
-                        textAlign: "center",
-                      },
-                    },
-                    Root: {
-                      style: {
-                        borderBottomColor: "rgba(0,0,0,0.15)",
-                        borderTopColor: "rgba(0,0,0,0.15)",
-                        borderRightColor: "rgba(0,0,0,0.15)",
-                        borderLeftColor: "rgba(0,0,0,0.15)",
-                        borderTopWidth: "1px",
-                        borderBottomWidth: "1px",
-                        borderRightWidth: "1px",
-                        borderLeftWidth: "1px",
-                        height: "26px",
-                      },
-                    },
-                    InputContainer: {},
-                  }}
-                  size={SIZE.mini}
-                  onChange={() => {}}
-                  value={Math.round(state.charSpacing)}
-                />
-              </Block>
-            </Block>
+            </div>
+          </div>
 
-            <Block>
+          <div>
+            <div className="flex items-center justify-between">
+              <div className="text-sm">Espaço de Carácteres</div>
+              <div className="w-12">
+                <Input className="h-5" onChange={() => {}} value={Math.round(state.charSpacing)} />
+              </div>
+            </div>
+
+            <div>
               <Slider
-                overrides={{
-                  InnerThumb: () => null,
-                  ThumbValue: () => null,
-                  TickBar: () => null,
-                  Track: {
-                    style: {
-                      paddingRight: 0,
-                      paddingLeft: 0,
-                    },
-                  },
-                  Thumb: {
-                    style: {
-                      height: "12px",
-                      width: "12px",
-                    },
-                  },
-                }}
                 min={-20}
                 max={100}
-                marks={false}
                 value={[state.charSpacing]}
-                onChange={({ value }) => handleChange("charSpacing", value)}
+                onValueChange={(value) => handleChange("charSpacing", value)}
               />
-            </Block>
-          </Block>
-        </Block>
-      )}
-    >
-      <Block>
-        <StatefulTooltip
-          placement={PLACEMENT.bottom}
-          showArrow={true}
-          accessibilityType={"tooltip"}
-          content="Espaçamento"
-        >
-          <Button size={SIZE.mini} kind={KIND.tertiary}>
-            <Spacing size={24} />
-          </Button>
-        </StatefulTooltip>
-      </Block>
-    </StatefulPopover>
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }
 
@@ -647,77 +493,72 @@ function TextAlign() {
     }
   }, [activeObject])
   return (
-    <StatefulPopover
-      showArrow={true}
-      placement={PLACEMENT.bottom}
-      content={() => (
-        <Block
-          padding={"12px"}
-          backgroundColor={"#ffffff"}
-          display={"grid"}
-          gridTemplateColumns={"1fr 1fr 1fr 1fr"}
-          gridGap={"8px"}
-        >
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button size="icon" variant="ghost">
+          <Tooltip>
+            <TooltipTrigger>
+              <TextAlignCenter size={24} />
+            </TooltipTrigger>
+
+            <TooltipContent>Alinhar</TooltipContent>
+          </Tooltip>
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent className="w-full">
+        <div className="flex gap-1">
           <Button
-            isSelected={state.align === TEXT_ALIGNS[0]}
+            // isSelected={state.align === TEXT_ALIGNS[0]}
             onClick={() => {
               // @ts-ignore
               editor.objects.update({ textAlign: TEXT_ALIGNS[0] })
               setState({ align: TEXT_ALIGNS[0] })
             }}
-            kind={KIND.tertiary}
-            size={SIZE.mini}
+            size="icon"
+            variant="outline"
           >
             <TextAlignLeft size={24} />
           </Button>
+
           <Button
-            isSelected={state.align === TEXT_ALIGNS[1]}
+            // isSelected={state.align === TEXT_ALIGNS[1]}
             onClick={() => {
               // @ts-ignore
               editor.objects.update({ textAlign: TEXT_ALIGNS[1] })
               setState({ align: TEXT_ALIGNS[1] })
             }}
-            kind={KIND.tertiary}
-            size={SIZE.mini}
+            size="icon"
+            variant="outline"
           >
             <TextAlignCenter size={24} />
           </Button>
           <Button
-            isSelected={state.align === TEXT_ALIGNS[2]}
+            // isSelected={state.align === TEXT_ALIGNS[2]}
             onClick={() => {
               // @ts-ignore
               editor.objects.update({ textAlign: TEXT_ALIGNS[2] })
               setState({ align: TEXT_ALIGNS[2] })
             }}
-            kind={KIND.tertiary}
-            size={SIZE.mini}
+            size="icon"
+            variant="outline"
           >
             <TextAlignRight size={24} />
           </Button>
           <Button
-            isSelected={state.align === TEXT_ALIGNS[3]}
+            // isSelected={state.align === TEXT_ALIGNS[3]}
             onClick={() => {
               // @ts-ignore
               editor.objects.update({ textAlign: TEXT_ALIGNS[3] })
               setState({ align: TEXT_ALIGNS[3] })
             }}
-            kind={KIND.tertiary}
-            size={SIZE.mini}
+            size="icon"
+            variant="outline"
           >
             <TextAlignJustify size={24} />
           </Button>
-        </Block>
-      )}
-      returnFocus
-      autoFocus
-    >
-      <Block>
-        <StatefulTooltip placement={PLACEMENT.bottom} showArrow={true} accessibilityType={"tooltip"} content="Alinhar">
-          <Button size={SIZE.mini} kind={KIND.tertiary}>
-            <TextAlignCenter size={24} />
-          </Button>
-        </StatefulTooltip>
-      </Block>
-    </StatefulPopover>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }

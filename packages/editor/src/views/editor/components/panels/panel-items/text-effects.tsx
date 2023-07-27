@@ -1,12 +1,9 @@
 import React from "react"
-import { Block } from "baseui/block"
 import Scrollable from "~/components/scrollable"
-import { Delete } from "baseui/icon"
+import { Cross2Icon } from "@radix-ui/react-icons"
 import { throttle } from "lodash"
 import { useActiveObject, useEditor } from "@layerhub-io/react"
 import { TEXT_EFFECTS } from "~/constants/template-editor"
-import Outline from "./common/Outline"
-import Shadow from "./common/Shadow"
 
 const EFFECTS = {
   None: {
@@ -100,31 +97,24 @@ const TextEffects = () => {
     }
   }
   return (
-    <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <Block
-        $style={{
-          display: "flex",
-          alignItems: "center",
-          fontWeight: 500,
-          justifyContent: "space-between",
-          padding: "1.5rem",
-        }}
-      >
-        <Block>Effects</Block>
+    <div className="flex flex-1 flex-col">
+      <div className="flex items-center font-medium justify-between p-6">
+        <div>Efeitos</div>
 
-        <Block $style={{ cursor: "pointer", display: "flex" }}>
-          <Delete size={24} />
-        </Block>
-      </Block>
+        <div className="cursor-pointer flex">
+          <Cross2Icon />
+        </div>
+      </div>
+
       <Scrollable>
-        <Block padding="0 1.5rem">
-          <Block $style={{ display: "grid", gridTemplateColumns: "80px 80px 80px", gap: "0.5rem" }}>
+        <div className="px-6">
+          <div className="grid grid-cols-[repeat(3,minmax(0,_80px))] gap-2">
             {TEXT_EFFECTS.map((effect, index) => {
               return (
-                <Block style={{ cursor: "pointer" }} key={index}>
-                  <Block
+                <div style={{ cursor: "pointer" }} key={index}>
+                  <div
                     onClick={() => applyEffect(effect.name)}
-                    $style={{
+                    style={{
                       border: "1px solid #afafaf",
                       display: "flex",
                       alignItems: "center",
@@ -133,27 +123,23 @@ const TextEffects = () => {
                     }}
                   >
                     <img style={{ width: "70px" }} src={effect.preview} />
-                  </Block>
-                  <Block
-                    $style={{
+                  </div>
+                  <div
+                    style={{
                       textAlign: "center",
                       padding: "0.5rem",
                       fontSize: "14px",
                     }}
                   >
                     {effect.name}
-                  </Block>
-                </Block>
+                  </div>
+                </div>
               )
             })}
-          </Block>
-          {/* <Block>
-            <Outline />
-            <Shadow />
-          </Block> */}
-        </Block>
+          </div>
+        </div>
       </Scrollable>
-    </Block>
+    </div>
   )
 }
 

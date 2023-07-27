@@ -50,27 +50,27 @@ export const getDefaultTemplate = ({ width, height }: IFrame) => {
 export const TEXT_EFFECTS = [
   {
     id: 1,
-    name: "None",
+    name: "Nenhum",
     preview: "https://i.ibb.co/Wyx2Ftf/none.webp",
   },
   {
     id: 2,
-    name: "Shadow",
+    name: "Sombra",
     preview: "https://i.ibb.co/HBQc95J/shadow.webp",
   },
   {
     id: 3,
-    name: "Lift",
+    name: "Elevado",
     preview: "https://i.ibb.co/M7zpk5f/lift.webp",
   },
   {
     id: 4,
-    name: "Hollow",
+    name: "Oco",
     preview: "https://i.ibb.co/vhjCd4w/hollow.webp",
   },
   {
     id: 5,
-    name: "Splice",
+    name: "Recorte",
     preview: "https://i.ibb.co/B2JPTfq/splice.webp",
   },
   {

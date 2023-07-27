@@ -1,10 +1,5 @@
-import { styled } from "baseui"
-
-const Panel = styled("div", (props) => ({
-  width: "80px",
-  backgroundColor: props.$theme.colors.white,
-  display: "flex",
-  flex: "none",
-}))
+const Panel = () => {
+  return <div className="w-[80px] bg-white flex flex-none" />
+}
 
 export default Panel

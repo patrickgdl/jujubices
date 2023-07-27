@@ -1,23 +1,10 @@
 import { useEditor, useZoomRatio } from "@layerhub-io/react"
-import { styled } from "baseui"
-import { Block } from "baseui/block"
-import { Button, KIND, SIZE } from "baseui/button"
-import { Input } from "baseui/input"
-import { Slider } from "baseui/slider"
-import { Theme } from "baseui/theme"
-import { PLACEMENT } from "baseui/toast"
-import { StatefulTooltip } from "baseui/tooltip"
 import React from "react"
 import Icons from "~/components/icons"
-
-const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
-  height: "100%",
-  background: $theme.colors.white,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "flex-end",
-}))
+import { Button } from "~/ui/button"
+import { Input } from "~/ui/input"
+import { Slider } from "~/ui/slider"
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/ui/tooltip"
 
 interface Options {
   zoomRatio: number
@@ -68,124 +55,68 @@ const Common = () => {
   }
 
   return (
-    <Container>
+    <div className="h-full bg-white flex flex-col items-center justify-end">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "end" }}>
-        <Button kind={KIND.tertiary} size={SIZE.compact} onClick={() => editor.zoom.zoomToFit()}>
+        <Button variant="ghost" size="icon" onClick={() => editor.zoom.zoomToFit()}>
           <Icons.Compress size={16} />
         </Button>
-        <Button kind={KIND.tertiary} size={SIZE.compact}>
+        <Button variant="ghost" size="icon">
           <Icons.Refresh size={16} />
         </Button>
-        <Button kind={KIND.tertiary} size={SIZE.compact}>
+        <Button variant="ghost" size="icon">
           <Icons.Undo size={22} />
         </Button>
-        <Button kind={KIND.tertiary} size={SIZE.compact}>
+        <Button variant="ghost" size="icon">
           <Icons.Redo size={22} />
         </Button>
-        <Button kind={KIND.tertiary} size={SIZE.compact}>
+        <Button variant="ghost" size="icon">
           <Icons.TimePast size={16} />
         </Button>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Block>
-          <StatefulTooltip
-            placement={PLACEMENT.bottom}
-            showArrow={true}
-            accessibilityType={"tooltip"}
-            content="Zoom Out"
-          >
-            <Button kind={KIND.tertiary} size={SIZE.compact} onClick={() => editor.zoom.zoomOut()}>
-              <Icons.RemoveCircleOutline size={24} />
-            </Button>
-          </StatefulTooltip>
-        </Block>
+      <div className="flex items-center justify-center w-full">
+        <div>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button variant="ghost" size="icon" onClick={() => editor.zoom.zoomOut()}>
+                <Icons.RemoveCircleOutline size={24} />
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent>Zoom Out</TooltipContent>
+          </Tooltip>
+        </div>
 
         <Slider
-          overrides={{
-            InnerThumb: () => null,
-            ThumbValue: () => null,
-            TickBar: () => null,
-            Root: {
-              style: { width: "140px" },
-            },
-            Thumb: {
-              style: {
-                height: "12px",
-                width: "12px",
-                paddingLeft: 0,
-              },
-            },
-            Track: {
-              style: {
-                paddingLeft: 0,
-                paddingRight: 0,
-              },
-            },
-          }}
-          value={[options.zoomRatio]}
-          onChange={({ value }) => applyZoomRatio("zoomRatio", { target: { value: value[0] } })}
           min={zoomMin}
           max={zoomMax}
+          value={[options.zoomRatio]}
+          onValueChange={(value) => applyZoomRatio("zoomRatio", { target: { value: value[0] } })}
         />
 
-        <Block>
-          <StatefulTooltip
-            placement={PLACEMENT.bottom}
-            showArrow={true}
-            accessibilityType={"tooltip"}
-            content="Zoom Out"
-          >
-            <Button kind={KIND.tertiary} size={SIZE.compact} onClick={() => editor.zoom.zoomIn()}>
-              <Icons.AddCircleOutline size={24} />
-            </Button>
-          </StatefulTooltip>
-        </Block>
+        <div>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button variant="ghost" size="icon" onClick={() => editor.zoom.zoomIn()}>
+                <Icons.AddCircleOutline size={24} />
+              </Button>
+            </TooltipTrigger>
+
+            <TooltipContent>Zoom In</TooltipContent>
+          </Tooltip>
+        </div>
 
         <Input
           type="number"
-          endEnhancer="%"
-          overrides={{
-            Input: {
-              style: {
-                backgroundColor: "#ffffff",
-                textAlign: "center",
-                paddingLeft: 0,
-                paddingRight: 0,
-              },
-            },
-            Root: {
-              style: {
-                borderBottomColor: "rgba(0,0,0,0.15)",
-                borderTopColor: "rgba(0,0,0,0.15)",
-                borderRightColor: "rgba(0,0,0,0.15)",
-                borderLeftColor: "rgba(0,0,0,0.15)",
-                borderTopWidth: "1px",
-                borderBottomWidth: "1px",
-                borderRightWidth: "1px",
-                borderLeftWidth: "1px",
-                height: "20px",
-                width: "52px",
-                paddingRight: 0,
-              },
-            },
-            EndEnhancer: {
-              style: {
-                paddingLeft: 0,
-                paddingRight: "10px",
-                backgroundColor: "#ffffff",
-              },
-            },
-          }}
-          size={SIZE.mini}
           max={zoomMax}
           min={zoomMin}
+          className="w-14"
           onChange={(e) => handleChange("zoomRatioTemp", parseFloat(e.target.value))}
           onKeyUp={(e) => applyZoomRatio("zoomRatio", e)}
           value={options.zoomRatioTemp}
         />
       </div>
-    </Container>
+    </div>
   )
 }
 

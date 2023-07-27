@@ -1,5 +1,4 @@
 import React from "react"
-import { Block } from "baseui/block"
 
 interface Props {
   children: React.ReactNode
@@ -35,10 +34,10 @@ function InfiniteScrolling({ children, fetchData, hasMore }: Props) {
   }, [lastElementRef, fetchData, hasMore])
 
   return (
-    <Block>
+    <div>
       {children}
-      <Block ref={lastElementRef}></Block>
-    </Block>
+      <div ref={lastElementRef}></div>
+    </div>
   )
 }
 

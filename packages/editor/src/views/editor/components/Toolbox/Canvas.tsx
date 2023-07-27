@@ -1,5 +1,4 @@
 import React from "react"
-import { Block } from "baseui/block"
 import useAppContext from "~/hooks/useAppContext"
 import { useActiveObject, useEditor } from "@layerhub-io/react"
 
@@ -33,8 +32,8 @@ const Canvas = () => {
   }, [editor, activeObject])
 
   return (
-    <Block
-      $style={{
+    <div
+      style={{
         flex: 1,
         display: "flex",
         alignItems: "center",
@@ -42,16 +41,16 @@ const Canvas = () => {
         justifyContent: "space-between",
       }}
     >
-      <Block
-        $style={{
+      <div
+        style={{
           flex: 1,
           display: "flex",
           alignItems: "center",
         }}
       >
-        <Block onClick={() => setActiveSubMenu("CanvasFill")}>
-          <Block
-            $style={{
+        <div onClick={() => setActiveSubMenu("CanvasFill")}>
+          <div
+            style={{
               height: "24px",
               width: "24px",
               display: "flex",
@@ -62,9 +61,9 @@ const Canvas = () => {
               border: "1px solid #dedede",
             }}
           />
-        </Block>
-      </Block>
-    </Block>
+        </div>
+      </div>
+    </div>
   )
 }
 

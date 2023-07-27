@@ -1,11 +1,8 @@
 import { useEditor } from "@layerhub-io/react"
 import { IScene } from "@layerhub-io/types"
-import { DarkTheme, styled, ThemeProvider } from "baseui"
-import { Block } from "baseui/block"
-import { Button, KIND } from "baseui/button"
-import { Theme } from "baseui/theme"
 import React from "react"
 import { toast } from "react-hot-toast"
+import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import Logo from "~/components/icons/Logo"
 import Play from "~/components/icons/Play"
@@ -13,34 +10,30 @@ import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 import { useUser } from "~/hooks/useUser"
 import api from "~/services/api"
 import supabase from "~/services/supabase"
+import { selectTemplates } from "~/store/slices/templates/selectors"
 import { Template } from "~/types/templates"
+import { Button } from "~/ui/button"
 import { makeJSONDownload } from "~/utils/download"
 import { loadTemplateFonts } from "~/utils/fonts"
 
-import TemplateTitle from "./template-title"
 import NavbarActions from "./navbar-actions"
-import { useSelector } from "react-redux"
-import { selectTemplates } from "~/store/slices/templates/selectors"
-
-const Container = styled<"div", {}, Theme>("div", ({ $theme }) => ({
-  height: "64px",
-  background: $theme.colors.black,
-  display: "grid",
-  padding: "0 1.25rem",
-  gridTemplateColumns: "380px 1fr 380px",
-  alignItems: "center",
-}))
+import TeamSwitcher from "./team-switcher"
+import TemplateTitle from "./template-title"
+import { UserNav } from "./user-nav"
+import Preview from "~/components/preview/preview"
 
 const Navbar = () => {
-  const { user } = useUser()
+  const { user, userDetails } = useUser()
+  const { email } = user!
+  const { full_name, avatar_url } = userDetails! || {}
+
   const navigate = useNavigate()
   const { selectedTemplate } = useSelector(selectTemplates)
 
   const [loading, setLoading] = React.useState<boolean>(false)
 
   const editor = useEditor()!
-  const { isEditing, setDisplayPreview, setCurrentScene, setCurrentTemplate, currentTemplate } =
-    useTemplateEditorContext()
+  const { isEditing, setCurrentScene, setCurrentTemplate, currentTemplate } = useTemplateEditorContext()
 
   const parseToJSONWithPreview = async () => {
     if (currentTemplate) {
@@ -76,7 +69,7 @@ const Navbar = () => {
     }
   }
 
-  const handleDownload = async () => {
+  const handleExport = async () => {
     if (editor) {
       const template = parseToJSONWithPreview()
 
@@ -191,42 +184,39 @@ const Navbar = () => {
   }
 
   return (
-    <ThemeProvider theme={DarkTheme}>
-      <Container>
-        <div style={{ color: "#ffffff" }}>
+    <div className="border-b">
+      <div className="flex h-16 items-center justify-between px-4">
+        <div className="flex space-x-4">
           <Logo size={36} />
+
+          <TeamSwitcher />
         </div>
 
-        <Block $style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="flex items-center">
           <TemplateTitle />
 
-          <Button
-            size="compact"
-            onClick={() => setDisplayPreview(true)}
-            kind={KIND.tertiary}
-            overrides={{
-              StartEnhancer: {
-                style: {
-                  marginRight: "2px",
-                },
-              },
-            }}
-          >
-            <Play size={24} />
-          </Button>
-        </Block>
+          <Preview>
+            <Button variant="ghost">
+              <Play size={24} />
+            </Button>
+          </Preview>
+        </div>
 
-        <NavbarActions
-          loading={loading}
-          editing={isEditing}
-          loggedIn={!!user}
-          onSubmit={handleSubmit}
-          onLogout={handleLogout}
-          onDownload={handleDownload}
-          onFileChange={handleFileChange}
-        />
-      </Container>
-    </ThemeProvider>
+        <div className="flex items-center space-x-4">
+          <NavbarActions
+            loading={loading}
+            editing={isEditing}
+            onSubmit={handleSubmit}
+            onExport={handleExport}
+            onFileChange={handleFileChange}
+          />
+
+          {full_name && email && avatar_url && (
+            <UserNav name={full_name} email={email} image={avatar_url} onLogout={handleLogout} />
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
 

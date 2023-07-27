@@ -2,7 +2,6 @@ import React from "react"
 import useAppContext from "~/hooks/useAppContext"
 import panelItems from "./panel-items"
 import useIsSidebarOpen from "~/hooks/useIsSidebarOpen"
-import { Block } from "baseui/block"
 
 interface State {
   panel: string
@@ -30,20 +29,15 @@ const PanelsList = () => {
   const Component = panelItems[state.panel]
 
   return (
-    <Block
+    <div
+      className="bg-white flex flex-none border-r border-solid border-gray-200 overflow-hidden transition-all ease-in-out duration-100"
       id="EditorPanelItem"
-      $style={{
-        background: "#ffffff",
-        width: isSidebarOpen ? "306px" : 0,
-        flex: "none",
-        borderRight: "1px solid #d7d8e3",
-        display: "flex",
-        transition: "ease width 0.1s",
-        overflow: "hidden",
+      style={{
+        width: isSidebarOpen ? "306px" : "0px",
       }}
     >
       {Component && <Component />}
-    </Block>
+    </div>
   )
 }
 

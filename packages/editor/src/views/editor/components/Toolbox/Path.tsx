@@ -1,5 +1,4 @@
 import React from "react"
-import { Block } from "baseui/block"
 import Common from "./Common"
 import Flip from "./Shared/Flip"
 import useAppContext from "~/hooks/useAppContext"
@@ -34,8 +33,8 @@ const Path = () => {
   }, [editor, activeObject])
 
   return (
-    <Block
-      $style={{
+    <div
+      style={{
         flex: 1,
         display: "flex",
         alignItems: "center",
@@ -43,16 +42,16 @@ const Path = () => {
         justifyContent: "space-between",
       }}
     >
-      <Block
-        $style={{
+      <div
+        style={{
           flex: 1,
           display: "flex",
           alignItems: "center",
         }}
       >
-        <Block onClick={() => setActiveSubMenu("PathFill")}>
-          <Block
-            $style={{
+        <div onClick={() => setActiveSubMenu("PathFill")}>
+          <div
+            style={{
               height: "24px",
               width: "24px",
               display: "flex",
@@ -63,11 +62,11 @@ const Path = () => {
               border: "1px solid #dedede",
             }}
           />
-        </Block>
+        </div>
         <Flip />
-      </Block>
+      </div>
       <Common />
-    </Block>
+    </div>
   )
 }
 

@@ -1,12 +1,10 @@
 import React from "react"
-import { useStyletron } from "baseui"
-import { Block } from "baseui/block"
-import { Button, SIZE } from "baseui/button"
 import AngleDoubleLeft from "~/components/icons/AngleDoubleLeft"
 import Scrollable from "~/components/scrollable"
 import { vectors } from "~/constants/mock-data"
 import { useEditor } from "@layerhub-io/react"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
+import { Button } from "~/ui/button"
 
 const Graphics = () => {
   const inputFileRef = React.useRef<HTMLInputElement>(null)
@@ -45,9 +43,9 @@ const Graphics = () => {
   }
 
   return (
-    <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <Block
-        $style={{
+    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
           display: "flex",
           alignItems: "center",
           fontWeight: 500,
@@ -55,104 +53,38 @@ const Graphics = () => {
           padding: "1.5rem",
         }}
       >
-        <Block>Graphics</Block>
+        <div>Graphics</div>
 
-        <Block onClick={() => setIsSidebarOpen(false)} $style={{ cursor: "pointer", display: "flex" }}>
+        <div onClick={() => setIsSidebarOpen(false)} style={{ cursor: "pointer", display: "flex" }}>
           <AngleDoubleLeft size={18} />
-        </Block>
-      </Block>
+        </div>
+      </div>
 
-      <Block padding="0 1.5rem">
-        <Button
-          onClick={handleInputFileRefClick}
-          size={SIZE.compact}
-          overrides={{
-            Root: {
-              style: {
-                width: "100%",
-              },
-            },
-          }}
-        >
-          Computador
-        </Button>
-      </Block>
+      <div className="px-6">
+        <Button onClick={handleInputFileRefClick}>Computador</Button>
+      </div>
       <Scrollable>
         <input onChange={handleFileInput} type="file" id="file" ref={inputFileRef} style={{ display: "none" }} />
-        <Block>
-          <Block $style={{ display: "grid", gap: "8px", padding: "1.5rem", gridTemplateColumns: "1fr 1fr" }}>
+        <div>
+          <div style={{ display: "grid", gap: "8px", padding: "1.5rem", gridTemplateColumns: "1fr 1fr" }}>
             {vectors.map((vector, index) => (
               <GraphicItem onClick={() => addObject(vector)} key={index} preview={vector} />
             ))}
-          </Block>
-        </Block>
+          </div>
+        </div>
       </Scrollable>
-    </Block>
+    </div>
   )
 }
 
 const GraphicItem = ({ preview, onClick }: { preview: any; onClick?: (option: any) => void }) => {
-  const [css] = useStyletron()
   return (
     <div
       onClick={onClick}
-      // onClick={() => onClick(component.layers[0])}
-      className={css({
-        position: "relative",
-        height: "84px",
-        background: "#f8f8fb",
-        cursor: "pointer",
-        padding: "12px",
-        borderRadius: "8px",
-        overflow: "hidden",
-        "::before:hover": {
-          opacity: 1,
-        },
-      })}
+      className="relative h-20 bg-gray-100 cursor-pointer p-3 rounded-md overflow-hidden before:hover:opacity-100"
     >
-      <div
-        className={css({
-          backgroundImage: `linear-gradient(to bottom,
-          rgba(0, 0, 0, 0) 0,
-          rgba(0, 0, 0, 0.006) 8.1%,
-          rgba(0, 0, 0, 0.022) 15.5%,
-          rgba(0, 0, 0, 0.047) 22.5%,
-          rgba(0, 0, 0, 0.079) 29%,
-          rgba(0, 0, 0, 0.117) 35.3%,
-          rgba(0, 0, 0, 0.158) 41.2%,
-          rgba(0, 0, 0, 0.203) 47.1%,
-          rgba(0, 0, 0, 0.247) 52.9%,
-          rgba(0, 0, 0, 0.292) 58.8%,
-          rgba(0, 0, 0, 0.333) 64.7%,
-          rgba(0, 0, 0, 0.371) 71%,
-          rgba(0, 0, 0, 0.403) 77.5%,
-          rgba(0, 0, 0, 0.428) 84.5%,
-          rgba(0, 0, 0, 0.444) 91.9%,
-          rgba(0, 0, 0, 0.45) 100%)`,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          opacity: 0,
-          transition: "opacity 0.3s ease-in-out",
-          height: "100%",
-          width: "100%",
-          ":hover": {
-            opacity: 1,
-          },
-        })}
-      />
-      <img
-        src={preview}
-        className={css({
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-          pointerEvents: "none",
-          verticalAlign: "middle",
-        })}
-      />
+      <div className="absolute top-0 left-0 right-0 bottom-0 opacity-0 transition-opacity duration-300 ease-in-out hover:opacity-100 h-full w-full" />
+      <img src={preview} className="w-full h-full object-contain pointer-events-none align-middle" />
     </div>
   )
 }

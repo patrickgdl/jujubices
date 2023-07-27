@@ -1,10 +1,10 @@
 import React from "react"
-import { Checkbox } from "baseui/checkbox"
-import { StatefulPopover, PLACEMENT } from "baseui/popover"
 import { HexColorPicker } from "react-colorful"
-import { Slider } from "baseui/slider"
-import { Input } from "baseui/input"
 import { useActiveObject, useEditor } from "@layerhub-io/react"
+import { Checkbox } from "~/ui/checkbox"
+import { Popover, PopoverContent, PopoverTrigger } from "~/ui/popover"
+import { Input } from "~/ui/input"
+import { Slider } from "~/ui/slider"
 
 interface Options {
   angle: number
@@ -34,9 +34,9 @@ const Gradient = () => {
       }
     } else {
       if (options.enabled) {
-      editor.objects.setGradient({ ...options, [key]: value })
+        editor.objects.setGradient({ ...options, [key]: value })
+      }
     }
-  }
   }
   const initialOptions = {
     angle: 0,
@@ -55,7 +55,7 @@ const Gradient = () => {
         enabled: true,
       }
     } else {
-    return initialOptions
+      return initialOptions
     }
   }
 
@@ -110,9 +110,22 @@ const Gradient = () => {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 8px" }}>
         <div style={{ fontSize: "14px" }}>Colors</div>
         <div style={{ display: "flex", gap: "0.5rem" }}>
-          <StatefulPopover
-            placement={PLACEMENT.bottomLeft}
-            content={
+          <Popover>
+            <PopoverTrigger>
+              <div
+                style={{
+                  height: "28px",
+                  width: "28px",
+                  backgroundSize: "100% 100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  backgroundColor: options.colors[0],
+                }}
+              />
+            </PopoverTrigger>
+            <PopoverContent>
               <div
                 style={{
                   padding: "1rem",
@@ -126,17 +139,16 @@ const Gradient = () => {
               >
                 <HexColorPicker onChange={(color) => handleGradientColorChange(0, color)} />
                 <Input
-                  overrides={{ Input: { style: { textAlign: "center" } } }}
                   value={options.colors[0]}
                   onChange={(e) => handleGradientColorChange(0, (e.target as any).value)}
                   placeholder="#000000"
-                  clearOnEscape
                 />
               </div>
-            }
-            accessibilityType="tooltip"
-          >
-            <div>
+            </PopoverContent>
+          </Popover>
+
+          <Popover>
+            <PopoverTrigger>
               <div
                 style={{
                   height: "28px",
@@ -146,14 +158,12 @@ const Gradient = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
-                  backgroundColor: options.colors[0],
+                  backgroundColor: options.colors[1],
                 }}
               />
-            </div>
-          </StatefulPopover>
-          <StatefulPopover
-            placement={PLACEMENT.bottomLeft}
-            content={
+            </PopoverTrigger>
+
+            <PopoverContent>
               <div
                 style={{
                   padding: "1rem",
@@ -167,61 +177,22 @@ const Gradient = () => {
               >
                 <HexColorPicker onChange={(color) => handleGradientColorChange(1, color)} />
                 <Input
-                  overrides={{ Input: { style: { textAlign: "center" } } }}
                   value={options.colors[1]}
                   onChange={(e) => handleGradientColorChange(1, (e.target as any).value)}
                   placeholder="#000000"
-                  clearOnEscape
                 />
               </div>
-            }
-            accessibilityType="tooltip"
-          >
-            <div>
-              <div
-                style={{
-                  height: "28px",
-                  width: "28px",
-                  backgroundSize: "100% 100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  backgroundColor: options.colors[1],
-                }}
-              />
-            </div>
-          </StatefulPopover>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
+
       <div style={{ height: "10px" }} />
 
       <div style={{ padding: "0 8px" }}>
         <div>
           <div style={{ fontSize: "14px" }}>Direction</div>
-          <Slider
-            overrides={{
-              InnerThumb: () => null,
-              ThumbValue: () => null,
-              TickBar: () => null,
-              Thumb: {
-                style: {
-                  height: "12px",
-                  width: "12px",
-                  paddingLeft: 0,
-                },
-              },
-              Track: {
-                style: {
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                },
-              },
-            }}
-            max={360}
-            value={[options.angle]}
-            onChange={({ value }) => handleChange("angle", value[0])}
-          />
+          <Slider max={360} value={[options.angle]} onValueChange={(value) => handleChange("angle", value[0])} />
         </div>
       </div>
     </div>

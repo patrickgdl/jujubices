@@ -1,7 +1,5 @@
 import { useEditor } from "@layerhub-io/react"
 import { ILayer } from "@layerhub-io/types"
-import { Block } from "baseui/block"
-import { Button, SIZE } from "baseui/button"
 import React from "react"
 import { toast } from "react-hot-toast"
 import DropZone from "~/components/dropzone"
@@ -9,6 +7,7 @@ import AngleDoubleLeft from "~/components/icons/AngleDoubleLeft"
 import Scrollable from "~/components/scrollable"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
 import api from "~/services/api"
+import { Button } from "~/ui/button"
 
 export default function () {
   const inputFileRef = React.useRef<HTMLInputElement>(null)
@@ -50,38 +49,23 @@ export default function () {
 
   return (
     <DropZone handleDropFiles={handleDropFiles}>
-      <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Block
-          $style={{
-            display: "flex",
-            alignItems: "center",
-            fontWeight: 500,
-            justifyContent: "space-between",
-            padding: "1.5rem",
-          }}
-        >
-          <Block>Uploads</Block>
+      <div className="flex flex-1 flex-col">
+        <div className="flex items-center font-medium justify-between p-6">
+          <div>Uploads</div>
 
-          <Block onClick={() => setIsSidebarOpen(false)} $style={{ cursor: "pointer", display: "flex" }}>
+          <div className="cursor-pointer flex" onClick={() => setIsSidebarOpen(false)}>
             <AngleDoubleLeft size={18} />
-          </Block>
-        </Block>
+          </div>
+        </div>
         <Scrollable>
-          <Block padding={"0 1.5rem"}>
-            <Button
-              onClick={handleInputFileRefClick}
-              size={SIZE.compact}
-              isLoading={saving}
-              overrides={{
-                Root: {
-                  style: {
-                    width: "100%",
-                  },
-                },
-              }}
-            >
-              Computador
-            </Button>
+          <div className="px-6">
+            {saving ? (
+              <div> Salvando... </div>
+            ) : (
+              <Button onClick={handleInputFileRefClick} size="full">
+                Computador
+              </Button>
+            )}
             <input onChange={handleFileInput} type="file" id="file" ref={inputFileRef} style={{ display: "none" }} />
 
             <div
@@ -108,9 +92,9 @@ export default function () {
                 </div>
               ))}
             </div>
-          </Block>
+          </div>
         </Scrollable>
-      </Block>
+      </div>
     </DropZone>
   )
 }

@@ -1,12 +1,8 @@
 import { useEditor, useFrame } from "@layerhub-io/react"
 import Scrollbar from "@layerhub-io/react-custom-scrollbar"
-import { Block } from "baseui/block"
-import { Button, SIZE } from "baseui/button"
-import { Plus } from "baseui/icon"
-import { Input } from "baseui/input"
-import { Modal, ROLE } from "baseui/modal"
-import { PLACEMENT, StatefulPopover } from "baseui/popover"
-import { Tab, Tabs } from "baseui/tabs"
+import { Popover, PopoverContent, PopoverTrigger } from "~/ui/popover"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/ui/tabs"
+import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "~/ui/dialog"
 import React from "react"
 import { HexColorPicker } from "react-colorful"
 import AngleDoubleLeft from "~/components/icons/AngleDoubleLeft"
@@ -15,6 +11,9 @@ import Scrollable from "~/components/scrollable"
 import { sampleFrames } from "~/constants/editor"
 import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
+import { Button } from "~/ui/button"
+import { Input } from "~/ui/input"
+import { PlusIcon } from "@radix-ui/react-icons"
 
 const colors = ["#ffffff", "#9B9B9B", "#4A4A4A", "#000000", "#A70C2C", "#DA9A15", "#F8E71D", "#47821A", "#4990E2"]
 
@@ -41,31 +40,23 @@ const Customize = () => {
   }
 
   return (
-    <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <Block
-        $style={{
-          display: "flex",
-          alignItems: "center",
-          fontWeight: 500,
-          justifyContent: "space-between",
-          padding: "1.5rem",
-        }}
-      >
-        <Block>Customizar</Block>
+    <div className="flex flex-1 flex-col">
+      <div className="flex items-center font-medium justify-between p-6">
+        <div>Customizar</div>
 
-        <Block onClick={() => setIsSidebarOpen(false)} $style={{ cursor: "pointer", display: "flex" }}>
+        <div onClick={() => setIsSidebarOpen(false)} className="cursor-pointer flex">
           <AngleDoubleLeft size={18} />
-        </Block>
-      </Block>
+        </div>
+      </div>
 
       <Scrollable>
-        <Block padding="0 1.5rem">
-          <Block>
+        <div className="px-6">
+          <div>
             <ResizeTemplate />
-            <Block $style={{ fontSize: "14px", textAlign: "center", paddingTop: "0.35rem" }}>1080 x 1920px</Block>
-          </Block>
+            <div className="text-sm text-center pt-1">1080 x 1920px</div>
+          </div>
 
-          <Block paddingTop="0.5rem">
+          <div className="pt-2">
             <div
               style={{
                 background: "#fafafa",
@@ -85,14 +76,17 @@ const Customize = () => {
                   paddingTop: "0.25rem",
                 }}
               >
-                <StatefulPopover
-                  placement={PLACEMENT.bottomLeft}
-                  content={
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="icon">
+                      <PlusIcon />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-6">
                     <div
                       style={{
                         padding: "1rem",
                         background: "#ffffff",
-                        width: "200px",
                         display: "flex",
                         flexDirection: "column",
                         gap: "1rem",
@@ -101,44 +95,13 @@ const Customize = () => {
                     >
                       <HexColorPicker onChange={(v) => handleChange("backgroundColor", v)} />
                       <Input
-                        overrides={{ Input: { style: { textAlign: "center" } } }}
                         value={state.backgroundColor}
                         onChange={(e) => handleChange("backgroundColor", (e.target as any).value)}
                         placeholder="#000000"
-                        clearOnEscape
                       />
                     </div>
-                  }
-                  accessibilityType="tooltip"
-                >
-                  <div
-                    style={{
-                      height: "40px",
-                      width: "40px",
-                      backgroundSize: "100% 100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      backgroundImage:
-                        'url("https://static.canva.com/web/images/788ee7a68293bd0264fc31f22c31e62d.png")',
-                    }}
-                  >
-                    <div
-                      style={{
-                        height: "32px",
-                        width: "32px",
-                        background: "#ffffff",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "1.3rem",
-                      }}
-                    >
-                      <Plus size={24} />
-                    </div>
-                  </div>
-                </StatefulPopover>
+                  </PopoverContent>
+                </Popover>
 
                 {colors.map((color) => (
                   <div
@@ -155,16 +118,14 @@ const Customize = () => {
                 ))}
               </div>
             </div>
-          </Block>
-        </Block>
+          </div>
+        </div>
       </Scrollable>
-    </Block>
+    </div>
   )
 }
 
 const ResizeTemplate = () => {
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [activeKey, setActiveKey] = React.useState<string | number>("0")
   const [desiredFrame, setDesiredFrame] = React.useState({
     width: 0,
     height: 0,
@@ -189,8 +150,8 @@ const ResizeTemplate = () => {
   }, [frame])
 
   const applyResize = () => {
-    // @ts-ignore
-    const size = activeKey === "0" ? selectedFrame : desiredFrame
+    const size = selectedFrame || desiredFrame
+
     if (editor) {
       editor.frame.resize({
         width: parseInt(size.width),
@@ -205,155 +166,89 @@ const ResizeTemplate = () => {
         },
       })
     }
-    setIsOpen(false)
   }
-
-  const isEnabled =
-    // @ts-ignore
-    (activeKey === "0" && selectedFrame.id !== 0) ||
-    // @ts-ignore
-    (activeKey === "1" && !!parseInt(desiredFrame.width) && !!parseInt(desiredFrame.height))
 
   return (
     <>
-      <Button
-        onClick={() => setIsOpen(true)}
-        size={SIZE.compact}
-        overrides={{
-          Root: {
-            style: {
-              width: "100%",
-            },
-          },
-        }}
-      >
-        Redimensionar
-      </Button>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button size="full">Redimensionar</Button>
+        </DialogTrigger>
 
-      <Modal
-        onClose={() => setIsOpen(false)}
-        closeable={true}
-        isOpen={isOpen}
-        animate
-        autoFocus
-        size="auto"
-        role={ROLE.dialog}
-        overrides={{
-          Dialog: {
-            style: {
-              borderTopRightRadius: "8px",
-              borderEndStartRadius: "8px",
-              borderEndEndRadius: "8px",
-              borderStartEndRadius: "8px",
-              borderStartStartRadius: "8px",
-            },
-          },
-        }}
-      >
-        <Block $style={{ padding: "0 1.5rem", width: "640px" }}>
-          <Block
-            $style={{
-              padding: "2rem 1rem 1rem",
-              textAlign: "center",
-              fontWeight: 500,
-            }}
-          >
-            Escolha um formato e redimensione seu modelo.
-          </Block>
-          <Tabs
-            overrides={{
-              TabContent: {
-                style: {
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                },
-              },
-              TabBar: {
-                style: {
-                  alignItems: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                  backgroundColor: "#ffffff",
-                },
-              },
-            }}
-            activeKey={activeKey}
-            onChange={({ activeKey }) => {
-              setActiveKey(activeKey)
-            }}
-          >
-            <Tab title="Tamanho pré-definidos">
-              <Block $style={{ width: "100%", height: "400px" }}>
-                <Scrollbar>
-                  <Block $style={{ display: "flex", flexDirection: "column", padding: "1rem 5rem" }}>
-                    {sampleFrames.map((sampleFrame, index) => (
-                      <Block
-                        onClick={() => setSelectedFrame(sampleFrame)}
-                        $style={{
-                          backgroundColor: selectedFrame.id === sampleFrame.id ? "rgb(243,244,245)" : "#ffffff",
-                          margin: "0.25rem 0",
-                          ":hover": {
-                            backgroundColor: "rgb(246,247,248)",
-                            cursor: "pointer",
-                          },
-                        }}
-                        key={index}
-                      >
-                        <Block $style={{ fontSize: "13px" }}>
-                          <Block $style={{ fontWeight: 500 }}>{sampleFrame.name}</Block>
-                          <Block $style={{ color: "rgb(119,119,119)" }}>
-                            {sampleFrame.width} x {sampleFrame.height}px
-                          </Block>
-                        </Block>
-                      </Block>
-                    ))}
-                  </Block>
-                </Scrollbar>
-              </Block>
-            </Tab>
+        <DialogContent>
+          <div className="px-6 w-full">
+            <div className=" pt-8 pb-4 px-4">Escolha um formato e redimensione seu modelo.</div>
 
-            <Tab title="Tamanho customizado">
-              <Block $style={{ padding: "2rem 2rem" }}>
-                <Block
-                  $style={{ display: "grid", gridTemplateColumns: "1fr 50px 1fr", alignItems: "end", fontSize: "14px" }}
-                >
-                  <Input
-                    onChange={(e: any) => setDesiredFrame({ ...desiredFrame, width: e.target.value })}
-                    value={desiredFrame.width}
-                    startEnhancer="W"
-                    size={SIZE.compact}
-                  />
-                  <Button
-                    overrides={{
-                      Root: {
-                        style: {
-                          height: "32px",
-                        },
-                      },
-                    }}
-                    size={SIZE.compact}
-                    kind="tertiary"
-                  >
-                    <SwapHorizontal size={24} />
-                  </Button>
-                  <Input
-                    onChange={(e: any) => setDesiredFrame({ ...desiredFrame, height: e.target.value })}
-                    value={desiredFrame.height}
-                    startEnhancer="H"
-                    size={SIZE.compact}
-                  />
-                </Block>
-              </Block>
-            </Tab>
-          </Tabs>
-        </Block>
+            <div className="flex items-center justify-center">
+              <Tabs defaultValue="preset">
+                <TabsList>
+                  <TabsTrigger value="preset">Tamanho pré-definidos</TabsTrigger>
+                  <TabsTrigger value="custom">Tamanho customizado</TabsTrigger>
+                </TabsList>
 
-        <Block $style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingBottom: "2rem" }}>
-          <Button disabled={!isEnabled} onClick={applyResize} style={{ width: "190px" }}>
-            Redimensionar
-          </Button>
-        </Block>
-      </Modal>
+                <TabsContent value="preset">
+                  <div style={{ width: "100%", height: "400px" }}>
+                    <Scrollbar>
+                      <div style={{ display: "flex", flexDirection: "column", padding: "1rem 5rem" }}>
+                        {sampleFrames.map((sampleFrame, index) => (
+                          <div
+                            onClick={() => setSelectedFrame(sampleFrame)}
+                            className="cursor-pointer hover:bg-gray-100"
+                            style={{
+                              backgroundColor: selectedFrame.id === sampleFrame.id ? "rgb(243,244,245)" : "#ffffff",
+                              margin: "0.25rem 0",
+                            }}
+                            key={index}
+                          >
+                            <div style={{ fontSize: "13px" }}>
+                              <div style={{ fontWeight: 500 }}>{sampleFrame.name}</div>
+                              <div style={{ color: "rgb(119,119,119)" }}>
+                                {sampleFrame.width} x {sampleFrame.height}px
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </Scrollbar>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="custom">
+                  <div style={{ padding: "2rem 2rem" }}>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 50px 1fr",
+                        alignItems: "end",
+                        fontSize: "14px",
+                      }}
+                    >
+                      <Input
+                        onChange={(e: any) => setDesiredFrame({ ...desiredFrame, width: e.target.value })}
+                        value={desiredFrame.width}
+                      />
+
+                      <Button size="sm">
+                        <SwapHorizontal size={24} />
+                      </Button>
+                      <Input
+                        onChange={(e: any) => setDesiredFrame({ ...desiredFrame, height: e.target.value })}
+                        value={desiredFrame.height}
+                      />
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button onClick={applyResize} size="lg">
+              Redimensionar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

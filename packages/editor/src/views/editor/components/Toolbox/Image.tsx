@@ -1,11 +1,10 @@
-import { Block } from "baseui/block"
 import Common from "./Common"
 import Flip from "./Shared/Flip"
 
 const Image = () => {
   return (
-    <Block
-      $style={{
+    <div
+      style={{
         flex: 1,
         display: "flex",
         alignItems: "center",
@@ -13,11 +12,12 @@ const Image = () => {
         justifyContent: "space-between",
       }}
     >
-      <Block>
+      <div>
         <Flip />
-      </Block>
+      </div>
+
       <Common />
-    </Block>
+    </div>
   )
 }
 

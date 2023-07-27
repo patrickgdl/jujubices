@@ -1,10 +1,9 @@
 import React from "react"
-import { Block } from "baseui/block"
 import { HexColorPicker } from "react-colorful"
 import Common from "./Common"
 import { useActiveObject } from "@layerhub-io/react"
+import { Popover, PopoverContent, PopoverTrigger } from "~/ui/popover"
 import { groupBy } from "lodash"
-import { PLACEMENT, StatefulPopover } from "baseui/popover"
 import Flip from "./Shared/Flip"
 
 const Vector = () => {
@@ -34,24 +33,29 @@ const Vector = () => {
   }
 
   return (
-    <Block
-      $style={{
-        flex: 1,
-        display: "flex",
-        alignItems: "center",
-        padding: "0 12px",
-        justifyContent: "space-between",
-      }}
-    >
-      <Block>
-        <Block $style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <Block $style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+    <div className="flex flex-1 items-center px-3 justify-between">
+      <div>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             {Object.keys(state.colorMap).map((c, index) => {
               return (
-                <StatefulPopover
-                  key={index}
-                  placement={PLACEMENT.bottomLeft}
-                  content={
+                <Popover key={index}>
+                  <PopoverTrigger>
+                    <div
+                      style={{
+                        height: "24px",
+                        width: "24px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        backgroundColor: state.colorMap[c],
+                        border: "1px solid #dedede",
+                      }}
+                    />
+                  </PopoverTrigger>
+
+                  <PopoverContent>
                     <div
                       style={{
                         padding: "1rem",
@@ -69,32 +73,16 @@ const Vector = () => {
                         }}
                       />
                     </div>
-                  }
-                  accessibilityType="tooltip"
-                >
-                  <div>
-                    <div
-                      style={{
-                        height: "24px",
-                        width: "24px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                        backgroundColor: state.colorMap[c],
-                        border: "1px solid #dedede",
-                      }}
-                    />
-                  </div>
-                </StatefulPopover>
+                  </PopoverContent>
+                </Popover>
               )
             })}
-          </Block>
+          </div>
           <Flip />
-        </Block>
-      </Block>
+        </div>
+      </div>
       <Common />
-    </Block>
+    </div>
   )
 }
 

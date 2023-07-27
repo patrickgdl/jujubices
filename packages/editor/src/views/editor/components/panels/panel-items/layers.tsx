@@ -1,6 +1,5 @@
 import React from "react"
 import { useEditor, useObjects } from "@layerhub-io/react"
-import { Block } from "baseui/block"
 import AngleDoubleLeft from "~/components/icons/AngleDoubleLeft"
 import Scrollable from "~/components/scrollable"
 import { ILayer } from "@layerhub-io/types"
@@ -9,8 +8,8 @@ import Unlocked from "~/components/icons/Unlocked"
 import Eye from "~/components/icons/Eye"
 import EyeCrossed from "~/components/icons/EyeCrossed"
 import Delete from "~/components/icons/Delete"
-import { Button, KIND, SIZE } from "baseui/button"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
+import { Button } from "~/ui/button"
 
 const Layers = () => {
   const editor = useEditor()
@@ -41,9 +40,9 @@ const Layers = () => {
   }, [editor, objects])
 
   return (
-    <Block $style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <Block
-        $style={{
+    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
           display: "flex",
           alignItems: "center",
           fontWeight: 500,
@@ -51,119 +50,65 @@ const Layers = () => {
           padding: "1.5rem",
         }}
       >
-        <Block>Layers</Block>
+        <div>Layers</div>
 
-        <Block onClick={() => setIsSidebarOpen(false)} $style={{ cursor: "pointer", display: "flex" }}>
+        <div onClick={() => setIsSidebarOpen(false)} style={{ cursor: "pointer", display: "flex" }}>
           <AngleDoubleLeft size={18} />
-        </Block>
-      </Block>
+        </div>
+      </div>
       <Scrollable>
-        <Block padding="0 1.5rem">
+        <div className="px-6">
           {layerObjects.map((object) => (
-            <Block
-              $style={{
+            <div
+              className="hover:bg-gray-100"
+              style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 90px",
                 fontSize: "14px",
                 alignItems: "center",
-                ":hover": {
-                  background: "rgb(245,246,247)",
-                },
               }}
               key={object.id}
             >
-              <Block $style={{ cursor: "pointer" }} onClick={() => editor.objects.select(object.id)}>
+              <div style={{ cursor: "pointer" }} onClick={() => editor.objects.select(object.id)}>
                 {object.name}
-              </Block>
-              <Block $style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
                 {object.locked ? (
-                  <Button
-                    kind={KIND.tertiary}
-                    size={SIZE.mini}
-                    onClick={() => editor.objects.unlock(object.id)}
-                    overrides={{
-                      Root: {
-                        style: {
-                          paddingLeft: "4px",
-                          paddingRight: "4px",
-                        },
-                      },
-                    }}
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => editor.objects.unlock(object.id)}>
                     <Locked size={24} />
                   </Button>
                 ) : (
-                  <Button
-                    kind={KIND.tertiary}
-                    size={SIZE.mini}
-                    onClick={() => editor.objects.lock(object.id)}
-                    overrides={{
-                      Root: {
-                        style: {
-                          paddingLeft: "4px",
-                          paddingRight: "4px",
-                        },
-                      },
-                    }}
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => editor.objects.lock(object.id)}>
                     <Unlocked size={24} />
                   </Button>
                 )}
 
                 {object.visible ? (
                   <Button
-                    kind={KIND.tertiary}
-                    size={SIZE.mini}
+                    variant="ghost"
+                    size="icon"
                     onClick={() => editor.objects.update({ visible: false }, object.id)}
-                    overrides={{
-                      Root: {
-                        style: {
-                          paddingLeft: "4px",
-                          paddingRight: "4px",
-                        },
-                      },
-                    }}
                   >
                     <Eye size={24} />
                   </Button>
                 ) : (
                   <Button
-                    kind={KIND.tertiary}
-                    size={SIZE.mini}
+                    variant="ghost"
+                    size="icon"
                     onClick={() => editor.objects.update({ visible: true }, object.id)}
-                    overrides={{
-                      Root: {
-                        style: {
-                          paddingLeft: "4px",
-                          paddingRight: "4px",
-                        },
-                      },
-                    }}
                   >
                     <EyeCrossed size={24} />
                   </Button>
                 )}
-                <Button
-                  kind={KIND.tertiary}
-                  size={SIZE.mini}
-                  onClick={() => editor.objects.remove(object.id)}
-                  overrides={{
-                    Root: {
-                      style: {
-                        paddingLeft: "4px",
-                        paddingRight: "4px",
-                      },
-                    },
-                  }}
-                >
+                <Button variant="ghost" size="icon" onClick={() => editor.objects.remove(object.id)}>
                   <Delete size={24} />
                 </Button>
-              </Block>
-            </Block>
+              </div>
+            </div>
           ))}
-        </Block>
+        </div>
       </Scrollable>
-    </Block>
+    </div>
   )
 }
 
