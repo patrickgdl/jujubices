@@ -1,13 +1,13 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 
 import ProtectedRoute from "./components/protected-route"
-import Dashboard from "./views/dashboard"
-import Editor from "./views/editor"
-import Home from "./views/home"
-import Login from "./views/login"
-import NotFound from "./views/not-found"
-import SelectEditor from "./views/select-editor/select-editor"
-import { Builder, Templates } from "./views/template"
+import Dashboard from "./pages/dashboard"
+import Editor from "./pages/editor"
+import Home from "./pages/home"
+import Login from "./pages/login"
+import NotFound from "./pages/not-found"
+import SelectEditor from "./pages/select-editor/select-editor"
+import { Builder, Templates } from "./pages/template"
 
 const Router = () => {
   return (

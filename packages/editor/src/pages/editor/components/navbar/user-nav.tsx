@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "~/ui/dropdown-menu"
 
@@ -44,24 +43,12 @@ export function UserNav({ name, email, image, onLogout }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Perfil
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Cobrança
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Configurações
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <DropdownMenuItem>Perfil</DropdownMenuItem>
+          <DropdownMenuItem>Cobrança</DropdownMenuItem>
+          <DropdownMenuItem>Configurações</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onLogout}>
-          Sair
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={onLogout}>Sair</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

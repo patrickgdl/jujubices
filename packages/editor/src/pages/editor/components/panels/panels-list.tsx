@@ -4,13 +4,14 @@ import Scrollable from "~/components/scrollable"
 import { BASE_ITEMS } from "~/constants/app-options"
 import useAppContext from "~/hooks/useAppContext"
 import useSetIsSidebarOpen from "~/hooks/useSetIsSidebarOpen"
+import { cn } from "~/utils/cn"
 
 const PanelsList = () => {
   const { activePanel } = useAppContext()
   const { t } = useTranslation("editor")
 
   return (
-    <div className="w-20 bg-black text-white display flex flex-none">
+    <div className="w-20 bg-gray-100 display flex flex-none">
       <Scrollable autoHide={true}>
         {BASE_ITEMS.map((panelListItem) => (
           <PanelListItem
@@ -40,11 +41,10 @@ const PanelListItem = ({ label, icon, activePanel, name }: any) => {
         setIsSidebarOpen(true)
         setActivePanel(name)
       }}
-      style={{
-        backgroundColor: name === activePanel ? "#fff" : "#000",
-        color: name === activePanel ? "#000" : "#fff",
-      }}
-      className="w-20 h-20 flex items-center flex-col justify-center font-medium text-sm gap-1 select-none transition-all hover:cursor-pointer hover:bg-white hover:transition-all hover:text-black"
+      className={cn(
+        "w-20 h-20 flex items-center flex-col justify-center font-medium text-sm gap-1 select-none transition-all hover:cursor-pointer hover:bg-gray-200 hover:transition-all hover:text-black",
+        activePanel === name ? "bg-white" : "bg-gray-100"
+      )}
     >
       <Icon size={24} />
       <div>{label}</div>

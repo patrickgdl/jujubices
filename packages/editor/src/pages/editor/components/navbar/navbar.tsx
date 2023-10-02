@@ -186,10 +186,10 @@ const Navbar = () => {
   return (
     <div className="border-b">
       <div className="flex h-16 items-center justify-between px-4">
-        <div className="flex space-x-4">
+        <div className="flex">
           <Logo size={36} />
 
-          <TeamSwitcher />
+          {/* <TeamSwitcher /> */}
         </div>
 
         <div className="flex items-center">

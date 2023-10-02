@@ -32,7 +32,7 @@ const TemplateTitle = () => {
   }, [state.name])
 
   return (
-    <div className="flex items-center justify-center opacity-100">
+    <div className="flex items-center opacity-100">
       <div className="flex absolute top-[-10px] left-[50%] w-full">
         <div className="absolute top-[-10px] left-[50%] text-sm font-medium" ref={spanRef}>
           {state.name}
