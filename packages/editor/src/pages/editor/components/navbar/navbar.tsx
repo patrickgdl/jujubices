@@ -4,8 +4,7 @@ import React from "react"
 import { toast } from "react-hot-toast"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import Logo from "~/components/icons/Logo"
-import Play from "~/components/icons/Play"
+import { ArrowLeftIcon } from "@radix-ui/react-icons"
 import useTemplateEditorContext from "~/hooks/useTemplateEditorContext"
 import { useUser } from "~/hooks/useUser"
 import api from "~/services/api"
@@ -17,7 +16,6 @@ import { makeJSONDownload } from "~/utils/download"
 import { loadTemplateFonts } from "~/utils/fonts"
 
 import NavbarActions from "./navbar-actions"
-import TeamSwitcher from "./team-switcher"
 import TemplateTitle from "./template-title"
 import { UserNav } from "./user-nav"
 import Preview from "~/components/preview/preview"
@@ -185,21 +183,22 @@ const Navbar = () => {
 
   return (
     <div className="border-b">
-      <div className="flex h-16 items-center justify-between px-4">
-        <div className="flex">
-          <Logo size={36} />
+      <div className="flex py-3 items-center justify-between px-4">
+        <div className="flex items-center space-x-4">
+          <Button variant="outline" size="icon">
+            <ArrowLeftIcon className="h-4 w-4" />
+          </Button>
 
-          {/* <TeamSwitcher /> */}
+          <div className="flex flex-col">
+            <h2 className="font-semibold">{currentTemplate.name || "Template"}</h2>
+            <h3 className="text-xs font-medium">
+              {`${currentTemplate.frame.width} x ${currentTemplate.frame.height}`}
+            </h3>
+          </div>
         </div>
 
         <div className="flex items-center">
           <TemplateTitle />
-
-          <Preview>
-            <Button variant="ghost">
-              <Play size={24} />
-            </Button>
-          </Preview>
         </div>
 
         <div className="flex items-center space-x-4">

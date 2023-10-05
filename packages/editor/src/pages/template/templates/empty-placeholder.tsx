@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import Template from "~/components/icons/Template"
 import { Button } from "~/ui/button"
 import {
@@ -20,7 +21,7 @@ export function EmptyPlaceholder() {
 
         <h3 className="mt-4 text-lg font-semibold">Sem templates por aqui</h3>
         <p className="mb-4 mt-2 text-sm text-muted-foreground">
-          Não temos templates nessa categoria. Sugira um ou compre um personalizado conosco.
+          Não temos templates nessa categoria. Sugira um ou <Link to="/custom">compre um personalizado conosco</Link>.
         </p>
         <Dialog>
           <DialogTrigger>

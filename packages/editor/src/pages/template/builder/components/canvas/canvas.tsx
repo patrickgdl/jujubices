@@ -5,8 +5,7 @@ const Canvas = () => {
     <div className="flex relative flex-1">
       <LayerhubCanvas
         config={{
-          background: "#f1f2f6",
-          frameMargin: 20,
+          background: "#edf2f7",
           shadow: {
             blur: 4,
             color: "#fcfcfc",

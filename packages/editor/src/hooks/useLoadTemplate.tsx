@@ -27,7 +27,6 @@ const useLoadTemplate = () => {
   React.useEffect(() => {
     if (template) {
       if (editor) {
-        // console.log(template.scene.layers.filter((l: any) => l.type === "StaticText"))
         loadFontsAndSetTemplate(template)
       }
     }

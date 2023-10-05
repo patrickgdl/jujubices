@@ -1,24 +1,25 @@
-import Canvas from "./components/canvas"
-import Container from "./components/container"
-import Navbar from "./components/navbar"
-import Panel from "./components/panel"
 import useImportOrCreateScene from "~/hooks/useImportOrCreateScene"
+
+import Canvas from "./components/canvas"
+import Navbar from "./components/navbar"
+import LeftBar from "./components/leftbar"
+import RightBar from "./components/rightbar"
 
 const Builder = () => {
   useImportOrCreateScene()
 
   return (
-    <Container>
+    <div className="h-screen w-screen bg-white">
       <Navbar />
 
-      <div className="flex flex-1">
-        <Panel />
+      <div className="grid grid-cols-[300px_1fr_300px] h-full">
+        <LeftBar />
 
-        <div className="flex flex-1 flex-col relative">
-          <Canvas />
-        </div>
+        <Canvas />
+
+        <RightBar />
       </div>
-    </Container>
+    </div>
   )
 }
 

@@ -1,4 +1,5 @@
 import React from "react"
+import Preview from "~/components/preview/preview"
 import { Button } from "~/ui/button"
 
 type NavbarActionsProps = {
@@ -17,7 +18,7 @@ const NavbarActions = ({ onExport, onFileChange, onSubmit, loading, editing }: N
   }
 
   return (
-    <div className="flex items-center justify-end">
+    <div className="flex items-center justify-end space-x-2">
       <input
         multiple={false}
         onChange={onFileChange}
@@ -27,20 +28,24 @@ const NavbarActions = ({ onExport, onFileChange, onSubmit, loading, editing }: N
         style={{ display: "none" }}
       />
 
-      <Button onClick={handleInputFileRefClick} variant="ghost">
+      <Preview>
+        <Button variant="outline">Preview</Button>
+      </Preview>
+
+      <Button onClick={handleInputFileRefClick} variant="outline">
         Importar
       </Button>
 
-      <Button onClick={onExport} variant="ghost">
+      <Button onClick={onExport} variant="outline">
         Exportar
       </Button>
 
       {editing ? (
-        <Button onClick={onSubmit} variant="ghost">
+        <Button onClick={onSubmit} variant="default">
           Atualizar
         </Button>
       ) : (
-        <Button onClick={onSubmit} variant="ghost">
+        <Button onClick={onSubmit} variant="default">
           Salvar
         </Button>
       )}
